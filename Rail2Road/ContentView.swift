@@ -6,11 +6,17 @@
 //
 
 import SwiftUI
+import Foundation
 
 struct ContentView: View {
+    @EnvironmentObject var database: FireDatabaseReference
+    @EnvironmentObject var dataConglomerate: DataConglomerate
+    private var query: Bool {
+
+        return true
+    }
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        LoginView()
     }
 }
 
