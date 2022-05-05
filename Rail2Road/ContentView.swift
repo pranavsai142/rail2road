@@ -20,21 +20,7 @@ struct ContentView: View {
     
     
     var body: some View {
-        if (query) {
-            if (dataConglomerate.data["JacksonAge"] != nil) {
-                VStack {
-                    Text("Hello")
-                    HStack {
-                        Text(dataConglomerate.data["JacksonAge"] as! String)
-                        Text("Another one")
-                        
-                    }
-                    Text("World")
-                    
-                }
-
-            }
-        }
+        LoginView()
     }
 }
 

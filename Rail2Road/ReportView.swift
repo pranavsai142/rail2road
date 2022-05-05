@@ -11,14 +11,10 @@ struct ReportView: View {
     var body: some View {
         NavigationView {
             VStack {
-                Text("report")
-                NavigationLink(
-                    destination: DetailView()) {
-                    Text("back")
-                }
+                Text("Report")
             }
         }
-            .navigationBarHidden(true)
+            .navigationBarTitle("Report")
     }
 }
 

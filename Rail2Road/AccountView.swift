@@ -8,31 +8,29 @@
 import SwiftUI
 
 struct AccountView: View {
+    @State private var fullName: String = ""
+    @State private var email: String = ""
     var body: some View {
         NavigationView {
             VStack {
-                Text("email")
-                Text("full name")
-                Text("reset password")
-                NavigationLink(
-                    destination: ResetView()) {
-                    Text("reset")
-                }
-                NavigationLink(
-                    destination: MapView()) {
-                    Text("back")
-                }
+                Text("Full Name")
+                    .padding(.leading)
+                    .padding(.trailing)
+                
+                Text("Email")
+                    .padding(.leading)
+                    .padding(.trailing)
+
+                Spacer()
+                
                 NavigationLink(
                     destination: EditView()) {
-                    Text("edit")
-                }
-                NavigationLink(
-                    destination: LoginView()) {
-                    Text("sign out")
+                    Text("Edit")
+                        .padding()
                 }
             }
         }
-            .navigationBarHidden(true)
+            .navigationBarTitle("Account")
     }
 }
 
