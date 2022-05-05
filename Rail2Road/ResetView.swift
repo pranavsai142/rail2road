@@ -9,18 +9,25 @@ import SwiftUI
 import Foundation
 
 struct ResetView: View {
+    @State private var email: String = ""
     var body: some View {
         NavigationView {
             VStack {
-                Text("Email")
-                Text("Reset Password")
-                NavigationLink(
-                    destination: LoginView()) {
-                    Text("Back")
-                }
+                TextField("Email", text: $email)
+                    .padding(.leading)
+                    .padding(.trailing)
+                
+                Button("Reset Password", action: {})
+                    .padding()
+                
+                Spacer()
+                
+                Text("Email Sent!")
+                    .padding()
             }
         }
-            .navigationBarHidden(true)
+            .navigationTitle("Reset Password")
+            
     }
 }
 
