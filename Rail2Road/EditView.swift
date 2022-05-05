@@ -8,21 +8,25 @@
 import SwiftUI
 
 struct EditView: View {
+    @State private var fullName: String = ""
+    @State private var email: String = ""
     var body: some View {
         NavigationView {
             VStack {
-                Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-                NavigationLink(
-                    destination: AccountView()) {
-                    Text("back")
-                }
-                NavigationLink(
-                    destination: AccountView()) {
-                    Text("save")
-                }
+                TextField("Full Name", text: $fullName)
+                    .padding(.leading)
+                    .padding(.trailing)
+                
+                TextField("Email", text: $email)
+                    .padding(.leading)
+                    .padding(.trailing)
+                
+                Button("Save", action: {
+                    
+                })
             }
+                .navigationBarTitle("Edit")
         }
-            .navigationBarHidden(true)
     }
 }
 

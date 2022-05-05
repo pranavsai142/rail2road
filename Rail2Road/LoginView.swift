@@ -16,12 +16,6 @@ struct LoginView: View {
     var body: some View {
         NavigationView {
             VStack {
-                Text("Rail2Road")
-                    .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-                    .bold()
-                
-                Spacer()
-            
                 TextField("Email", text: $email)
                     .padding(.leading)
                     .padding(.trailing)
@@ -41,16 +35,17 @@ struct LoginView: View {
                 NavigationLink(
                     destination: ResetView()) {
                     Text("Reset Password")
-                        .padding(.bottom, 1)
                 }
+                    .navigationBarTitle("Rail2Road")
                 NavigationLink(
                     destination: RegisterView()) {
                     Text("Register")
                         .padding(.bottom)
                 }
+                    .navigationBarTitle("Rail2Road")
             }
         }
-            .navigationTitle("Rail2Road")
+            .navigationBarTitle("Rail2Road")
             .navigationBarHidden(true)
     }
 }

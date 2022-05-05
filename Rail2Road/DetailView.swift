@@ -11,18 +11,15 @@ struct DetailView: View {
     var body: some View {
         NavigationView {
             VStack {
-                Text("Details")
+                Text("Railyard Info")
                 NavigationLink(
                     destination: ReportView()) {
                     Text("report")
                 }
-                NavigationLink(
-                    destination: MapView()) {
-                    Text("back")
-                }
             }
+                .navigationBarHidden(true)
         }
-            .navigationBarHidden(true)
+            .navigationBarTitle("Details")
     }
 }
 

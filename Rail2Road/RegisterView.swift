@@ -42,7 +42,6 @@ struct RegisterView: View {
             }
         }
             .navigationTitle("Register")
-            .navigationBarTitleDisplayMode(.inline)
     }
 }
 
