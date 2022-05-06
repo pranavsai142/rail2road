@@ -17,7 +17,6 @@ struct DetailView: View {
                     Text("report")
                 }
             }
-                .navigationBarHidden(true)
         }
             .navigationBarTitle("Details")
     }
