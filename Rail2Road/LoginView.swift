@@ -16,6 +16,11 @@ struct LoginView: View {
     var body: some View {
         NavigationView {
             VStack {
+                Text("Rail2Road")
+                    .font(.title)
+                    .bold()
+                    .padding(.top)
+                
                 TextField("Email", text: $email)
                     .padding(.leading)
                     .padding(.trailing)
@@ -42,11 +47,9 @@ struct LoginView: View {
                     Text("Register")
                         .padding(.bottom)
                 }
-                    .navigationBarTitle("Rail2Road")
+                    .navigationBarHidden(true)
             }
         }
-            .navigationBarTitle("Rail2Road")
-            .navigationBarHidden(true)
     }
 }
 

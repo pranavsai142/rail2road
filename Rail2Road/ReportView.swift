@@ -9,12 +9,11 @@ import SwiftUI
 
 struct ReportView: View {
     var body: some View {
-        NavigationView {
-            VStack {
-                Text("Report")
-            }
+        VStack {
+            Text("Report")
         }
-            .navigationBarTitle("Report")
+            .navigationTitle("Report")
+            .navigationBarTitleDisplayMode(.inline)
     }
 }
 

@@ -11,22 +11,25 @@ struct EditView: View {
     @State private var fullName: String = ""
     @State private var email: String = ""
     var body: some View {
-        NavigationView {
-            VStack {
-                TextField("Full Name", text: $fullName)
-                    .padding(.leading)
-                    .padding(.trailing)
+        VStack {
+            TextField("Full Name", text: $fullName)
+                .padding(.leading)
+                .padding(.trailing)
+                .padding(.top)
+            
+            TextField("Email", text: $email)
+                .padding(.leading)
+                .padding(.trailing)
+            
+            Spacer()
+            
+            Button("Save", action: {
                 
-                TextField("Email", text: $email)
-                    .padding(.leading)
-                    .padding(.trailing)
-                
-                Button("Save", action: {
-                    
-                })
-            }
-                .navigationBarTitle("Edit")
+            })
+                .padding()
         }
+            .navigationTitle("Edit")
+            .navigationBarTitleDisplayMode(.inline)
     }
 }
 

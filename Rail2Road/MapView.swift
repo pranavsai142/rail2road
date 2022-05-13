@@ -14,59 +14,56 @@ struct MapView: View {
 
     
     var body: some View {
-        NavigationView {
-            ZStack {
-                Map(coordinateRegion: $region, annotationItems: railyards) { railyard in
-                    MapAnnotation(coordinate: railyard.coordinates) {
-                        NavigationLink(destination: DetailView()) {
-                            RailyardAnnotation(railyard: railyard)
-                        }
-                    }
-                }
-                VStack {
-                    HStack {
-                        NavigationLink(
-                            destination: AccountView()) {
-                            Text("Account")
-                                .padding()
-                        }
-                        
-                        Spacer()
-                        
-                        VStack(alignment: HorizontalAlignment.trailing) {
-                            Button("North", action: {
-                                
-                            })
-                                .padding(.trailing)
-                            Button("Zoom In", action: {
-                                
-                            })
-                                .padding(.trailing)
-                            Button("Zoom Out", action: {
-                                
-                            })
-                                .padding(.trailing)
-                        }
-                    }
-                    Spacer()
-                    HStack {
-                        Button("Search", action: {
-                            
-                        })
-                            .padding()
-                        
-                        Spacer()
-                        
-                        Button("Location", action: {
-                            
-                        })
-                            .padding()
+        ZStack {
+            Map(coordinateRegion: $region, annotationItems: railyards) { railyard in
+                MapAnnotation(coordinate: railyard.coordinates) {
+                    NavigationLink(destination: DetailView()) {
+                        RailyardAnnotation(railyard: railyard)
                     }
                 }
             }
-            .navigationBarHidden(true)
+            VStack {
+                HStack {
+                    NavigationLink(
+                        destination: AccountView()) {
+                        Text("Account")
+                            .padding()
+                    }
+                    
+                    Spacer()
+                    
+                    VStack(alignment: HorizontalAlignment.trailing) {
+                        Button("North", action: {
+                            
+                        })
+                            .padding(.trailing)
+                        Button("Zoom In", action: {
+                            
+                        })
+                            .padding(.trailing)
+                        Button("Zoom Out", action: {
+                            
+                        })
+                            .padding(.trailing)
+                    }
+                }
+                Spacer()
+                HStack {
+                    Button("Search", action: {
+                        
+                    })
+                        .padding()
+                    
+                    Spacer()
+                    
+                    Button("Location", action: {
+                        
+                    })
+                        .padding()
+                }
+            }
         }
-            .navigationBarHidden(true)
+        .navigationBarHidden(true)
     }
 }
 

@@ -11,26 +11,26 @@ struct AccountView: View {
     @State private var fullName: String = ""
     @State private var email: String = ""
     var body: some View {
-        NavigationView {
-            VStack {
-                Text("Full Name")
-                    .padding(.leading)
-                    .padding(.trailing)
-                
-                Text("Email")
-                    .padding(.leading)
-                    .padding(.trailing)
+        VStack {
+            Text("Full Name")
+                .padding(.leading)
+                .padding(.trailing)
+                .padding(.top)
+            
+            Text("Email")
+                .padding(.leading)
+                .padding(.trailing)
 
-                Spacer()
-                
-                NavigationLink(
-                    destination: EditView()) {
-                    Text("Edit")
-                        .padding()
-                }
+            Spacer()
+            
+            NavigationLink(
+                destination: EditView()) {
+                Text("Edit")
+                    .padding()
             }
         }
-            .navigationBarTitle("Account")
+            .navigationTitle("Account")
+            .navigationBarTitleDisplayMode(.inline)
     }
 }
 
