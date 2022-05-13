@@ -11,23 +11,19 @@ import Foundation
 struct ResetView: View {
     @State private var email: String = ""
     var body: some View {
-        NavigationView {
-            VStack {
-                TextField("Email", text: $email)
-                    .padding(.leading)
-                    .padding(.trailing)
-                
-                Button("Reset Password", action: {})
-                    .padding()
-                
-                Spacer()
-                
-                Text("Email Sent!")
-                    .padding()
-            }
-        }
-            .navigationTitle("Reset Password")
+        VStack {
+            TextField("Email", text: $email)
+                .padding(.leading)
+                .padding(.trailing)
             
+            Button("Reset Password", action: {})
+                .padding()
+            
+            Spacer()
+            
+            Text("Email Sent!")
+                .padding()
+        }
     }
 }
 

@@ -9,17 +9,15 @@ import SwiftUI
 
 struct DetailView: View {
     var body: some View {
-        NavigationView {
-            VStack {
-                Text("Railyard Info")
-                NavigationLink(
-                    destination: ReportView()) {
-                    Text("report")
-                }
+        VStack {
+            Text("Railyard Info")
+            NavigationLink(
+                destination: ReportView()) {
+                Text("report")
             }
-                .navigationBarHidden(true)
         }
-            .navigationBarTitle("Details")
+            .navigationTitle("Detail")
+            .navigationBarTitleDisplayMode(.inline)
     }
 }
 
