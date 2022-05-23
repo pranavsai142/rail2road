@@ -12,6 +12,7 @@ struct MapView: View {
     @State private var railyards = [Railyard(coordinates: CLLocationCoordinate2D(latitude: 51.507222, longitude: -0.1275)), Railyard(coordinates: CLLocationCoordinate2D(latitude: 51.307222, longitude: -0.2375))]
     @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 51.507222, longitude: -0.1275), span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5))
 
+    var uid: String
     
     var body: some View {
         ZStack {
@@ -69,6 +70,6 @@ struct MapView: View {
 
 struct MapView_Previews: PreviewProvider {
     static var previews: some View {
-        MapView()
+        MapView(uid: "1")
     }
 }
