@@ -8,34 +8,39 @@
 import SwiftUI
 
 struct AccountView: View {
-    @State private var fullName: String = ""
-    @State private var email: String = ""
+    var uid: String
+    @EnvironmentObject var database: FireDatabaseReference
+    @EnvironmentObject var dataConglomerate: DataConglomerate
+    
     var body: some View {
-        VStack {
-            Text("Full Name")
-                .padding(.leading)
-                .padding(.trailing)
-                .padding(.top)
-            
-            Text("Email")
-                .padding(.leading)
-                .padding(.trailing)
-
-            Spacer()
-            
-            NavigationLink(
-                destination: EditView()) {
-                Text("Edit")
-                    .padding()
+        if(query) {
+            VStack {
+                if(dataConglomerate.data[userNameTag] != nil) {
+                    Text(dataConglomerate.dataToString(tag: userNameTag))
+                }
             }
+                .navigationTitle("Account")
+                .navigationBarTitleDisplayMode(.inline)
         }
-            .navigationTitle("Account")
-            .navigationBarTitleDisplayMode(.inline)
     }
+    
+    
+    var userNameTag = "user_name"
+    var userPath: [String] {
+        ["users", uid]
+    }
+
+    var query: Bool {
+        DispatchQueue.main.async {
+            _ = database.getValue(path: userPath, key: "name", tag: userNameTag, dataConglomerate: dataConglomerate)
+        }
+        return true
+    }
+
 }
 
 struct AccountView_Previews: PreviewProvider {
     static var previews: some View {
-        AccountView()
+        AccountView(uid: "1")
     }
 }

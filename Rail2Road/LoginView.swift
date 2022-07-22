@@ -22,6 +22,8 @@ struct LoginView: View {
     @State private var uid = ""
     
     private func authenticate() {
+        email = "test@newsies.us"
+        password = "Newsies"
         failed = false
         networkError = false
         tryAgainLater = false
@@ -61,7 +63,9 @@ struct LoginView: View {
                 SecureField("Password", text: $password)
             
                 NavigationLink(
-                    destination: MapView(uid: uid),
+                    destination: MapView(uid: uid)
+                        .environmentObject(database)
+                        .environmentObject(dataConglomerate),
                     isActive: $isAuthenticated) {
                     Button(action: {
                         authenticate()

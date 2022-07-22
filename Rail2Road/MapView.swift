@@ -9,14 +9,41 @@ import SwiftUI
 import MapKit
 
 struct MapView: View {
+    @EnvironmentObject var database: FireDatabaseReference
+    @EnvironmentObject var dataConglomerate: DataConglomerate
+    
+    @StateObject var locationManager = LocationManager()
+    
     @State private var railyards = [Railyard(coordinates: CLLocationCoordinate2D(latitude: 51.507222, longitude: -0.1275)), Railyard(coordinates: CLLocationCoordinate2D(latitude: 51.307222, longitude: -0.2375))]
-    @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 51.507222, longitude: -0.1275), span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5))
+    @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 0, longitude: 0), span: MKCoordinateSpan(latitudeDelta: 0, longitudeDelta: 0))
 
     var uid: String
     
+    
+    private func zoomIn() {
+        DispatchQueue.main.async {
+            region.span.latitudeDelta *= 0.9
+            region.span.longitudeDelta *= 0.9
+        }
+    }
+    
+    private func zoomOut() {
+        DispatchQueue.main.async {
+            region.span.latitudeDelta *= 1.1
+            region.span.longitudeDelta *= 1.1
+        }
+    }
+    
+    private func goToCurrentLocation() {
+        DispatchQueue.main.async {
+            region = locationManager.region
+        }
+    }
+
+    
     var body: some View {
         ZStack {
-            Map(coordinateRegion: $region, annotationItems: railyards) { railyard in
+            Map(coordinateRegion: $region, showsUserLocation: true, annotationItems: railyards) { railyard in
                 MapAnnotation(coordinate: railyard.coordinates) {
                     NavigationLink(destination: DetailView()) {
                         RailyardAnnotation(railyard: railyard)
@@ -26,7 +53,9 @@ struct MapView: View {
             VStack {
                 HStack {
                     NavigationLink(
-                        destination: AccountView()) {
+                        destination: AccountView(uid: uid)
+                            .environmentObject(database)
+                            .environmentObject(dataConglomerate)) {
                         Text("Account")
                             .padding()
                     }
@@ -39,11 +68,11 @@ struct MapView: View {
                         })
                             .padding(.trailing)
                         Button("Zoom In", action: {
-                            
+                            zoomIn()
                         })
                             .padding(.trailing)
                         Button("Zoom Out", action: {
-                            
+                            zoomOut()
                         })
                             .padding(.trailing)
                     }
@@ -58,13 +87,16 @@ struct MapView: View {
                     Spacer()
                     
                     Button("Location", action: {
-                        
+                        goToCurrentLocation()
                     })
                         .padding()
                 }
             }
         }
         .navigationBarHidden(true)
+        .onAppear {
+            goToCurrentLocation()
+        }
     }
 }
 

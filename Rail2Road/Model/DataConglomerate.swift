@@ -11,5 +11,8 @@ final class DataConglomerate: ObservableObject {
     @Published var data: [String: Any] = [String: Any]()
     @Published var query: [String: Any] = [String: Any]()
     
+    func dataToString(tag: String) -> String {
+        return data[tag] as! String
+    }
 }
 

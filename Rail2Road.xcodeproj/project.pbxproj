@@ -24,6 +24,7 @@
 		BF2C4D95281E5E3E00C241BF /* ReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2C4D94281E5E3E00C241BF /* ReportView.swift */; };
 		BF2C4D98281E5E4E00C241BF /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2C4D97281E5E4E00C241BF /* AccountView.swift */; };
 		BF2C4D9B281E5E5900C241BF /* EditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2C4D9A281E5E5900C241BF /* EditView.swift */; };
+		BF8986532889CFCA00BF676E /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8986522889CFCA00BF676E /* LocationManager.swift */; };
 		BF8A79C22824D75E007B4AE2 /* Railyard.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8A79C12824D75E007B4AE2 /* Railyard.swift */; };
 		BF8A79C52824D873007B4AE2 /* RailyardAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8A79C42824D873007B4AE2 /* RailyardAnnotation.swift */; };
 /* End PBXBuildFile section */
@@ -46,6 +47,7 @@
 		BF2C4D94281E5E3E00C241BF /* ReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportView.swift; sourceTree = "<group>"; };
 		BF2C4D97281E5E4E00C241BF /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
 		BF2C4D9A281E5E5900C241BF /* EditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditView.swift; sourceTree = "<group>"; };
+		BF8986522889CFCA00BF676E /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		BF8A79C12824D75E007B4AE2 /* Railyard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Railyard.swift; sourceTree = "<group>"; };
 		BF8A79C42824D873007B4AE2 /* RailyardAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RailyardAnnotation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -116,6 +118,7 @@
 			children = (
 				BF2C4D7A281E415F00C241BF /* DataConglomerate.swift */,
 				BF8A79C12824D75E007B4AE2 /* Railyard.swift */,
+				BF8986522889CFCA00BF676E /* LocationManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -199,6 +202,7 @@
 			files = (
 				BF2C4D63281E31A200C241BF /* ContentView.swift in Sources */,
 				BF2C4D92281E5E1F00C241BF /* DetailView.swift in Sources */,
+				BF8986532889CFCA00BF676E /* LocationManager.swift in Sources */,
 				BF2C4D9B281E5E5900C241BF /* EditView.swift in Sources */,
 				BF2C4D8F281E5E0200C241BF /* MapView.swift in Sources */,
 				BF2C4D77281E410200C241BF /* FireDatabaseReference.swift in Sources */,
