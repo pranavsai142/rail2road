@@ -18,7 +18,9 @@ struct AccountView: View {
                 if(dataConglomerate.data[userNameTag] != nil) {
                     Text(dataConglomerate.dataToString(tag: userNameTag))
                 }
+                Spacer()
             }
+                .padding()
                 .navigationTitle("Account")
                 .navigationBarTitleDisplayMode(.inline)
         }

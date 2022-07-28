@@ -12,19 +12,19 @@ struct RegisterView: View {
     @EnvironmentObject var database: FireDatabaseReference
     @EnvironmentObject var dataConglomerate: DataConglomerate
     
-    @State private var isRegistered = false
-    @State private var failedToRegister = false
-    @State private var unmatchedPasswords = false
-    @State private var weakEmail = false
-    @State private var weakPassword = false
-    @State private var emailExists = false
-    @State private var showingAlert = false
-    @State private var networkError = false
-    @State private var name = ""
-    @State private var email = ""
-    @State private var password = ""
-    @State private var reenteredPassword = ""
-    @State private var uid = ""
+    @State private var isRegistered: Bool = false
+    @State private var failedToRegister: Bool = false
+    @State private var unmatchedPasswords: Bool = false
+    @State private var weakEmail: Bool = false
+    @State private var weakPassword: Bool = false
+    @State private var emailExists: Bool = false
+    @State private var showingAlert: Bool = false
+    @State private var networkError: Bool = false
+    @State private var name: String = ""
+    @State private var email: String = ""
+    @State private var password: String = ""
+    @State private var reenteredPassword: String = ""
+    @State private var uid: String = ""
     
     private func register() {
         failedToRegister = false

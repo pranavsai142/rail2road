@@ -15,11 +15,11 @@ struct LoginView: View {
     
     @State private var email: String = ""
     @State private var password: String = ""
-    @State private var isAuthenticated = false
-    @State private var tryAgainLater = false
-    @State private var networkError = false
-    @State private var failed = false
-    @State private var uid = ""
+    @State private var isAuthenticated: Bool = false
+    @State private var tryAgainLater: Bool = false
+    @State private var networkError: Bool = false
+    @State private var failed: Bool = false
+    @State private var uid: String = ""
     
     private func authenticate() {
         email = "test@newsies.us"
