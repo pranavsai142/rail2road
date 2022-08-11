@@ -12,6 +12,18 @@ struct AccountView: View {
     @EnvironmentObject var database: FireDatabaseReference
     @EnvironmentObject var dataConglomerate: DataConglomerate
     
+    var userNameTag = "user_name"
+    var userPath: [String] {
+        ["users", uid]
+    }
+
+    var query: Bool {
+        DispatchQueue.main.async {
+            _ = database.getValue(path: userPath, key: "name", tag: userNameTag, dataConglomerate: dataConglomerate)
+        }
+        return true
+    }
+    
     var body: some View {
         if(query) {
             VStack {
@@ -25,20 +37,6 @@ struct AccountView: View {
                 .navigationBarTitleDisplayMode(.inline)
         }
     }
-    
-    
-    var userNameTag = "user_name"
-    var userPath: [String] {
-        ["users", uid]
-    }
-
-    var query: Bool {
-        DispatchQueue.main.async {
-            _ = database.getValue(path: userPath, key: "name", tag: userNameTag, dataConglomerate: dataConglomerate)
-        }
-        return true
-    }
-
 }
 
 struct AccountView_Previews: PreviewProvider {
