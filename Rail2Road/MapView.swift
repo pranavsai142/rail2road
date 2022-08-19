@@ -9,7 +9,7 @@ import SwiftUI
 import MapKit
 
 extension Double {
-    func truncate(places : Int)-> Double {
+    func truncate(places: Int) -> Double {
         return Double(floor(pow(10.0, Double(places)) * self)/pow(10.0, Double(places)))
     }
 }
@@ -23,6 +23,8 @@ struct MapView: View {
     @State private var railyards = [Railyard(coordinates: CLLocationCoordinate2D(latitude: 42.1033585, longitude: -88.3726605)), Railyard(coordinates: CLLocationCoordinate2D(latitude: 42.1043585, longitude: -88.3736605)),
                                     Railyard(coordinates: CLLocationCoordinate2D(latitude: 37.873972, longitude: -122.51297))]
     @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 0, longitude: 0), span: MKCoordinateSpan(latitudeDelta: 0, longitudeDelta: 0))
+    
+    @State private var userRailyardRegionsTag = "user_railyard_regions_tag"
 
     var uid: String
     
@@ -31,13 +33,36 @@ struct MapView: View {
     var query: Bool {
         let userLatitude = locationManager.region.center.latitude.truncate(places: 3)
         let userLongitude = locationManager.region.center.longitude.truncate(places: 3)
-//       let (lowerLatitudeBound, upperLatitudeBound, lowerLongitudeBound, upperLongitudeBound) = boundRegion(region)
+//        let (lowerLatitudeBound, upperLatitudeBound, lowerLongitudeBound, upperLongitudeBound) = boundRegion(region)
         let queryFoundTag = "query_railyards_" + String(userLatitude) + "_" + String(userLongitude) + "_found"
+        
+        let userRailyardRegionsTags = findRailyardRegionsTags(region: region)
+        var storedUserRailyardRegions: [RailyardRegion] = []
+        var userRailyardRegionsQueryTags: [QueryTags] = []
+        for userRailyardRegionTags in userRailyardRegionsTags {
+            let userRailyardRegionFound = dataConglomerate.query[userRailyardRegionTags.foundTag]
+            if(userRailyardRegionFound != nil) {
+                if(userRailyardRegionFound as! Bool) {
+                    let userRailyardRegion = dataConglomerate.query[userRailyardRegionTags.tag] as! RailyardRegion
+                    storedUserRailyardRegions.append(userRailyardRegion)
+                } else {
+                    userRailyardRegionsQueryTags.append(userRailyardRegionTags)
+                }
+            } else {
+                userRailyardRegionsQueryTags.append(userRailyardRegionTags)
+            }
+        }
         DispatchQueue.main.async {
-//            _ = database.queryDatabaseByString(path: ["railyards"], child: "name", query: "test", foundTag: queryFoundTag, tag: railyardsTag, dataConglomerate: dataConglomerate)
-            _ = database.queryDatabaseByRegion(path: ["railyards"], child: "longitude", region: region, foundTag: queryFoundTag, tag: railyardsTag, dataConglomerate: dataConglomerate)
+            for userRailyardRegionQueryTags in userRailyardRegionsQueryTags {
+                _ = database.queryDatabaseByRegion(path: ["railyards"], queryTags: userRailyardRegionQueryTags, dataConglomerate: dataConglomerate)
+            }
         }
         return true
+    }
+    
+//Returns constrcted QueryTags for each railyard region present in the region passed in
+    private func findRailyardRegionsTags(region: MKCoordinateRegion) -> [QueryTags] {
+        return []
     }
     
     private func zoomIn() {
@@ -78,7 +103,7 @@ struct MapView: View {
     
     private func printQuery() -> Bool {
         if(dataConglomerate.query[railyardsTag] != nil) {
-            print(dataConglomerate.query[railyardsTag])
+//            print(dataConglomerate.query[railyardsTag])
         }
         return true
     }

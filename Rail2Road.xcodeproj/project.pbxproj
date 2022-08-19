@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8171B85D28AD49460004B7B7 /* RailyardRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8171B85C28AD49460004B7B7 /* RailyardRegion.swift */; };
+		8171B85F28AF1E390004B7B7 /* QueryTags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8171B85E28AF1E390004B7B7 /* QueryTags.swift */; };
 		BF2C4D61281E31A200C241BF /* Rail2RoadApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2C4D60281E31A200C241BF /* Rail2RoadApp.swift */; };
 		BF2C4D63281E31A200C241BF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2C4D62281E31A200C241BF /* ContentView.swift */; };
 		BF2C4D65281E31A200C241BF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF2C4D64281E31A200C241BF /* Assets.xcassets */; };
@@ -32,6 +34,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8171B85C28AD49460004B7B7 /* RailyardRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RailyardRegion.swift; sourceTree = "<group>"; };
+		8171B85E28AF1E390004B7B7 /* QueryTags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryTags.swift; sourceTree = "<group>"; };
 		BF2C4D5D281E31A200C241BF /* Rail2Road.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rail2Road.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF2C4D60281E31A200C241BF /* Rail2RoadApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rail2RoadApp.swift; sourceTree = "<group>"; };
 		BF2C4D62281E31A200C241BF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -124,7 +128,9 @@
 				BF2C4D7A281E415F00C241BF /* DataConglomerate.swift */,
 				BFBE4050288F0CF700DA2FD3 /* Chat.swift */,
 				BF8A79C12824D75E007B4AE2 /* Railyard.swift */,
+				8171B85C28AD49460004B7B7 /* RailyardRegion.swift */,
 				BF8986522889CFCA00BF676E /* LocationManager.swift */,
+				8171B85E28AF1E390004B7B7 /* QueryTags.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -212,9 +218,11 @@
 				BF8986532889CFCA00BF676E /* LocationManager.swift in Sources */,
 				BF2C4D9B281E5E5900C241BF /* EditView.swift in Sources */,
 				BF2C4D8F281E5E0200C241BF /* MapView.swift in Sources */,
+				8171B85F28AF1E390004B7B7 /* QueryTags.swift in Sources */,
 				BFBE4051288F0CF700DA2FD3 /* Chat.swift in Sources */,
 				BF2C4D77281E410200C241BF /* FireDatabaseReference.swift in Sources */,
 				BF2C4D98281E5E4E00C241BF /* AccountView.swift in Sources */,
+				8171B85D28AD49460004B7B7 /* RailyardRegion.swift in Sources */,
 				BF8A79C52824D873007B4AE2 /* RailyardAnnotation.swift in Sources */,
 				BF2C4D61281E31A200C241BF /* Rail2RoadApp.swift in Sources */,
 				BF2C4D89281E5D8200C241BF /* RegisterView.swift in Sources */,
@@ -355,7 +363,7 @@
 				DEVELOPMENT_TEAM = PCKCXX5VA8;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Rail2Road/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -377,7 +385,7 @@
 				DEVELOPMENT_TEAM = PCKCXX5VA8;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Rail2Road/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
