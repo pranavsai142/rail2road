@@ -15,7 +15,7 @@ struct RailyardAnnotation: View {
                 .foregroundColor(Color.white)
                 .frame(width: 42, height: 60)
                 .background(Color.green.opacity(0.9))
-            Text(railyard.title)
+            Text(railyard.name)
                 .foregroundColor(Color.white)
                 .frame(width: 100, height: 60)
                 .background(Color.black.opacity(0.9))

@@ -7,13 +7,26 @@
 
 import MapKit
 
-struct RailyardRegion: Identifiable {
+struct RailyardRegion: Identifiable, Equatable {
+    static func == (lhs: RailyardRegion, rhs: RailyardRegion) -> Bool {
+        if lhs.id == rhs.id {
+            return true
+        } else {
+            return false
+        }
+    }
+    
     let id: UUID
-    let tag: String
+    let queryTags: RailroadRegionQueryTags
     let railyards: [Railyard]
-    init(tag: String, railyards: [Railyard]) {
+    init(queryTags: RailroadRegionQueryTags, railyards: [Railyard]) {
         self.id = UUID()
         self.railyards = railyards
-        self.tag = tag
+        self.queryTags = queryTags
     }
+//    init(tree: Any?) {
+//        self.id = UUID()
+//        self.railyards = []
+//        self.tag = Qu
+//    }
 }

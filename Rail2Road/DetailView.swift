@@ -24,7 +24,7 @@ struct DetailView: View {
     var body: some View {
         VStack {
             HStack {
-                Text(railyard.title)
+                Text(railyard.name)
                     .font(.title)
                     .padding()
                 Spacer()

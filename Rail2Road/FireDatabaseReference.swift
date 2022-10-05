@@ -9,6 +9,7 @@ import Foundation
 import FirebaseDatabase
 import MapKit
 
+/// Retrieve and Insert data into a Firebase Realtime Database
 final class FireDatabaseReference: ObservableObject {
     @Published var database: DatabaseReference = Database.database().reference()
     
@@ -123,7 +124,7 @@ final class FireDatabaseReference: ObservableObject {
 // to get cat(s) [multiple returns not implemented]
 // queryDatabaseByString(["cats"], "name", "jeff", "query_jeff_found", "cat_data", dataConglomerate)
 // _ = database.queryDatabaseByString(path: ["railyards"], child: "name", query: "test", foundTag: queryFoundTag, tag: railyardsTag, dataConglomerate: dataConglomerate)
-    func queryDatabaseByString(path: [String], child: String, query: String, queryTags: QueryTags, dataConglomerate: DataConglomerate) -> Bool {
+    func queryDatabaseByString(path: [String], child: String, query: String, queryTags: StringQueryTags, dataConglomerate: DataConglomerate) -> Bool {
         var ref = database
         if(path.count > 0) {
             let stringPath = path.joined(separator: "/")
@@ -144,7 +145,45 @@ final class FireDatabaseReference: ObservableObject {
         return true
     }
     
-    func queryDatabaseByRegion(path: [String], queryTags: QueryTags, dataConglomerate: DataConglomerate) -> Bool {
+    
+    //Utlized RailroadRegionQueryTags to sort railyards by latlong lexographically. Uses latlongMinBound and latlongMaxBound with a delta of 2°*2°
+    /// Queries the database with respect to latitude and longitude values. Sorts the data lexographically based on latlong string, being "LAT_LONG" (ex. 12_-124)
+    /// - Parameters:
+    ///   - path: What child to navigate to before beginning the query
+    ///   - queryTags: Instance of RailroadRegionQueryTags utlizing protocol QueryTags containing latitude and longitude data.
+    ///   - dataConglomerate: An Instance of DataConglomerateq
+    /// - Returns: WIP True if query published
+    func queryDatabaseByRegion(path: [String], queryTags: RailroadRegionQueryTags, dataConglomerate: DataConglomerate) -> Bool {
+        var ref = database
+        if(!path.isEmpty) {
+            let stringPath = path.joined(separator: "/")
+            ref  = database.child(stringPath)
+        }
+        ref.queryOrdered(byChild: "latlong")
+            .queryStarting(atValue: queryTags.getLatLongMinBound())
+            .queryEnding(beforeValue: queryTags.getLatLongMaxBound())
+            .observeSingleEvent(of: .value, with: { snapshot in
+            if let snapVal = snapshot.value as? NSDictionary {
+                var railyards: [Railyard] = []
+                let railyardUids = snapVal.allKeys
+                for railyardUid in railyardUids {
+                    let railyardDictionary = snapVal.value(forKey: (railyardUid as! String)) as! NSDictionary
+                    let railyardUid = UUID(uuidString: railyardUid as! String)!
+                    railyards.append(Railyard(id: railyardUid, dictionary: railyardDictionary))
+                    
+                }
+                let railyardRegion = RailyardRegion(queryTags: queryTags, railyards: railyards)
+                dataConglomerate.storedUserRailyardRegions[queryTags] = railyardRegion
+                
+//                dataConglomerate.query[queryTags.foundTag] = true
+//                dataConglomerate.query[queryTags.tag] = snapVal
+            }
+            else {
+//                dataConglomerate.query[queryTags.foundTag] = false
+//                dataConglomerate.query[queryTags.tag] = false
+            }
+        })
+        
         return true;
     }
 
