@@ -13,12 +13,21 @@ struct DetailView: View {
     @EnvironmentObject var dataConglomerate: DataConglomerate
     
     @State private var message: String = ""
+    @State private var isFavorite: Bool = false
     
     var uid: String
     var railyard: Railyard
     
     private func sendMessage() {
         
+    }
+    
+    private func toggleFavorite() {
+        if(isFavorite) {
+            isFavorite = false
+        } else {
+            isFavorite = true
+        }
     }
     
     var body: some View {
@@ -28,6 +37,15 @@ struct DetailView: View {
                     .font(.title)
                     .padding()
                 Spacer()
+                Button(action: {
+                    toggleFavorite()
+                }, label: {
+                    if(isFavorite) {
+                        Image(systemName: "star.fill")
+                    } else {
+                        Image(systemName: "star")
+                    }
+                })
                 Text(String(railyard.waittime))
                     .font(.title)
                     .padding()

@@ -23,6 +23,9 @@ struct MapView: View {
 //    @State private var railyards = [Railyard(coordinates: CLLocationCoordinate2D(latitude: 42.1033585, longitude: -88.3726605)), Railyard(coordinates: CLLocationCoordinate2D(latitude: 42.1043585, longitude: -88.3736605)),
 //                                    Railyard(coordinates: CLLocationCoordinate2D(latitude: 37.873972, longitude: -122.51297))]
     @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 0, longitude: 0), span: MKCoordinateSpan(latitudeDelta: 0, longitudeDelta: 0))
+    @State private var searchOverlayActive: Bool = false
+    @State private var listViewActive: Bool = true
+    @State private var viewFavoriteRailyards: Bool = true
 
     var uid: String
     
@@ -168,7 +171,7 @@ struct MapView: View {
     }
     
     private func search() {
-        
+        searchOverlayActive = true
     }
     
 //    private func printQuery() -> Bool {
@@ -180,69 +183,162 @@ struct MapView: View {
     
     var body: some View {
         if(query) {
-            ZStack {
-                Map(coordinateRegion: $region, showsUserLocation: true, annotationItems: dataConglomerate.storedRailyards) { railyard in
-                    MapAnnotation(coordinate: railyard.coordinates) {
-                        NavigationLink(destination: DetailView(uid: uid, railyard: railyard)
-                                        .environmentObject(database)
-                                        .environmentObject(dataConglomerate)) {
-                            RailyardAnnotation(railyard: railyard)
-                        }
-                    }
-                }
-                    .edgesIgnoringSafeArea(.all)
+            if(listViewActive) {
                 VStack {
-                    HStack(alignment: .top) {
-                        NavigationLink(
-                            destination: AccountView(uid: uid)
-                                .environmentObject(database)
-                                .environmentObject(dataConglomerate)) {
-                            Image(systemName: "person.crop.circle.fill")
-                                .padding(.leading)
-                        }
-                        
-                        Spacer()
-                        
-                        VStack(alignment: HorizontalAlignment.trailing) {
-                            Button(action: {
-                                zoomIn()
-                            }, label: {
-                                Image(systemName: "plus.square.fill")
-                                    .padding(.trailing)
-                            })
-                            Button(action: {
-                                zoomOut()
-                            }, label: {
-                                Image(systemName: "minus.square.fill")
-                                    .padding(.trailing)
-                            })
-                            Button(action: {
-                                goToCurrentLocation()
-                            }, label: {
-                                Image(systemName: "location.fill.viewfinder")
-                                    .padding(.trailing)
-                            })
-                        }
-                    }
-                        .padding(.top)
-                    Spacer()
                     HStack {
-                        Button(action: {
-                            search()
-                        }, label: {
-                            Image(systemName: "magnifyingglass.circle.fill")
-                                .padding(.leading)
-                                .padding(.bottom)
-                                .padding(.bottom)
-                        })
-                        
                         Spacer()
+                        Button(action: {
+                            listViewActive = false
+                        }, label: {
+                            Image(systemName: "chevron.compact.up")
+                        })
+                        Spacer()
+                        Button(action: {
+                            viewFavoriteRailyards = !viewFavoriteRailyards
+                        }, label: {
+                            if(viewFavoriteRailyards) {
+                                Image(systemName: "star.fill")
+                            } else {
+                                Image(systemName: "star")
+                            }
+                        })
+                    }
+                    Form {
+                        if(viewFavoriteRailyards) {
+                            Section(header: Text("Favorite Railyards")) {
+                                HStack {
+                                    Text("test railyard entry")
+                                    Spacer()
+                                    Text("Waittime")
+                                }
+                            }
+                        } else {
+                            Section(header: Text("Nearby Railyards")) {
+                                HStack {
+                                    Text("test railyard entry")
+                                    Spacer()
+                                    Text("Waittime")
+                                }
+                            }
+                        }
                     }
                 }
-            }
-            .navigationBarHidden(true)
-            .onAppear {
-                goToCurrentLocation()
+                    .background(Color.black)
+                    .opacity(0.8)
+                    .navigationBarHidden(true)
+                    .onAppear {
+                        goToCurrentLocation()
+                    }
+            } else {
+                ZStack {
+                    Map(coordinateRegion: $region, showsUserLocation: true, annotationItems: dataConglomerate.storedRailyards) { railyard in
+                        MapAnnotation(coordinate: railyard.coordinates) {
+                            NavigationLink(destination: DetailView(uid: uid, railyard: railyard)
+                                            .environmentObject(database)
+                                            .environmentObject(dataConglomerate)) {
+                                RailyardAnnotation(railyard: railyard)
+                            }
+                        }
+                    }
+                        .edgesIgnoringSafeArea(.all)
+                    VStack {
+                        HStack(alignment: .top) {
+                            NavigationLink(
+                                destination: AccountView(uid: uid)
+                                    .environmentObject(database)
+                                    .environmentObject(dataConglomerate)) {
+                                Image(systemName: "person.crop.circle.fill")
+                                    .padding(.leading)
+                            }
+                            
+                            Spacer()
+                            
+                            VStack(alignment: HorizontalAlignment.trailing) {
+                                Button(action: {
+                                    zoomIn()
+                                }, label: {
+                                    Image(systemName: "plus.square.fill")
+                                        .padding(.trailing)
+                                })
+                                Button(action: {
+                                    zoomOut()
+                                }, label: {
+                                    Image(systemName: "minus.square.fill")
+                                        .padding(.trailing)
+                                })
+                                Button(action: {
+                                    goToCurrentLocation()
+                                }, label: {
+                                    Image(systemName: "location.fill.viewfinder")
+                                        .padding(.trailing)
+                                })
+                            }
+                        }
+                            .padding(.top)
+                        Spacer()
+                        HStack {
+                            Button(action: {
+                                searchOverlayActive = true
+                            }, label: {
+                                Image(systemName: "magnifyingglass.circle.fill")
+                                    .padding(.leading)
+                                    .padding(.bottom)
+                                    .padding(.bottom)
+                            })
+                            
+                            Spacer()
+                        }
+                    }
+                    if(searchOverlayActive) {
+                        VStack {
+                            HStack {
+                                Spacer()
+                                Button(action: {
+                                    searchOverlayActive = false
+                                }, label: {
+                                    Image(systemName: "chevron.compact.up")
+                                })
+                                Spacer()
+                            }
+                            Form {
+                                Section(header: Text("Location Search")) {
+                                    ZStack(alignment: .trailing) {
+                                        TextField("Search", text: $locationManager.queryFragment)
+                                        // This is optional and simply displays an icon during an active search
+                                        if locationManager.status == .isSearching {
+                                            Image(systemName: "clock")
+                                                .foregroundColor(Color.gray)
+                                        }
+                                    }
+                                }
+                                Section(header: Text("Results")) {
+                                    List {
+                                        // With Xcode 12, this will not be necessary as it supports switch statements.
+                                        Group { () -> AnyView in
+                                            switch locationManager.status {
+                                            case .noResults: return AnyView(Text("No Results"))
+                                            case .error(let description): return AnyView(Text("Error: \(description)"))
+                                            default: return AnyView(EmptyView())
+                                            }
+                                        }.foregroundColor(Color.gray)
+
+                                        ForEach(locationManager.searchResults, id: \.self) { completionResult in
+                                            // This simply lists the results, use a button in case you'd like to perform an action
+                                            // or use a NavigationLink to move to the next view upon selection.
+                                            Text(completionResult.title)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                            .background(Color.black)
+                            .opacity(0.8)
+                    }
+                }
+                    .navigationBarHidden(true)
+                    .onAppear {
+                        goToCurrentLocation()
+                    }
             }
         }
     }
