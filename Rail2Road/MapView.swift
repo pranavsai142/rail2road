@@ -300,6 +300,7 @@ struct MapView: View {
                                 })
                                 Spacer()
                             }
+                                .padding(.bottom)
                             Form {
                                 Section(header: Text("Location Search")) {
                                     ZStack(alignment: .trailing) {
