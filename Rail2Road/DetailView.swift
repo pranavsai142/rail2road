@@ -34,6 +34,7 @@ struct DetailView: View {
                     .background(Color.green)
             }
                 .background(Color.black.opacity(0.3))
+                .offset(y: 1)
             Spacer()
             ScrollView {
                 ForEach(dataConglomerate.getChatHistory(railyard: railyard)) { chat in
