@@ -12,21 +12,24 @@ final class DataConglomerate: ObservableObject {
     /// query dictionary. Used for data originating from Firebase Realtime Database.
     @Published var query: [String: Any] = [String: Any]()
     /// dictionary containing locally saved railyard regions, key of the dictionary being a RailyardRegionQueryTag
-    @Published var storedUserRailyardRegions: [RailroadRegionQueryTags: RailyardRegion] = [RailroadRegionQueryTags: RailyardRegion]()
+//    @Published var storedUserRailyardRegions: [RailroadRegionQueryTags: RailyardRegion] = [RailroadRegionQueryTags: RailyardRegion]()
+    
+    @Published var storedUserLongitudeRegions: [Int: Bool] = [Int: Bool]()
+    @Published var storedRailyards: [Railyard] = [Railyard]()
     
     func dataToString(tag: String) -> String {
         return data[tag] as! String
     }
     
-    func conglomerateRailyards(storedUserRailyardRegionsTags: [RailroadRegionQueryTags]) -> [Railyard] {
-        var railyards: [Railyard] = []
-        for storedUserRailyardRegionTags in storedUserRailyardRegionsTags {
-            if storedUserRailyardRegions[storedUserRailyardRegionTags] != nil {
-                railyards.append(contentsOf: storedUserRailyardRegions[storedUserRailyardRegionTags]!.railyards)
-            }
-        }
-        return railyards
-    }
+//    func conglomerateRailyards(userLongitudeRegionsTags: [LongitudeRegionQueryTags]) -> [Railyard] {
+//        var railyards: [Railyard] = []
+//        for userLongitudeRegionTags in userLongitudeRegionsTags {
+//            if storedUserLongitudeRegions[userLongitudeRegionTags.longitudeRegion] != nil {
+//                railyards.append(contentsOf: storedUserLongitudeRegions[userLongitudeRegionTags.longitudeRegion]!)
+//            }
+//        }
+//        return railyards
+//    }
     
     func getChatHistory(railyard: Railyard) -> [Chat] {
         var chatHistory: [Chat] = []

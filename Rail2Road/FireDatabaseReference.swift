@@ -147,43 +147,60 @@ final class FireDatabaseReference: ObservableObject {
     
     
     //Utlized RailroadRegionQueryTags to sort railyards by latlong lexographically. Uses latlongMinBound and latlongMaxBound with a delta of 2°*2°
-    /// Queries the database with respect to latitude and longitude values. Sorts the data lexographically based on latlong string, being "LAT_LONG" (ex. 12_-124)
+    /// Queries the database with respect to latitude and longitude values. Retrives all railyards within the railyard region's longitude bounds. Saves the longitude query into DataConglomerate's SavedRailyards
     /// - Parameters:
     ///   - path: What child to navigate to before beginning the query
     ///   - queryTags: Instance of RailroadRegionQueryTags utlizing protocol QueryTags containing latitude and longitude data.
-    ///   - dataConglomerate: An Instance of DataConglomerateq
+    ///   - dataConglomerate: An Instance of DataConglomerate
     /// - Returns: WIP True if query published
-    func queryDatabaseByRegion(path: [String], queryTags: RailroadRegionQueryTags, dataConglomerate: DataConglomerate) -> Bool {
+    func queryDatabaseByRegion(path: [String], queryTags: LongitudeRegionQueryTags, dataConglomerate: DataConglomerate) -> Bool {
         var ref = database
         if(!path.isEmpty) {
             let stringPath = path.joined(separator: "/")
             ref  = database.child(stringPath)
         }
-        ref.queryOrdered(byChild: "latlong")
-            .queryStarting(atValue: queryTags.getLatLongMinBound())
-            .queryEnding(beforeValue: queryTags.getLatLongMaxBound())
-            .observeSingleEvent(of: .value, with: { snapshot in
-            if let snapVal = snapshot.value as? NSDictionary {
-                var railyards: [Railyard] = []
-                let railyardUids = snapVal.allKeys
-                for railyardUid in railyardUids {
-                    let railyardDictionary = snapVal.value(forKey: (railyardUid as! String)) as! NSDictionary
-                    let railyardUid = UUID(uuidString: railyardUid as! String)!
-                    railyards.append(Railyard(id: railyardUid, dictionary: railyardDictionary))
-                    
+        if(dataConglomerate.storedUserLongitudeRegions[queryTags.longitudeRegion] == nil) {
+            ref.queryOrdered(byChild: "longitude")
+                .queryStarting(atValue: queryTags.getLeftBound())
+                .queryEnding(beforeValue: queryTags.getRightBound())
+                .observeSingleEvent(of: .value, with: { snapshot in
+                if let snapVal = snapshot.value as? NSDictionary {
+                    var railyards: [Railyard] = []
+                    let railyardUids = snapVal.allKeys
+                    for railyardUid in railyardUids {
+                        let railyardDictionary = snapVal.value(forKey: (railyardUid as! String)) as! NSDictionary
+    //                    print("adding " + (railyardDictionary["name"] as! String))
+                        let railyardUid = UUID(uuidString: railyardUid as! String)!
+                        railyards.append(Railyard(id: railyardUid, dictionary: railyardDictionary))
+                        
+                    }
+                    print("\n\n")
+                    print("starting at value", queryTags.getLeftBound())
+                    print(railyards)
+                    print("ending at value", queryTags.getRightBound())
+                    railyards.sort()
+                    dataConglomerate.storedUserLongitudeRegions[queryTags.longitudeRegion] = true
+                    for railyard in railyards {
+                        if(!dataConglomerate.storedRailyards.contains(railyard)) {
+                            dataConglomerate.storedRailyards.append(railyard)
+                        }
+                    }
                 }
-                let railyardRegion = RailyardRegion(queryTags: queryTags, railyards: railyards)
-                dataConglomerate.storedUserRailyardRegions[queryTags] = railyardRegion
-                
-//                dataConglomerate.query[queryTags.foundTag] = true
-//                dataConglomerate.query[queryTags.tag] = snapVal
-            }
-            else {
-//                dataConglomerate.query[queryTags.foundTag] = false
-//                dataConglomerate.query[queryTags.tag] = false
-            }
-        })
-        
+                else {
+                    if(snapshot.exists()) {
+                        print("\n\n")
+                        print("starting at value", queryTags.getLeftBound())
+                        print("Not dictionary type")
+                        print("ending at value", queryTags.getRightBound())
+                    } else {
+//                        print("\n\n")
+//                        print("starting at value", queryTags.getLeftBound())
+//                        print("No values found")
+//                        print("ending at value", queryTags.getRightBound())
+                    }
+                }
+            })
+        }
         return true;
     }
 

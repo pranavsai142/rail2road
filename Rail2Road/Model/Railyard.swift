@@ -7,7 +7,15 @@
 
 import MapKit
 
-struct Railyard: Identifiable {
+struct Railyard: Identifiable, Comparable {
+    static func < (lhs: Railyard, rhs: Railyard) -> Bool {
+        return lhs.coordinates.latitude < rhs.coordinates.latitude
+    }
+    
+    static func == (lhs: Railyard, rhs: Railyard) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
     let id: UUID
     let coordinates: CLLocationCoordinate2D
     let name: String
