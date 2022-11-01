@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct SearchOverlay: View {
+    @EnvironmentObject var dataConglomerate: DataConglomerate
+    
     @StateObject var searchManager = SearchManager()
     
     var body: some View {

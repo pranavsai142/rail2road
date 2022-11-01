@@ -7,7 +7,7 @@
 
 import MapKit
 
-struct Railyard: Identifiable, Comparable {
+struct Railyard: Identifiable, Comparable, Equatable {
     static func < (lhs: Railyard, rhs: Railyard) -> Bool {
         return lhs.coordinates.latitude < rhs.coordinates.latitude
     }

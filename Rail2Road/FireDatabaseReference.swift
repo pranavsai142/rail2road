@@ -179,12 +179,7 @@ final class FireDatabaseReference: ObservableObject {
                     print(railyards)
                     print("ending at value", queryTags.getRightBound())
                     railyards.sort()
-                    dataConglomerate.storedUserLongitudeRegions[queryTags.longitudeRegion] = true
-                    for railyard in railyards {
-                        if(!dataConglomerate.storedRailyards.contains(railyard)) {
-                            dataConglomerate.storedRailyards.append(railyard)
-                        }
-                    }
+                    dataConglomerate.storedUserLongitudeRegions[queryTags.longitudeRegion] = railyards
                 }
                 else {
                     if(snapshot.exists()) {

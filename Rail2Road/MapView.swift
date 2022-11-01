@@ -20,7 +20,6 @@ struct MapView: View {
     
     @StateObject var locationManager = LocationManager()
     
-    @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 0, longitude: 0), span: MKCoordinateSpan(latitudeDelta: 0, longitudeDelta: 0))
     @State private var searchOverlayActive: Bool = false
     @State private var listOverlayActive: Bool = true
     @State private var viewFavoriteRailyards: Bool = true
@@ -28,7 +27,7 @@ struct MapView: View {
     var uid: String
     
     var query: Bool {
-        let userLongitudeRegionsTags = findLongitudeRegionsTags(region: region)
+        let userLongitudeRegionsTags = dataConglomerate.findLongitudeRegionsTags()
         //QueryTag struct {foundTag: String, tag: String} Used for retriving values from firebase
         DispatchQueue.main.async {
             var userLongitudeRegionsQueryTags: [LongitudeRegionQueryTags] = []
@@ -48,35 +47,6 @@ struct MapView: View {
 //    private func pairingFunction(userRailyardRegionTags: RailroadRegionQueryTags) -> Int {
 //        return userRailyardRegionTags.latitudeRegion + 360 * (userRailyardRegionTags.longitudeRegion % 360)
 //    }
-    
-    
-    private func findLongitudeRegionsTags(region: MKCoordinateRegion) -> [LongitudeRegionQueryTags] {
-        var latitudeRegions: [Int] = []
-        let bottomBound = region.center.latitude - (region.span.latitudeDelta/2.0)
-        let topBound = region.center.latitude + (region.span.latitudeDelta/2.0)
-        
-        latitudeRegions.append(contentsOf: splitIntoLatitudeRegions(bottomBound: bottomBound, topBound: topBound))
-        
-        var longitudeRegions: [Int] = []
-        var leftBound = region.center.longitude - (region.span.longitudeDelta/2.0)
-        var rightBound = region.center.longitude + (region.span.longitudeDelta/2.0)
-        
-        if (leftBound < -180.0) {
-            longitudeRegions.append(contentsOf: splitIntoLongitudeRegions(leftBound: leftBound + 360, rightBound: 180.0))
-            leftBound = -180.0
-        } else if (rightBound > 180.0) {
-            longitudeRegions.append(contentsOf: splitIntoLongitudeRegions(leftBound: -180.0, rightBound: rightBound - 360.0))
-            rightBound = 180.0
-        }
-        longitudeRegions.append(contentsOf: splitIntoLongitudeRegions(leftBound: leftBound, rightBound: rightBound))
-
-        var queryTags: [LongitudeRegionQueryTags] = []
-        for longitudeRegion in longitudeRegions {
-            queryTags.append(LongitudeRegionQueryTags(longitudeRegion: longitudeRegion))
-        }
-        return queryTags
-    }
-    
 //    private func findRailyardRegionsTags(region: MKCoordinateRegion) -> [RailroadRegionQueryTags] {
 //        var latitudeRegions: [Int] = []
 //        let bottomBound = region.center.latitude - (region.span.latitudeDelta/2.0)
@@ -100,32 +70,6 @@ struct MapView: View {
 //        let queryTags = concatIntoQueryTags(latitudeRegions: latitudeRegions, longitudeRegions: longitudeRegions)
 //        return queryTags
 //    }
-
-    private func splitIntoLongitudeRegions(leftBound: CLLocationDegrees, rightBound: CLLocationDegrees) -> [Int] {
-        var minLongitude = Int(floor(leftBound / 2.0)) * 2
-        let maxLongitude = Int(ceil(rightBound / 2.0)) * 2
-        var longitudeRegions: [Int] = []
-        while (minLongitude <= maxLongitude && minLongitude < 180) {
-            longitudeRegions.append(minLongitude)
-            minLongitude = minLongitude + 2
-        }
-        return longitudeRegions
-    }
-    
-    private func splitIntoLatitudeRegions(bottomBound: CLLocationDegrees, topBound: CLLocationDegrees) -> [Int] {
-        var minLatitude = Int(floor(bottomBound / 2.0)) * 2
-        let maxLatitude = Int(ceil(topBound / 2.0)) * 2
-        var latitudeRegions: [Int] = []
-        if (minLatitude <= -90) {
-            minLatitude = -88
-        }
-        while (minLatitude <= maxLatitude && minLatitude <= 90) {
-            latitudeRegions.append(minLatitude)
-            minLatitude = minLatitude + 2
-        }
-        return latitudeRegions
-    }
-    
 //    private func concatIntoQueryTags(latitudeRegions: [Int], longitudeRegions: [Int]) -> [RailroadRegionQueryTags] {
 //        var queryTags: [RailroadRegionQueryTags] = []
 //        for latitudeRegion in latitudeRegions {
@@ -138,33 +82,33 @@ struct MapView: View {
 
     private func zoomIn() {
         DispatchQueue.main.async {
-            region.span.latitudeDelta *= 0.9
-            region.span.longitudeDelta *= 0.9
+            dataConglomerate.region.span.latitudeDelta *= 0.9
+            dataConglomerate.region.span.longitudeDelta *= 0.9
         }
     }
     
     private func zoomOut() {
         DispatchQueue.main.async {
-            let newLatitudeDelta = region.span.latitudeDelta * 1.1
-            let newLongitudeDelta = region.span.longitudeDelta * 1.1
+            let newLatitudeDelta = dataConglomerate.region.span.latitudeDelta * 1.1
+            let newLongitudeDelta = dataConglomerate.region.span.longitudeDelta * 1.1
             if(newLatitudeDelta < 126.65) {
-                region.span.latitudeDelta = newLatitudeDelta
+                dataConglomerate.region.span.latitudeDelta = newLatitudeDelta
             } else {
                 //Max latitude delta for Apple Maps
-                region.span.latitudeDelta = 126.65
+                dataConglomerate.region.span.latitudeDelta = 126.65
             }
             if(newLongitudeDelta < 108.689) {
-                region.span.longitudeDelta = newLongitudeDelta
+                dataConglomerate.region.span.longitudeDelta = newLongitudeDelta
             } else {
                 //Max longitude delta for appple maps
-                region.span.longitudeDelta = 108.689
+                dataConglomerate.region.span.longitudeDelta = 108.689
             }
         }
     }
     
     private func goToCurrentLocation() {
         DispatchQueue.main.async {
-            region = locationManager.region
+            dataConglomerate.region = locationManager.region
         }
     }
     
@@ -203,7 +147,13 @@ struct MapView: View {
                         })
                             .padding(.trailing)
                     }
-                    ListOverlay(viewFavoriteRailyards: viewFavoriteRailyards)
+                    if(searchOverlayActive) {
+                        SearchOverlay()
+                    } else {
+                        ListOverlay(uid: uid, viewFavoriteRailyards: viewFavoriteRailyards)
+                            .environmentObject(database)
+                            .environmentObject(dataConglomerate)
+                    }
                 }
                     .background(Color.black)
                     .opacity(0.8)
@@ -213,7 +163,7 @@ struct MapView: View {
                     }
             } else {
                 ZStack {
-                    Map(coordinateRegion: $region, showsUserLocation: true, annotationItems: dataConglomerate.storedRailyards) { railyard in
+                    Map(coordinateRegion: $dataConglomerate.region, showsUserLocation: true, annotationItems: dataConglomerate.conglomerateAllStoredRailyards()) { railyard in
                         MapAnnotation(coordinate: railyard.coordinates) {
                             NavigationLink(destination: DetailView(uid: uid, railyard: railyard)
                                             .environmentObject(database)

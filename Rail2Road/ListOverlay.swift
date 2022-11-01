@@ -8,7 +8,12 @@
 import SwiftUI
 
 struct ListOverlay: View {
+    @EnvironmentObject var database: FireDatabaseReference
+    @EnvironmentObject var dataConglomerate: DataConglomerate
+    
+    var uid: String
     var viewFavoriteRailyards: Bool
+    
     var body: some View {
         Form {
             if(viewFavoriteRailyards) {
@@ -20,7 +25,13 @@ struct ListOverlay: View {
             } else {
                 Section(header: Text("Nearby Railyards")) {
                     List {
-                        RailyardRow(railyard: Railyard())
+                        ForEach(dataConglomerate.conglomerateNearbyStoredRailyards()) { railyard in
+                            NavigationLink(destination: DetailView(uid: uid, railyard: railyard)
+                                            .environmentObject(database)
+                                            .environmentObject(dataConglomerate)) {
+                                RailyardRow(railyard: railyard)
+                            }
+                        }
                     }
                 }
             }
@@ -30,6 +41,6 @@ struct ListOverlay: View {
 
 struct ListOverlay_Previews: PreviewProvider {
     static var previews: some View {
-        ListOverlay(viewFavoriteRailyards: true)
+        ListOverlay(uid: "1", viewFavoriteRailyards: true)
     }
 }
