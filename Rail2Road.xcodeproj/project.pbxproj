@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		81377B9F2910C6C300274799 /* RailyardRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81377B9E2910C6C300274799 /* RailyardRow.swift */; };
+		81377BA12910C7F500274799 /* SearchOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81377BA02910C7F500274799 /* SearchOverlay.swift */; };
+		81377BA32910C82700274799 /* ListOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81377BA22910C82700274799 /* ListOverlay.swift */; };
+		81377BA52910CAC500274799 /* SearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81377BA42910CAC500274799 /* SearchManager.swift */; };
 		8171B85F28AF1E390004B7B7 /* QueryTags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8171B85E28AF1E390004B7B7 /* QueryTags.swift */; };
 		BF2C4D61281E31A200C241BF /* Rail2RoadApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2C4D60281E31A200C241BF /* Rail2RoadApp.swift */; };
 		BF2C4D63281E31A200C241BF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2C4D62281E31A200C241BF /* ContentView.swift */; };
@@ -33,6 +37,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		81377B9E2910C6C300274799 /* RailyardRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RailyardRow.swift; sourceTree = "<group>"; };
+		81377BA02910C7F500274799 /* SearchOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchOverlay.swift; sourceTree = "<group>"; };
+		81377BA22910C82700274799 /* ListOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListOverlay.swift; sourceTree = "<group>"; };
+		81377BA42910CAC500274799 /* SearchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchManager.swift; sourceTree = "<group>"; };
 		8171B85E28AF1E390004B7B7 /* QueryTags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryTags.swift; sourceTree = "<group>"; };
 		BF2C4D5D281E31A200C241BF /* Rail2Road.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rail2Road.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF2C4D60281E31A200C241BF /* Rail2RoadApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rail2RoadApp.swift; sourceTree = "<group>"; };
@@ -98,10 +106,13 @@
 				BF2C4D88281E5D8200C241BF /* RegisterView.swift */,
 				BF2C4D8B281E5DA600C241BF /* ResetView.swift */,
 				BF2C4D8E281E5E0200C241BF /* MapView.swift */,
+				81377BA02910C7F500274799 /* SearchOverlay.swift */,
+				81377BA22910C82700274799 /* ListOverlay.swift */,
 				BF8A79C42824D873007B4AE2 /* RailyardAnnotation.swift */,
 				BF2C4D91281E5E1F00C241BF /* DetailView.swift */,
 				BFBE4053288F0F9700DA2FD3 /* ChatBubble.swift */,
 				BF2C4D94281E5E3E00C241BF /* ReportView.swift */,
+				81377B9E2910C6C300274799 /* RailyardRow.swift */,
 				BF2C4D97281E5E4E00C241BF /* AccountView.swift */,
 				BF2C4D9A281E5E5900C241BF /* EditView.swift */,
 				BF2C4D64281E31A200C241BF /* Assets.xcassets */,
@@ -127,6 +138,7 @@
 				BFBE4050288F0CF700DA2FD3 /* Chat.swift */,
 				BF8A79C12824D75E007B4AE2 /* Railyard.swift */,
 				BF8986522889CFCA00BF676E /* LocationManager.swift */,
+				81377BA42910CAC500274799 /* SearchManager.swift */,
 				8171B85E28AF1E390004B7B7 /* QueryTags.swift */,
 			);
 			path = Model;
@@ -211,9 +223,12 @@
 			files = (
 				BF2C4D63281E31A200C241BF /* ContentView.swift in Sources */,
 				BF2C4D92281E5E1F00C241BF /* DetailView.swift in Sources */,
+				81377BA32910C82700274799 /* ListOverlay.swift in Sources */,
 				BFBE4054288F0F9700DA2FD3 /* ChatBubble.swift in Sources */,
 				BF8986532889CFCA00BF676E /* LocationManager.swift in Sources */,
+				81377B9F2910C6C300274799 /* RailyardRow.swift in Sources */,
 				BF2C4D9B281E5E5900C241BF /* EditView.swift in Sources */,
+				81377BA52910CAC500274799 /* SearchManager.swift in Sources */,
 				BF2C4D8F281E5E0200C241BF /* MapView.swift in Sources */,
 				8171B85F28AF1E390004B7B7 /* QueryTags.swift in Sources */,
 				BFBE4051288F0CF700DA2FD3 /* Chat.swift in Sources */,
@@ -222,6 +237,7 @@
 				BF8A79C52824D873007B4AE2 /* RailyardAnnotation.swift in Sources */,
 				BF2C4D61281E31A200C241BF /* Rail2RoadApp.swift in Sources */,
 				BF2C4D89281E5D8200C241BF /* RegisterView.swift in Sources */,
+				81377BA12910C7F500274799 /* SearchOverlay.swift in Sources */,
 				BF2C4D86281E5D0C00C241BF /* LoginView.swift in Sources */,
 				BF2C4D7B281E415F00C241BF /* DataConglomerate.swift in Sources */,
 				BF8A79C22824D75E007B4AE2 /* Railyard.swift in Sources */,

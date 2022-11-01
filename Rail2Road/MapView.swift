@@ -20,11 +20,9 @@ struct MapView: View {
     
     @StateObject var locationManager = LocationManager()
     
-//    @State private var railyards = [Railyard(coordinates: CLLocationCoordinate2D(latitude: 42.1033585, longitude: -88.3726605)), Railyard(coordinates: CLLocationCoordinate2D(latitude: 42.1043585, longitude: -88.3736605)),
-//                                    Railyard(coordinates: CLLocationCoordinate2D(latitude: 37.873972, longitude: -122.51297))]
     @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 0, longitude: 0), span: MKCoordinateSpan(latitudeDelta: 0, longitudeDelta: 0))
     @State private var searchOverlayActive: Bool = false
-    @State private var listViewActive: Bool = true
+    @State private var listOverlayActive: Bool = true
     @State private var viewFavoriteRailyards: Bool = true
 
     var uid: String
@@ -183,15 +181,16 @@ struct MapView: View {
     
     var body: some View {
         if(query) {
-            if(listViewActive) {
+            if(listOverlayActive) {
                 VStack {
                     HStack {
-                        Spacer()
                         Button(action: {
-                            listViewActive = false
+                            listOverlayActive = false
                         }, label: {
                             Image(systemName: "chevron.compact.up")
                         })
+                    }
+                    HStack {
                         Spacer()
                         Button(action: {
                             viewFavoriteRailyards = !viewFavoriteRailyards
@@ -202,26 +201,9 @@ struct MapView: View {
                                 Image(systemName: "star")
                             }
                         })
+                            .padding(.trailing)
                     }
-                    Form {
-                        if(viewFavoriteRailyards) {
-                            Section(header: Text("Favorite Railyards")) {
-                                HStack {
-                                    Text("test railyard entry")
-                                    Spacer()
-                                    Text("Waittime")
-                                }
-                            }
-                        } else {
-                            Section(header: Text("Nearby Railyards")) {
-                                HStack {
-                                    Text("test railyard entry")
-                                    Spacer()
-                                    Text("Waittime")
-                                }
-                            }
-                        }
-                    }
+                    ListOverlay(viewFavoriteRailyards: viewFavoriteRailyards)
                 }
                     .background(Color.black)
                     .opacity(0.8)
@@ -287,6 +269,15 @@ struct MapView: View {
                             })
                             
                             Spacer()
+                            
+                            Button(action: {
+                                listOverlayActive = true
+                            }, label: {
+                                Image(systemName: "list.bullet.circle.fill")
+                                    .padding(.trailing)
+                                    .padding(.bottom)
+                                    .padding(.bottom)
+                            })
                         }
                     }
                     if(searchOverlayActive) {
@@ -301,36 +292,7 @@ struct MapView: View {
                                 Spacer()
                             }
                                 .padding(.bottom)
-                            Form {
-                                Section(header: Text("Location Search")) {
-                                    ZStack(alignment: .trailing) {
-                                        TextField("Search", text: $locationManager.queryFragment)
-                                        // This is optional and simply displays an icon during an active search
-                                        if locationManager.status == .isSearching {
-                                            Image(systemName: "clock")
-                                                .foregroundColor(Color.gray)
-                                        }
-                                    }
-                                }
-                                Section(header: Text("Results")) {
-                                    List {
-                                        // With Xcode 12, this will not be necessary as it supports switch statements.
-                                        Group { () -> AnyView in
-                                            switch locationManager.status {
-                                            case .noResults: return AnyView(Text("No Results"))
-                                            case .error(let description): return AnyView(Text("Error: \(description)"))
-                                            default: return AnyView(EmptyView())
-                                            }
-                                        }.foregroundColor(Color.gray)
-
-                                        ForEach(locationManager.searchResults, id: \.self) { completionResult in
-                                            // This simply lists the results, use a button in case you'd like to perform an action
-                                            // or use a NavigationLink to move to the next view upon selection.
-                                            Text(completionResult.title)
-                                        }
-                                    }
-                                }
-                            }
+                            SearchOverlay()
                         }
                             .background(Color.black)
                             .opacity(0.8)
