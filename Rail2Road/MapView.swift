@@ -23,13 +23,21 @@ struct MapView: View {
     @State private var searchOverlayActive: Bool = false
     @State private var listOverlayActive: Bool = true
     @State private var viewFavoriteRailyards: Bool = true
+    
+    @State private var userFavoritesTag: String = "user_favorites"
 
     var uid: String
+    
+    var userFavoritesPath: [String] {
+        ["users", uid, "favorites"]
+    }
     
     var query: Bool {
         let userLongitudeRegionsTags = dataConglomerate.findLongitudeRegionsTags()
         //QueryTag struct {foundTag: String, tag: String} Used for retriving values from firebase
         DispatchQueue.main.async {
+            _ = database.getValues(path: userFavoritesPath, tag: userFavoritesTag, dataConglomerate: dataConglomerate)
+            _ = generateFavorites()
             var userLongitudeRegionsQueryTags: [LongitudeRegionQueryTags] = []
             for userLongitudeRegionTags in userLongitudeRegionsTags {
 //                print(pairingFunction(userRailyardRegionTags: userRailyardRegionTags))
@@ -43,6 +51,28 @@ struct MapView: View {
         }
         return true
     }
+    
+    //    A helper function to create Railyard objects based on all the user's favorite railyards
+        private func generateFavorites() -> Bool {
+    //        Array of user's subscription's uids
+            if dataConglomerate.data[userFavoritesTag] != nil {
+                let userFavoritesIds = dataConglomerate.data[userFavoritesTag] as! NSArray
+                for id in userFavoritesIds {
+                    let id = (id as! String)
+    //                Define tags to act as keys to access data in the database
+                    let railyardTag = "railyard_" + id + "_name"
+    //                Subscription init variables
+    //                Query the bitch. THIS HAS TO BE CHANGED IF TREE IS RENAMED TO
+    //                    authors INSTEAD OF subscriptions
+                    print("HEREJRJEJRHEHREHR")
+                    _ = database.getRailyard(id: id, tag: railyardTag, dataConglomerate: dataConglomerate)
+                }
+                return true
+            }
+            else {
+                return false
+            }
+        }
     
 //    private func pairingFunction(userRailyardRegionTags: RailroadRegionQueryTags) -> Int {
 //        return userRailyardRegionTags.latitudeRegion + 360 * (userRailyardRegionTags.longitudeRegion % 360)

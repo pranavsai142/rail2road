@@ -59,6 +59,29 @@ final class FireDatabaseReference: ObservableObject {
         return true
     }
     
+    func getValues(path: [String], tag: String, dataConglomerate: DataConglomerate) -> Bool {
+        print("INI GET VALAUES")
+        print("path", path)
+        let stringPath = path.joined(separator: "/")
+        let ref = database.child(stringPath)
+//        var data: Any?
+//        print(stringPath)
+//        print(key)
+        if(dataConglomerate.data[tag] == nil) {
+            ref.observeSingleEvent(of: .value, with: { snapshot in
+              // This is the snapshot of the data at the moment in the Firebase database
+              // To get value from the snapshot, we user snapshot.value
+                var data = NSArray()
+                for snap in snapshot.children {
+                    let value = (snap as! DataSnapshot).key
+                    data = data.adding(value) as NSArray
+                }
+                dataConglomerate.data[tag] = data
+            })
+        }
+        return true
+    }
+    
     //Returns an array of keys under a given path
     //path: path to return keys under
     //tag: string to save data under in dataConglomerate
@@ -106,6 +129,48 @@ final class FireDatabaseReference: ObservableObject {
             })
         }
         return true
+    }
+    
+//    database.getRailyard(id: id, tag: railyardTag, dataConglomerate: dataConglomerate)
+    func getRailyard(id: String, tag: String, dataConglomerate: DataConglomerate) -> Bool {
+        var ref = database
+        let path = ["railyards"]
+        if(!path.isEmpty) {
+            let stringPath = path.joined(separator: "/")
+            ref  = database.child(stringPath)
+        }
+        ref.queryOrderedByKey()
+            .queryEqual(toValue: id)
+            .observeSingleEvent(of: .value, with: { snapshot in
+            if let snapVal = snapshot.value as? NSDictionary {
+                let railyardDictionary = snapVal.value(forKey: id) as! NSDictionary
+//                    print("adding " + (railyardDictionary["name"] as! String))
+                let railyardUid = UUID(uuidString: id)!
+                let railyard = Railyard(id: railyardUid, dictionary: railyardDictionary)
+                    
+                print("\n\n")
+                print("starting at value")
+                print(railyard)
+                print("ending at value")
+                if(!dataConglomerate.favoriteRailyards.contains(railyard)) {
+                    dataConglomerate.favoriteRailyards.append(railyard)
+                }
+            }
+            else {
+                if(snapshot.exists()) {
+                    print("\n\n")
+                    print("starting at value")
+                    print("Not dictionary type")
+                    print("ending at value")
+                } else {
+//                        print("\n\n")
+//                        print("starting at value", queryTags.getLeftBound())
+//                        print("No values found")
+//                        print("ending at value", queryTags.getRightBound())
+                }
+            }
+        })
+        return true;
     }
     
     
@@ -174,19 +239,19 @@ final class FireDatabaseReference: ObservableObject {
                         railyards.append(Railyard(id: railyardUid, dictionary: railyardDictionary))
                         
                     }
-                    print("\n\n")
-                    print("starting at value", queryTags.getLeftBound())
-                    print(railyards)
-                    print("ending at value", queryTags.getRightBound())
+//                    print("\n\n")
+//                    print("starting at value", queryTags.getLeftBound())
+//                    print(railyards)
+//                    print("ending at value", queryTags.getRightBound())
                     railyards.sort()
                     dataConglomerate.storedUserLongitudeRegions[queryTags.longitudeRegion] = railyards
                 }
                 else {
                     if(snapshot.exists()) {
-                        print("\n\n")
-                        print("starting at value", queryTags.getLeftBound())
-                        print("Not dictionary type")
-                        print("ending at value", queryTags.getRightBound())
+//                        print("\n\n")
+//                        print("starting at value", queryTags.getLeftBound())
+//                        print("Not dictionary type")
+//                        print("ending at value", queryTags.getRightBound())
                     } else {
 //                        print("\n\n")
 //                        print("starting at value", queryTags.getLeftBound())

@@ -4,7 +4,6 @@
 //
 //  Created by Pranav Sai on 4/30/22.
 //
-import Foundation
 import MapKit
 
 final class DataConglomerate: ObservableObject {
@@ -17,6 +16,7 @@ final class DataConglomerate: ObservableObject {
     
     @Published var storedUserLongitudeRegions: [Int: [Railyard]] = [Int: [Railyard]]()
     @Published var storedRailyards: [Railyard] = [Railyard]()
+    @Published var favoriteRailyards: [Railyard] = [Railyard]()
     
     @Published var region: MKCoordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 0, longitude: 0), span: MKCoordinateSpan(latitudeDelta: 0, longitudeDelta: 0))
     
@@ -29,7 +29,11 @@ final class DataConglomerate: ObservableObject {
         var storedNearbyRailyards: [Railyard] = []
         for userLongitudeRegionTags in userLongitudeRegionsTags {
             if storedUserLongitudeRegions[userLongitudeRegionTags.longitudeRegion] != nil {
-                storedNearbyRailyards.append(contentsOf: storedUserLongitudeRegions[userLongitudeRegionTags.longitudeRegion]!)
+                for railyard in storedUserLongitudeRegions[userLongitudeRegionTags.longitudeRegion]! {
+                    if(abs(railyard.coordinates.latitude - region.center.latitude) < 2.0) {
+                        storedNearbyRailyards.append(railyard)
+                    }
+                }
             }
         }
         return storedNearbyRailyards

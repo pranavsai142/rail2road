@@ -19,7 +19,13 @@ struct ListOverlay: View {
             if(viewFavoriteRailyards) {
                 Section(header: Text("Favorite Railyards")) {
                     List {
-                        RailyardRow(railyard: Railyard())
+                        ForEach(dataConglomerate.favoriteRailyards) { railyard in
+                            NavigationLink(destination: DetailView(uid: uid, railyard: railyard)
+                                            .environmentObject(database)
+                                            .environmentObject(dataConglomerate)) {
+                                RailyardRow(railyard: railyard)
+                            }
+                        }
                     }
                 }
             } else {
