@@ -7,6 +7,7 @@
 
 import MapKit
 import Combine
+import CoreLocation
 
 class SearchManager: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
 
@@ -50,11 +51,37 @@ class SearchManager: NSObject, ObservableObject, MKLocalSearchCompleterDelegate 
         // Depending on what you're searching, you might need to filter differently or
         // remove the filter altogether. Filtering for an empty Subtitle seems to filter
         // out a lot of places and only shows cities and countries.
-        self.searchResults = completer.results.filter({ $0.subtitle == "" })
+        self.searchResults = completer.results.filter({ $0.subtitle != "" && $0.subtitle != "Search Nearby"})
+//        self.searchResults = completer.results
         self.status = completer.results.isEmpty ? .noResults : .result
     }
 
     func completer(_ completer: MKLocalSearchCompleter, didFailWithError error: Error) {
         self.status = .error(error.localizedDescription)
+    }
+    
+    func SearchStringToRegion(completion: MKLocalSearchCompletion, dataConglomerate: DataConglomerate) {
+        let address: String
+//        There are 3 commas in a standard postal address. If the subtitle is not a postal address, concatenate the title
+        if(completion.subtitle.filter{ $0 == "," }.count < 3) {
+            address = completion.title + ", " + completion.subtitle
+        } else {
+            address = completion.subtitle
+        }
+        let geoCoder = CLGeocoder()
+        geoCoder.geocodeAddressString(address) { (placemarks, error) in
+            guard
+                let placemarks = placemarks,
+                let location = placemarks.first?.location,
+                let identifier = placemarks.first?.region?.identifier
+            else {
+                return
+            }
+            
+            dataConglomerate.region.center = location.coordinate
+            dataConglomerate.region.span = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+            print("Identifier", identifier)
+            dataConglomerate.searchOverlayActive = false
+        }
     }
 }

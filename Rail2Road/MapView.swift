@@ -20,7 +20,6 @@ struct MapView: View {
     
     @StateObject var locationManager = LocationManager()
     
-    @State private var searchOverlayActive: Bool = false
     @State private var listOverlayActive: Bool = true
     @State private var viewFavoriteRailyards: Bool = true
     
@@ -143,7 +142,7 @@ struct MapView: View {
     }
     
     private func search() {
-        searchOverlayActive = true
+        dataConglomerate.searchOverlayActive = true
     }
     
 //    private func printQuery() -> Bool {
@@ -177,13 +176,11 @@ struct MapView: View {
                         })
                             .padding(.trailing)
                     }
-                    if(searchOverlayActive) {
-                        SearchOverlay()
-                    } else {
-                        ListOverlay(uid: uid, viewFavoriteRailyards: viewFavoriteRailyards)
-                            .environmentObject(database)
-                            .environmentObject(dataConglomerate)
-                    }
+                    //If ListOverlay should have accessibility to SearchOverlay,
+                    //add conditional displaying SearchOverlay if dataConglomerate.searchOverlayActive else display ListOverlay.
+                    ListOverlay(uid: uid, viewFavoriteRailyards: viewFavoriteRailyards)
+                        .environmentObject(database)
+                        .environmentObject(dataConglomerate)
                 }
                     .background(Color.black)
                     .opacity(0.8)
@@ -240,7 +237,7 @@ struct MapView: View {
                         Spacer()
                         HStack {
                             Button(action: {
-                                searchOverlayActive = true
+                                dataConglomerate.searchOverlayActive = true
                             }, label: {
                                 Image(systemName: "magnifyingglass.circle.fill")
                                     .padding(.leading)
@@ -260,12 +257,12 @@ struct MapView: View {
                             })
                         }
                     }
-                    if(searchOverlayActive) {
+                    if(dataConglomerate.searchOverlayActive) {
                         VStack {
                             HStack {
                                 Spacer()
                                 Button(action: {
-                                    searchOverlayActive = false
+                                    dataConglomerate.searchOverlayActive = false
                                 }, label: {
                                     Image(systemName: "chevron.compact.up")
                                 })

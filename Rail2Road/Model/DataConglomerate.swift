@@ -18,6 +18,10 @@ final class DataConglomerate: ObservableObject {
     @Published var storedRailyards: [Railyard] = [Railyard]()
     @Published var favoriteRailyards: [Railyard] = [Railyard]()
     
+    /// Boolean that detirmines if the SearchOverlay is visible or not.
+    /// The reason for having this variable stored in DataConglomerate is because the value has to persist between two views, MapView and SearchOverlay.
+    @Published var searchOverlayActive: Bool = false
+    
     @Published var region: MKCoordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 0, longitude: 0), span: MKCoordinateSpan(latitudeDelta: 0, longitudeDelta: 0))
     
     func dataToString(tag: String) -> String {

@@ -6,11 +6,16 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct SearchOverlay: View {
     @EnvironmentObject var dataConglomerate: DataConglomerate
     
     @StateObject var searchManager = SearchManager()
+    
+    private func updateMapRegion(completion: MKLocalSearchCompletion) {
+        searchManager.SearchStringToRegion(completion: completion, dataConglomerate: dataConglomerate)
+    }
     
     var body: some View {
         Form {
@@ -26,19 +31,25 @@ struct SearchOverlay: View {
             }
             Section(header: Text("Results")) {
                 List {
-                    HStack {
-                        switch searchManager.status {
-                            case .noResults: Text("No Results")
-                            case .error(let description): Text("Error: \(description)")
-                            default: EmptyView()
-                        }
+                    switch searchManager.status {
+                        case .noResults: Text("No Results")
+                        case .error(let description): Text("Error: \(description)")
+                        default: EmptyView()
                     }
-                        .foregroundColor(Color.gray)
 
-                    ForEach(searchManager.searchResults, id: \.self) { completionResult in
+                    ForEach(searchManager.searchResults, id: \.self) { completion in
                         // This simply lists the results, use a button in case you'd like to perform an action
                         // or use a NavigationLink to move to the next view upon selection.
-                        Text(completionResult.title)
+                            Button(action: {
+                                updateMapRegion(completion: completion)
+                            }, label: {
+                                VStack(alignment: .leading) {
+                                    Text(completion.title)
+                                    Text(completion.subtitle)
+                                        .font(.subheadline)
+                                        .foregroundColor(.gray)
+                                }
+                            })
                     }
                 }
             }
