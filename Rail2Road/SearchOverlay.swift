@@ -23,7 +23,7 @@ struct SearchOverlay: View {
                 ZStack(alignment: .trailing) {
                     TextField("Search", text: $searchManager.queryFragment)
                     // This is optional and simply displays an icon during an active search
-                    if searchManager.status == .isSearching {
+                    if searchManager.status == .searching {
                         Image(systemName: "clock")
                             .foregroundColor(Color.gray)
                     }
@@ -32,7 +32,7 @@ struct SearchOverlay: View {
             Section(header: Text("Results")) {
                 List {
                     switch searchManager.status {
-                        case .noResults: Text("No Results")
+                        case .empty: Text("No Results")
                         case .error(let description): Text("Error: \(description)")
                         default: EmptyView()
                     }

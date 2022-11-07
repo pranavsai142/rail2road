@@ -13,8 +13,8 @@ class SearchManager: NSObject, ObservableObject, MKLocalSearchCompleterDelegate 
 
     enum SearchStatus: Equatable {
         case idle
-        case noResults
-        case isSearching
+        case empty
+        case searching
         case error(String)
         case result
     }
@@ -37,7 +37,7 @@ class SearchManager: NSObject, ObservableObject, MKLocalSearchCompleterDelegate 
             // feel free to play with the proper value here
             .debounce(for: .milliseconds(250), scheduler: RunLoop.main, options: nil)
             .sink(receiveValue: { fragment in
-                self.status = .isSearching
+                self.status = .searching
                 if !fragment.isEmpty {
                     self.searchCompleter.queryFragment = fragment
                 } else {
@@ -53,7 +53,7 @@ class SearchManager: NSObject, ObservableObject, MKLocalSearchCompleterDelegate 
         // out a lot of places and only shows cities and countries.
         self.searchResults = completer.results.filter({ $0.subtitle != "" && $0.subtitle != "Search Nearby"})
 //        self.searchResults = completer.results
-        self.status = completer.results.isEmpty ? .noResults : .result
+        self.status = completer.results.isEmpty ? .empty : .result
     }
 
     func completer(_ completer: MKLocalSearchCompleter, didFailWithError error: Error) {

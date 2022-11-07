@@ -7,10 +7,18 @@
 import MapKit
 
 final class DataConglomerate: ObservableObject {
+    
+    enum QueryStatus: Equatable {
+        case searching
+        case empty
+        case error
+        case result
+    }
+
     /// data dictionary. Use for local storage of metadata like information
     @Published var data: [String: Any] = [String: Any]()
-    /// query dictionary. Used for data originating from Firebase Realtime Database.
-    @Published var query: [String: Any] = [String: Any]()
+    /// query dictionary. Used for keeping track of the status of queries
+    @Published var queries: [String: QueryStatus] = [String: QueryStatus]()
     /// dictionary containing locally saved railyard regions, key of the dictionary being a RailyardRegionQueryTag
 //    @Published var storedUserRailyardRegions: [RailroadRegionQueryTags: RailyardRegion] = [RailroadRegionQueryTags: RailyardRegion]()
     

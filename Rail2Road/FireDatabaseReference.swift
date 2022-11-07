@@ -41,7 +41,8 @@ final class FireDatabaseReference: ObservableObject {
 //        print("Query")
 //        print(stringPath)
 //        print(key)
-        if(dataConglomerate.data[tag] == nil) {
+        if(dataConglomerate.data[tag] == nil && dataConglomerate.queries[tag] == nil) {
+            dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.searching
             ref.observeSingleEvent(of: .value, with: { snapshot in
               // This is the snapshot of the data at the moment in the Firebase database
               // To get value from the snapshot, we user snapshot.value
@@ -51,8 +52,10 @@ final class FireDatabaseReference: ObservableObject {
     //            print(self.data)
                 if(snapshot.value! is NSNull) {
                     dataConglomerate.data[tag] = "DNE"
+                    dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.empty
                 } else {
                     dataConglomerate.data[tag] = ((snapshot.value) as! NSDictionary)[key]
+                    dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.result
                 }
             })
         }
@@ -60,14 +63,13 @@ final class FireDatabaseReference: ObservableObject {
     }
     
     func getValues(path: [String], tag: String, dataConglomerate: DataConglomerate) -> Bool {
-        print("INI GET VALAUES")
-        print("path", path)
         let stringPath = path.joined(separator: "/")
         let ref = database.child(stringPath)
 //        var data: Any?
 //        print(stringPath)
 //        print(key)
-        if(dataConglomerate.data[tag] == nil) {
+        if(dataConglomerate.data[tag] == nil && dataConglomerate.queries[tag] == nil) {
+            dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.searching
             ref.observeSingleEvent(of: .value, with: { snapshot in
               // This is the snapshot of the data at the moment in the Firebase database
               // To get value from the snapshot, we user snapshot.value
@@ -77,6 +79,7 @@ final class FireDatabaseReference: ObservableObject {
                     data = data.adding(value) as NSArray
                 }
                 dataConglomerate.data[tag] = data
+                dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.result
             })
         }
         return true
@@ -92,16 +95,19 @@ final class FireDatabaseReference: ObservableObject {
 //        var data: Any?
 //        print(stringPath)
 //        print(key)
-        if(dataConglomerate.data[tag] == nil) {
+        if(dataConglomerate.data[tag] == nil && dataConglomerate.queries[tag] == nil) {
+            dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.searching
             ref.observeSingleEvent(of: .value, with: { snapshot in
               // This is the snapshot of the data at the moment in the Firebase database
-              // To get value from the snapshot, we user snapshot.value
+              // To get value from the snapshot, we use snapshot.value
                 var data = NSArray()
+                //Implement handling of data types that are not an NSArray
                 for snap in snapshot.children {
                     let value = (snap as! DataSnapshot).key
                     data = data.adding(value) as NSArray
                 }
                 dataConglomerate.data[tag] = data
+                dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.result
             })
         }
         return true
@@ -113,7 +119,8 @@ final class FireDatabaseReference: ObservableObject {
         let ref = database.child(stringPath)
 //        var data: Any?
 //        print(stringPath)
-        if(dataConglomerate.data[tag] == nil) {
+        if(dataConglomerate.data[tag] == nil && dataConglomerate.queries[tag] == nil) {
+            dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.searching
             ref.observeSingleEvent(of: .value, with: { snapshot in
               // This is the snapshot of the data at the moment in the Firebase database
               // To get value from the snapshot, we user snapshot.value
@@ -122,9 +129,12 @@ final class FireDatabaseReference: ObservableObject {
 //                print("\(type(of: values))")
                 if(snapshot.value! is NSNull) {
                     dataConglomerate.data[tag] = "DNE"
-                }
-                else {
+                    dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.empty
+                } else if(snapshot.value! is NSDictionary) {
                     dataConglomerate.data[tag] = (snapshot.value) as! NSDictionary
+                    dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.result
+                } else {
+                    dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.error
                 }
             })
         }
@@ -139,37 +149,43 @@ final class FireDatabaseReference: ObservableObject {
             let stringPath = path.joined(separator: "/")
             ref  = database.child(stringPath)
         }
-        ref.queryOrderedByKey()
-            .queryEqual(toValue: id)
-            .observeSingleEvent(of: .value, with: { snapshot in
-            if let snapVal = snapshot.value as? NSDictionary {
-                let railyardDictionary = snapVal.value(forKey: id) as! NSDictionary
-//                    print("adding " + (railyardDictionary["name"] as! String))
-                let railyardUid = UUID(uuidString: id)!
-                let railyard = Railyard(id: railyardUid, dictionary: railyardDictionary)
-                    
-                print("\n\n")
-                print("starting at value")
-                print(railyard)
-                print("ending at value")
-                if(!dataConglomerate.favoriteRailyards.contains(railyard)) {
-                    dataConglomerate.favoriteRailyards.append(railyard)
+        if(dataConglomerate.favoriteRailyards.isEmpty && dataConglomerate.queries[tag] == nil) {
+            dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.searching
+            ref.queryOrderedByKey()
+                .queryEqual(toValue: id)
+                .observeSingleEvent(of: .value, with: { snapshot in
+                if let snapVal = snapshot.value as? NSDictionary {
+                    let railyardDictionary = snapVal.value(forKey: id) as! NSDictionary
+    //                    print("adding " + (railyardDictionary["name"] as! String))
+                    let railyardUid = UUID(uuidString: id)!
+                    let railyard = Railyard(id: railyardUid, dictionary: railyardDictionary)
+                        
+//                    print("\n\n")
+//                    print("starting at value")
+//                    print(railyard)
+//                    print("ending at value")
+                    if(!dataConglomerate.favoriteRailyards.contains(railyard)) {
+                        dataConglomerate.favoriteRailyards.append(railyard)
+                    }
+                    dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.result
                 }
-            }
-            else {
-                if(snapshot.exists()) {
-                    print("\n\n")
-                    print("starting at value")
-                    print("Not dictionary type")
-                    print("ending at value")
-                } else {
+                else {
+                    if(snapshot.exists()) {
 //                        print("\n\n")
-//                        print("starting at value", queryTags.getLeftBound())
-//                        print("No values found")
-//                        print("ending at value", queryTags.getRightBound())
+//                        print("starting at value")
+//                        print("Not dictionary type")
+//                        print("ending at value")
+                        dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.error
+                    } else {
+                        dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.empty
+    //                        print("\n\n")
+    //                        print("starting at value", queryTags.getLeftBound())
+    //                        print("No values found")
+    //                        print("ending at value", queryTags.getRightBound())
+                    }
                 }
-            }
-        })
+            })
+        }
         return true;
     }
     
@@ -189,24 +205,26 @@ final class FireDatabaseReference: ObservableObject {
 // to get cat(s) [multiple returns not implemented]
 // queryDatabaseByString(["cats"], "name", "jeff", "query_jeff_found", "cat_data", dataConglomerate)
 // _ = database.queryDatabaseByString(path: ["railyards"], child: "name", query: "test", foundTag: queryFoundTag, tag: railyardsTag, dataConglomerate: dataConglomerate)
-    func queryDatabaseByString(path: [String], child: String, query: String, queryTags: StringQueryTags, dataConglomerate: DataConglomerate) -> Bool {
+    func queryDatabaseByString(path: [String], child: String, query: String, tag: String, dataConglomerate: DataConglomerate) -> Bool {
         var ref = database
         if(path.count > 0) {
             let stringPath = path.joined(separator: "/")
             ref = database.child(stringPath)
         }
-        ref.queryOrdered(byChild: child).queryEqual(toValue: query).observeSingleEvent(of: .value, with: { snapshot in
-            if let snapVal = snapshot.value as? NSDictionary {
-                dataConglomerate.query[queryTags.foundTag] = true
-                print(type(of: snapVal))
-                dataConglomerate.query[queryTags.tag] = snapVal
-            }
-            //Return value does not match structure of Dictionary or is null
-            else {
-                dataConglomerate.query[queryTags.foundTag] = false
-                dataConglomerate.query[queryTags.tag] = false
-            }
-        })
+        if(dataConglomerate.data[tag] == nil && dataConglomerate.queries[tag] == nil) {
+            dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.searching
+            ref.queryOrdered(byChild: child).queryEqual(toValue: query).observeSingleEvent(of: .value, with: { snapshot in
+                if let snapVal = snapshot.value as? NSDictionary {
+//                    print(type(of: snapVal))
+                    dataConglomerate.data[tag] = snapVal[query]
+                    dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.result
+                }
+                //Return value does not match structure of Dictionary or is null
+                else {
+                    dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.empty
+                }
+            })
+        }
         return true
     }
     
@@ -264,135 +282,6 @@ final class FireDatabaseReference: ObservableObject {
         return true;
     }
 
-    //  _ = database.queryDatabaseByRegion(path: ["railyards"], child: "longitude", region: region, foundTag: queryFoundTag, tag: railyardsTag, dataConglomerate: dataConglomerate)
-    func queryDatabaseByRegion(path: [String], child: String, region: MKCoordinateRegion, foundTag: String, tag: String, dataConglomerate: DataConglomerate) -> Bool {
-        var ref = database
-        if(!path.isEmpty) {
-            let stringPath = path.joined(separator: "/")
-            ref  = database.child(stringPath)
-        }
-        //If map region is wrapping around to negative values of longitude
-        if(region.center.longitude + (region.span.longitudeDelta/2) > 180.0) {
-            print("+hit")
-            ref.queryOrdered(byChild: child).queryStarting(atValue: region.center.longitude - (region.span.longitudeDelta/2)).queryEnding(atValue: 180.0).observeSingleEvent(of: .value, with: { snapshot in
-                if let snapVal = snapshot.value as? NSDictionary {
-                    dataConglomerate.query[foundTag] = true
-                    dataConglomerate.query[tag] = snapVal
-                }
-                else {
-                    dataConglomerate.query[foundTag] = false
-                    dataConglomerate.query[tag] = false
-                }
-            })
-            
-//            ref.queryOrdered(byChild: child).queryStarting(atValue: -180.0).queryEnding(atValue: -180.0 + (region.center.longitude + region.span.longitudeDelta - 180)).observeSingleEvent(of: .value, with: { snapshot in
-//                if let snapVal = snapshot.value as? NSArray {
-//                    dataConglomerate.query[foundTag] = true
-//                    var authorUUID = ""
-//                    for snap in snapshot.children {
-//                        authorUUID = (snap as! DataSnapshot).key
-//                    }
-//                    let authorData = NSArray(array: [authorUUID]).addingObjects(from: [snapVal[1]])
-//                    dataConglomerate.query[tag] = (dataConglomerate.query[tag] as! NSArray).addingObjects(from: authorData) as [Any]
-//                }
-//                else if let snapVal = snapshot.value as? NSDictionary {
-//                    dataConglomerate.query[foundTag] = true
-//                    dataConglomerate.query[tag] = dataConglomerate.query[tag]
-//                }
-//                else {
-//                    dataConglomerate.query[foundTag] = false
-//                    dataConglomerate.query[tag] = false
-//                }
-        //            for snap in snapshot.children {
-        //                print((snap as! DataSnapshot).key)
-        //            }
-//            })
-        }
-        //If map region is mapping around to positive values of longitude
-        else if(region.center.longitude - region.span.longitudeDelta < -180.0) {
-            print("-hit")
-        }
-        else {
-            print("hit")
-            ref.queryOrdered(byChild: child).queryStarting(atValue: 0.0).queryEnding(atValue: 20.0).observeSingleEvent(of: .value, with: { snapshot in
-//                print("snapshot", snapshot)
-//                if let snapVal = snapshot.value as? NSArray {
-//                    dataConglomerate.query[foundTag] = true
-//                    let authorData = NSArray().addingObjects(from: [snapVal[1]])
-//                    dataConglomerate.query[tag] = authorData
-//                }
-                if let snapVal = snapshot.value as? NSDictionary {
-                    print(type(of: snapVal))
-                    dataConglomerate.query[foundTag] = true
-                    NSMutableDictionary(dictionary: snapVal)
-                    dataConglomerate.query[tag] = snapVal
-                }
-                else {
-                    dataConglomerate.query[foundTag] = false
-                    dataConglomerate.query[tag] = false
-                }
-//                for snap in snapshot.children {
-//                    print((snap as! DataSnapshot).key)
-//                }
-            })
-//            ref.queryOrdered(byChild: child).observeSingleEvent(of: .value, with: { snapshot in
-//                if let snapVal = snapshot.value as? NSArray {
-//                    dataConglomerate.query[foundTag] = true
-//                    var authorUUID = ""
-//                    for snap in snapshot.children {
-//                        authorUUID = (snap as! DataSnapshot).key
-//                    }
-//                    let authorData = NSArray(array: [authorUUID]).addingObjects(from: [snapVal[1]])
-//                    dataConglomerate.query[tag] = authorData
-//                }
-//                else if let snapVal = snapshot.value as? NSDictionary {
-//                    dataConglomerate.query[foundTag] = true
-//                    dataConglomerate.query[tag] = snapVal
-//                }
-//                else {
-//                    dataConglomerate.query[foundTag] = false
-//                    dataConglomerate.query[tag] = false
-//                }
-//                for snap in snapshot.children {
-//                    print((snap as! DataSnapshot).key)
-//                }
-//            })
-        }
-//
-//        ref.queryOrdered(byChild: child).queryStarting(atValue: lowerBound).queryEnding(beforeValue: upperBound).observeSingleEvent(of: .value, with: { snapshot in
-//            if let snapVal = snapshot.value as? NSArray {
-//    //                print("cauht array")
-//                dataConglomerate.query[foundTag] = true
-//                var authorUUID = ""
-//                //There is only one snap. This loop is for when trying to show multiple values.
-//                for snap in snapshot.children {
-//                    authorUUID = (snap as! DataSnapshot).key
-//                }
-//    //                print("found tag", foundTag)
-//    //                print("AUTHOr UUID", authorUUID)
-//    //                print("snapVAl", snapVal[1])
-//                let authorData = NSArray(array: [authorUUID]).addingObjects(from: [snapVal[1]])
-//    //                print("AUTHOr DATA", authorData)
-//                dataConglomerate.query[tag] = authorData
-//            }
-//            else if let snapVal = snapshot.value as? NSDictionary {
-//    //                print("cauht dictionary")
-//                dataConglomerate.query[foundTag] = true
-//    //                print("found tag", foundTag)
-//                dataConglomerate.query[tag] = snapVal
-//            }
-//            else {
-//    //                print("NO DICE")
-//                dataConglomerate.query[foundTag] = false
-//                dataConglomerate.query[tag] = false
-//            }
-//    //            for snap in snapshot.children {
-//    //                print((snap as! DataSnapshot).key)
-//    //            }
-//        })
-        return true
-    }
-    
     func queryDatabaseByValueInRange(path: [String], child: String, key: String, lowerBound: Double, upperBound: Double, foundTag: String, tag: String, dataConglomerate: DataConglomerate) -> Bool {
 //        var ref = database
 //        if(!path.isEmpty) {

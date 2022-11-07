@@ -11,11 +11,9 @@ protocol QueryTags: Hashable {
 
 struct StringQueryTags: QueryTags {
     var tag: String
-    var foundTag: String
     
-    init(tag: String, foundTag: String) {
+    init(tag: String) {
         self.tag = tag
-        self.foundTag = foundTag
     }
 }
 

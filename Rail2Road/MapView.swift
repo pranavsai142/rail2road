@@ -23,7 +23,7 @@ struct MapView: View {
     @State private var listOverlayActive: Bool = true
     @State private var viewFavoriteRailyards: Bool = true
     
-    @State private var userFavoritesTag: String = "user_favorites"
+    @State private var userFavoritesTag: String = "user_favorites_tag"
 
     var uid: String
     
@@ -32,6 +32,7 @@ struct MapView: View {
     }
     
     var query: Bool {
+        print("\n", dataConglomerate.queries)
         let userLongitudeRegionsTags = dataConglomerate.findLongitudeRegionsTags()
         //QueryTag struct {foundTag: String, tag: String} Used for retriving values from firebase
         DispatchQueue.main.async {
@@ -54,16 +55,15 @@ struct MapView: View {
     //    A helper function to create Railyard objects based on all the user's favorite railyards
         private func generateFavorites() -> Bool {
     //        Array of user's subscription's uids
-            if dataConglomerate.data[userFavoritesTag] != nil {
+            if dataConglomerate.queries[userFavoritesTag] == DataConglomerate.QueryStatus.result {
                 let userFavoritesIds = dataConglomerate.data[userFavoritesTag] as! NSArray
                 for id in userFavoritesIds {
                     let id = (id as! String)
     //                Define tags to act as keys to access data in the database
-                    let railyardTag = "railyard_" + id + "_name"
+                    let railyardTag = "railyard_" + id + "_tag"
     //                Subscription init variables
     //                Query the bitch. THIS HAS TO BE CHANGED IF TREE IS RENAMED TO
     //                    authors INSTEAD OF subscriptions
-                    print("HEREJRJEJRHEHREHR")
                     _ = database.getRailyard(id: id, tag: railyardTag, dataConglomerate: dataConglomerate)
                 }
                 return true

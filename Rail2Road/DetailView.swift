@@ -23,6 +23,7 @@ struct DetailView: View {
     }
     
     private func toggleFavorite() {
+        print("HEEIHREIHRE")
         if(isFavorite) {
             isFavorite = false
         } else {
@@ -35,7 +36,7 @@ struct DetailView: View {
             HStack {
                 Text(railyard.name)
                     .font(.title)
-                    .padding()
+//                    .padding()
                 Spacer()
                 Button(action: {
                     toggleFavorite()
@@ -43,12 +44,13 @@ struct DetailView: View {
                     if(isFavorite) {
                         Image(systemName: "star.fill")
                     } else {
-                        Image(systemName: "star")
+                        Image(systemName: "pencil")
                     }
                 })
+                .background(.green)
                 Text(String(railyard.waittime))
                     .font(.title)
-                    .padding()
+//                    .padding()
                     .background(Color.green)
             }
                 .background(Color.black.opacity(0.3))
