@@ -23,7 +23,10 @@ struct ReportView: View {
     
     var body: some View {
         VStack {
-            Text("Report")
+            Text("Truthful reporting delivers accurate data!")
+                .italic()
+                .font(.caption)
+                .multilineTextAlignment(.center)
             DatePicker("Start:", selection: $startDate)
             DatePicker("End:", selection: $endDate)
             Spacer()
@@ -34,8 +37,8 @@ struct ReportView: View {
             }
         }
             .padding()
-            .navigationTitle("Report")
             .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle(Text("Report Wait Time"))
     }
 }
 

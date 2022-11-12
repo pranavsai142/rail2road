@@ -31,6 +31,23 @@ struct DetailView: View {
     }
     
     var body: some View {
+//        if(dataConglomerate.reportOverlayActive) {
+//            VStack {
+//                HStack {
+//                    Button(action: {
+//                        dataConglomerate.reportOverlayActive = false
+//                    }, label: {
+//                        Image(systemName: "chevron.compact.up")
+//                    })
+//                }
+//                ReportOverlay(uid: uid, railyard: railyard)
+//                    .environmentObject(database)
+//                    .environmentObject(dataConglomerate)
+//            }
+//                .background(Color.black)
+//                .opacity(0.2)
+//                .navigationBarTitleDisplayMode(.inline)
+//        } else {
         VStack {
             HStack {
                 Text(railyard.address)
@@ -45,15 +62,24 @@ struct DetailView: View {
                         Image(systemName: "star")
                     }
                 })
-                Text(String(railyard.waittime))
-                    .font(.title)
-                    .bold()
-                    .padding()
-                    .background(.green)
-                    .clipShape(RoundedRectangle(cornerRadius: 20))
-                
+                NavigationLink(
+                    destination: ReportView(uid: uid, railyard: railyard)
+                        .environmentObject(database)
+                        .environmentObject(dataConglomerate)) {
+                    VStack {
+                        Text(String(railyard.waittime))
+                            .font(.title)
+                            .bold()
+                            .padding()
+                            .background(.green)
+                            .clipShape(RoundedRectangle(cornerRadius: 20))
+                        Text("Report Wait Time")
+                            .font(.caption)
+                    }
+                }
             }
-                .padding()
+                .padding(.leading)
+                .padding(.trailing)
             ScrollView {
                 ForEach(dataConglomerate.getChatHistory(railyard: railyard)) { chat in
                     if(Int.random(in: 0..<2) % 2 == 0) {
@@ -65,6 +91,7 @@ struct DetailView: View {
             }
         }
             .navigationTitle(railyard.name)
+            .navigationBarTitleDisplayMode(.large)
     }
 }
 
