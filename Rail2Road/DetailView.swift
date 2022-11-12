@@ -23,7 +23,6 @@ struct DetailView: View {
     }
     
     private func toggleFavorite() {
-        print("HEEIHREIHRE")
         if(isFavorite) {
             isFavorite = false
         } else {
@@ -34,9 +33,8 @@ struct DetailView: View {
     var body: some View {
         VStack {
             HStack {
-                Text(railyard.name)
-                    .font(.title)
-//                    .padding()
+                Text(railyard.address)
+                    .font(.caption)
                 Spacer()
                 Button(action: {
                     toggleFavorite()
@@ -44,18 +42,18 @@ struct DetailView: View {
                     if(isFavorite) {
                         Image(systemName: "star.fill")
                     } else {
-                        Image(systemName: "pencil")
+                        Image(systemName: "star")
                     }
                 })
-                .background(.green)
                 Text(String(railyard.waittime))
                     .font(.title)
-//                    .padding()
-                    .background(Color.green)
+                    .bold()
+                    .padding()
+                    .background(.green)
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                
             }
-                .background(Color.black.opacity(0.3))
-                .offset(y: 1)
-            Spacer()
+                .padding()
             ScrollView {
                 ForEach(dataConglomerate.getChatHistory(railyard: railyard)) { chat in
                     if(Int.random(in: 0..<2) % 2 == 0) {
@@ -65,30 +63,8 @@ struct DetailView: View {
                     }
                 }
             }
-            HStack {
-                TextField("Type here", text: $message)
-                    .padding(.leading)
-                    .padding(.trailing)
-                Button(action: {
-                    sendMessage()
-                }) {
-                    Image(systemName: "plus.message.fill")
-                        .padding(.leading)
-                        .padding(.trailing)
-                }
-            }
-                .background(Color.black.opacity(0.1))
-            
-            NavigationLink(
-                destination: ReportView(uid: uid, railyard: railyard)
-                    .environmentObject(database)
-                    .environmentObject(dataConglomerate)) {
-                Text("report")
-                    .padding(.bottom)
-            }
         }
-            .navigationTitle("Details")
-            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle(railyard.name)
     }
 }
 

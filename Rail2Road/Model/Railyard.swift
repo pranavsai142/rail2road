@@ -20,6 +20,7 @@ struct Railyard: Identifiable, Comparable, Equatable {
     let coordinates: CLLocationCoordinate2D
     let name: String
     let waittime: Int = 10
+    let address: String = "142 Redmond Dr, Gilberts, IL 60136-8026 United States of America, Planet Earth"
     init(id: UUID = UUID(), coordinates: CLLocationCoordinate2D) {
         self.id = id
         self.coordinates = coordinates
