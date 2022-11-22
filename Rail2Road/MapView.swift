@@ -48,6 +48,7 @@ struct MapView: View {
             for userLongitudeRegionQueryTags in userLongitudeRegionsQueryTags {
                 _ = database.queryDatabaseByRegion(path: ["railyards"], queryTags: userLongitudeRegionQueryTags, dataConglomerate: dataConglomerate)
             }
+            _ = generateWaittimes()
         }
         return true
     }
@@ -61,9 +62,7 @@ struct MapView: View {
                     let id = (id as! String)
     //                Define tags to act as keys to access data in the database
                     let railyardTag = "railyard_" + id + "_tag"
-    //                Subscription init variables
-    //                Query the bitch. THIS HAS TO BE CHANGED IF TREE IS RENAMED TO
-    //                    authors INSTEAD OF subscriptions
+
                     _ = database.getRailyard(id: id, tag: railyardTag, dataConglomerate: dataConglomerate)
                 }
                 return true
@@ -72,6 +71,17 @@ struct MapView: View {
                 return false
             }
         }
+    
+    private func generateWaittimes() -> Bool {
+        for keyAndRailyard in dataConglomerate.conglomerateAllStoredKeysAndRailyards() {
+            let startDate = Date()
+            let endDate = Date()
+            let tag = "railyard_" + keyAndRailyard.1.id.uuidString + "_waittime_tag"
+            _ = database.queryDatabaseByTime(path: ["waittimes"], longitudeRegion: keyAndRailyard.0, railyard: keyAndRailyard.1, lowerBound: startDate, upperBound: endDate, tag: tag, dataConglomerate: dataConglomerate)
+            print(tag)
+        }
+        return true
+    }
     
 //    private func pairingFunction(userRailyardRegionTags: RailroadRegionQueryTags) -> Int {
 //        return userRailyardRegionTags.latitudeRegion + 360 * (userRailyardRegionTags.longitudeRegion % 360)

@@ -23,7 +23,6 @@ final class DataConglomerate: ObservableObject {
 //    @Published var storedUserRailyardRegions: [RailroadRegionQueryTags: RailyardRegion] = [RailroadRegionQueryTags: RailyardRegion]()
     
     @Published var storedUserLongitudeRegions: [Int: [Railyard]] = [Int: [Railyard]]()
-    @Published var storedRailyards: [Railyard] = [Railyard]()
     @Published var favoriteRailyards: [Railyard] = [Railyard]()
     
     /// Boolean that detirmines if the SearchOverlay is visible or not.
@@ -57,6 +56,19 @@ final class DataConglomerate: ObservableObject {
             railyards.append(contentsOf: regionRailyards)
         }
         return railyards
+    }
+    
+    func conglomerateAllStoredKeysAndRailyards() -> [(Int, Railyard)] {
+        var keysAndRailyards: [(Int, Railyard)] = []
+        for key in storedUserLongitudeRegions.keys {
+            let regionRailyards = storedUserLongitudeRegions[key]
+            if(regionRailyards != nil) {
+                for regionRailyard in regionRailyards! {
+                    keysAndRailyards.append((key, regionRailyard))
+                }
+            }
+        }
+        return keysAndRailyards
     }
     
     func getChatHistory(railyard: Railyard) -> [Chat] {

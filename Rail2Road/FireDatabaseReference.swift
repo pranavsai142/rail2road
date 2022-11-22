@@ -282,7 +282,7 @@ final class FireDatabaseReference: ObservableObject {
         return true;
     }
 
-    func queryDatabaseByTime(path: [String], railyard: Railyard, lowerBound: Date, upperBound: Date, tag: String, dataConglomerate: DataConglomerate) -> Bool {
+    func queryDatabaseByTime(path: [String], longitudeRegion: Int, railyard: Railyard, lowerBound: Date, upperBound: Date, tag: String, dataConglomerate: DataConglomerate) -> Bool {
         //Query database by child endtime in waittimes tree
         //Query start amd end are lower and upper bounds
         //Recieve waittimes reported within bound timeframe
