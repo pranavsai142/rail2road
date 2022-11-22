@@ -11,7 +11,7 @@ struct RailyardAnnotation: View {
     var railyard: Railyard
     var body: some View {
         HStack(spacing: 0) {
-            Text(String(railyard.waittime))
+            Text(railyard.waittimeToMinutes())
                 .foregroundColor(Color.white)
                 .frame(width: 42, height: 60)
                 .background(Color.green.opacity(0.9))

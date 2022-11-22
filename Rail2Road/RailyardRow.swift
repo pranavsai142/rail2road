@@ -13,7 +13,7 @@ struct RailyardRow: View {
         HStack {
             Text(railyard.name)
             Spacer()
-            Text(String(railyard.waittime))
+            Text(railyard.waittimeToMinutes())
         }
             .padding()
     }

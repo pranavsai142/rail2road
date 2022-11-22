@@ -7,27 +7,6 @@
 
 import SwiftUI
 
-extension TimeInterval {
-    var hourMinuteSecondMS: String {
-        String(format:"%d:%02d:%02d.%03d", hour, minute, second, millisecond)
-    }
-    var minuteSecondMS: String {
-        String(format:"%d:%02d.%03d", minute, second, millisecond)
-    }
-    var hour: Int {
-        Int((self/3600).truncatingRemainder(dividingBy: 3600))
-    }
-    var minute: Int {
-        Int((self/60).truncatingRemainder(dividingBy: 60))
-    }
-    var second: Int {
-        Int(truncatingRemainder(dividingBy: 60))
-    }
-    var millisecond: Int {
-        Int((self*1000).truncatingRemainder(dividingBy: 1000))
-    }
-}
-
 struct ReportView: View {
     @EnvironmentObject var database: FireDatabaseReference
     @EnvironmentObject var dataConglomerate: DataConglomerate
@@ -53,36 +32,11 @@ struct ReportView: View {
     }
     
     private func submit() {
-        
-    }
-    
-
-    private func timeIntervalToString(delta: TimeInterval) -> String {
-        if(delta <= 1) {
-            return "Invalid Input"
-        }
-        
-        var returnString = ""
-        
-        if(delta.hour == 1) {
-            returnString = returnString + String(delta.hour) + " hour"
-        } else if(delta.hour > 1) {
-            returnString = returnString + String(delta.hour) + " hours"
-        }
-        
-        if(delta.minute == 1) {
-            returnString = returnString + " " + String(delta.minute) + " minute"
-        } else if(delta.minute > 1) {
-            returnString = returnString + " " + String(delta.minute) + " minutes"
-        }
-
-//        if(delta.second == 1) {
-//            returnString = returnString + " " + String(delta.second) + " second"
-//        } else if(delta.second > 1) {
-//            returnString = returnString + " " + String(delta.second) + " seconds"
-//        }
-        
-        return returnString
+        //The following data has to be submitted into firebase, as long as submission valid.
+        //endtime: millesecond timestamp
+        //User uid: string
+        //delta: millesecond time duration
+        //railyard uid: string
     }
     
     var body: some View {
@@ -95,7 +49,7 @@ struct ReportView: View {
             DatePicker("End:", selection: $endDate, in: maxDateConstraints, displayedComponents: [.date, .hourAndMinute])
             Spacer()
             HStack {
-                Text("Wait Duration: \(timeIntervalToString(delta: (startDate.distance(to: endDate))))")
+                Text("Wait Duration: \(startDate.distance(to: endDate).toString())")
                     .bold()
                 Spacer()
                 Button(action: {

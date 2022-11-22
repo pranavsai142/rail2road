@@ -12,6 +12,7 @@
 		81377BA32910C82700274799 /* ListOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81377BA22910C82700274799 /* ListOverlay.swift */; };
 		81377BA52910CAC500274799 /* SearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81377BA42910CAC500274799 /* SearchManager.swift */; };
 		8171B85F28AF1E390004B7B7 /* QueryTags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8171B85E28AF1E390004B7B7 /* QueryTags.swift */; };
+		8181116D292CA5A2007E57C3 /* TimeIntervalExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8181116C292CA5A2007E57C3 /* TimeIntervalExtension.swift */; };
 		BF2C4D61281E31A200C241BF /* Rail2RoadApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2C4D60281E31A200C241BF /* Rail2RoadApp.swift */; };
 		BF2C4D63281E31A200C241BF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2C4D62281E31A200C241BF /* ContentView.swift */; };
 		BF2C4D65281E31A200C241BF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF2C4D64281E31A200C241BF /* Assets.xcassets */; };
@@ -42,6 +43,7 @@
 		81377BA22910C82700274799 /* ListOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListOverlay.swift; sourceTree = "<group>"; };
 		81377BA42910CAC500274799 /* SearchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchManager.swift; sourceTree = "<group>"; };
 		8171B85E28AF1E390004B7B7 /* QueryTags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryTags.swift; sourceTree = "<group>"; };
+		8181116C292CA5A2007E57C3 /* TimeIntervalExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalExtension.swift; sourceTree = "<group>"; };
 		BF2C4D5D281E31A200C241BF /* Rail2Road.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rail2Road.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF2C4D60281E31A200C241BF /* Rail2RoadApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rail2RoadApp.swift; sourceTree = "<group>"; };
 		BF2C4D62281E31A200C241BF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 				BF8986522889CFCA00BF676E /* LocationManager.swift */,
 				81377BA42910CAC500274799 /* SearchManager.swift */,
 				8171B85E28AF1E390004B7B7 /* QueryTags.swift */,
+				8181116C292CA5A2007E57C3 /* TimeIntervalExtension.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -238,6 +241,7 @@
 				BF2C4D61281E31A200C241BF /* Rail2RoadApp.swift in Sources */,
 				BF2C4D89281E5D8200C241BF /* RegisterView.swift in Sources */,
 				81377BA12910C7F500274799 /* SearchOverlay.swift in Sources */,
+				8181116D292CA5A2007E57C3 /* TimeIntervalExtension.swift in Sources */,
 				BF2C4D86281E5D0C00C241BF /* LoginView.swift in Sources */,
 				BF2C4D7B281E415F00C241BF /* DataConglomerate.swift in Sources */,
 				BF8A79C22824D75E007B4AE2 /* Railyard.swift in Sources */,

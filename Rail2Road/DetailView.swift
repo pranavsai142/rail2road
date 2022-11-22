@@ -67,7 +67,7 @@ struct DetailView: View {
                         .environmentObject(database)
                         .environmentObject(dataConglomerate)) {
                     VStack {
-                        Text(String(railyard.waittime))
+                        Text(railyard.waittimeToMinutes())
                             .font(.title)
                             .bold()
                             .padding()
@@ -97,6 +97,6 @@ struct DetailView: View {
 
 struct DetailView_Previews: PreviewProvider {
     static var previews: some View {
-        DetailView(uid: "1", railyard: Railyard(coordinates: CLLocationCoordinate2D(latitude: 0, longitude: 0)))
+        DetailView(uid: "1", railyard: Railyard())
     }
 }

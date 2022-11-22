@@ -158,7 +158,7 @@ final class FireDatabaseReference: ObservableObject {
                     let railyardDictionary = snapVal.value(forKey: id) as! NSDictionary
     //                    print("adding " + (railyardDictionary["name"] as! String))
                     let railyardUid = UUID(uuidString: id)!
-                    let railyard = Railyard(id: railyardUid, dictionary: railyardDictionary)
+                    let railyard = Railyard(id: railyardUid, dictionary: railyardDictionary, waittime: nil)
                         
 //                    print("\n\n")
 //                    print("starting at value")
@@ -230,7 +230,7 @@ final class FireDatabaseReference: ObservableObject {
     
     
     //Utlized RailroadRegionQueryTags to sort railyards by latlong lexographically. Uses latlongMinBound and latlongMaxBound with a delta of 2°*2°
-    /// Queries the database with respect to latitude and longitude values. Retrives all railyards within the railyard region's longitude bounds. Saves the longitude query into DataConglomerate's SavedRailyards
+    /// Queries the database with respect to latitude and longitude values. Retrives all railyards within the railyard region's longitude bounds. Saves the longitude query into DataConglomerate's SavedRailyards. TODO: Add tag parameter to update queryStatus
     /// - Parameters:
     ///   - path: What child to navigate to before beginning the query
     ///   - queryTags: Instance of RailroadRegionQueryTags utlizing protocol QueryTags containing latitude and longitude data.
@@ -254,7 +254,7 @@ final class FireDatabaseReference: ObservableObject {
                         let railyardDictionary = snapVal.value(forKey: (railyardUid as! String)) as! NSDictionary
     //                    print("adding " + (railyardDictionary["name"] as! String))
                         let railyardUid = UUID(uuidString: railyardUid as! String)!
-                        railyards.append(Railyard(id: railyardUid, dictionary: railyardDictionary))
+                        railyards.append(Railyard(id: railyardUid, dictionary: railyardDictionary, waittime: nil))
                         
                     }
 //                    print("\n\n")
@@ -282,6 +282,14 @@ final class FireDatabaseReference: ObservableObject {
         return true;
     }
 
+    func queryDatabaseByTime(path: [String], railyard: Railyard, lowerBound: Date, upperBound: Date, tag: String, dataConglomerate: DataConglomerate) -> Bool {
+        //Query database by child endtime in waittimes tree
+        //Query start amd end are lower and upper bounds
+        //Recieve waittimes reported within bound timeframe
+        //Average waittimes recieved and write number to railyard object
+        //Update queryStatus
+        return true
+    }
     func queryDatabaseByValueInRange(path: [String], child: String, key: String, lowerBound: Double, upperBound: Double, foundTag: String, tag: String, dataConglomerate: DataConglomerate) -> Bool {
 //        var ref = database
 //        if(!path.isEmpty) {
