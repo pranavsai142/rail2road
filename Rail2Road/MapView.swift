@@ -48,7 +48,7 @@ struct MapView: View {
             for userLongitudeRegionQueryTags in userLongitudeRegionsQueryTags {
                 _ = database.queryDatabaseByRegion(path: ["railyards"], queryTags: userLongitudeRegionQueryTags, dataConglomerate: dataConglomerate)
             }
-            _ = generateWaittimes()
+//            _ = generateWaittimes()
         }
         return true
     }
@@ -61,7 +61,7 @@ struct MapView: View {
                 for id in userFavoritesIds {
                     let id = (id as! String)
     //                Define tags to act as keys to access data in the database
-                    let railyardTag = "railyard_" + id + "_tag"
+                     let railyardTag = "railyard_" + id + "_tag"
 
                     _ = database.getRailyard(id: id, tag: railyardTag, dataConglomerate: dataConglomerate)
                 }
@@ -74,10 +74,10 @@ struct MapView: View {
     
     private func generateWaittimes() -> Bool {
         for keyAndRailyard in dataConglomerate.conglomerateAllStoredKeysAndRailyards() {
-            let startDate = Date()
+            let startDate = Calendar.current.date(byAdding: .day, value: -2, to: Date())!
             let endDate = Date()
             let tag = "railyard_" + keyAndRailyard.1.id.uuidString + "_waittime_tag"
-            _ = database.queryDatabaseByTime(path: ["waittimes"], longitudeRegion: keyAndRailyard.0, railyard: keyAndRailyard.1, lowerBound: startDate, upperBound: endDate, tag: tag, dataConglomerate: dataConglomerate)
+            _ = database.queryDatabaseByTime(path: ["railyards", keyAndRailyard.1.id.uuidString], longitudeRegion: keyAndRailyard.0, railyard: keyAndRailyard.1, startDate: startDate, endDate: endDate, tag: tag, dataConglomerate: dataConglomerate)
             print(tag)
         }
         return true

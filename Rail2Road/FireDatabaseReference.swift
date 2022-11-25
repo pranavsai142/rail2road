@@ -279,15 +279,44 @@ final class FireDatabaseReference: ObservableObject {
                 }
             })
         }
-        return true;
+        return true
     }
 
-    func queryDatabaseByTime(path: [String], longitudeRegion: Int, railyard: Railyard, lowerBound: Date, upperBound: Date, tag: String, dataConglomerate: DataConglomerate) -> Bool {
-        //Query database by child endtime in waittimes tree
-        //Query start amd end are lower and upper bounds
-        //Recieve waittimes reported within bound timeframe
-        //Average waittimes recieved and write number to railyard object
-        //Update queryStatus
+    func queryDatabaseByTime(path: [String], longitudeRegion: Int, railyard: Railyard, startDate: Date, endDate: Date, tag: String, dataConglomerate: DataConglomerate) -> Bool {
+        var ref = database
+        if(!path.isEmpty) {
+            let stringPath = path.joined(separator: "/")
+            ref  = database.child(stringPath)
+        }
+        
+        if(dataConglomerate.queries[tag] == nil) {
+            dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.searching
+            ref.queryOrdered(byChild: "endtime")
+                .queryStarting(atValue: startDate)
+                .queryEnding(atValue: endDate)
+                .observeSingleEvent(of: .value, with: { snapshot in
+                if let snapVal = snapshot.value as? NSDictionary {
+                    dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.result
+                    var waittimes: [Waittime] = []
+                    for waittime in snapVal.allKeys {
+                        let waittimeDictionary = snapVal.value(forKey: (waittime as! String)) as! NSDictionary
+                        let waittimeUid = UUID(uuidString: waittime as! String)!
+                        waittimes.append(Waittime(id: waittimeUid, dictionary: waittimeDictionary))
+                        
+                    }
+                } else {
+                    if(snapshot.exists()) {
+//                        print("\n\n")
+//                        print("starting at value")
+//                        print("Not dictionary type")
+//                        print("ending at value")
+                        dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.error
+                    } else {
+                        dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.empty
+                    }
+                }
+            })
+        }
         return true
     }
     func queryDatabaseByValueInRange(path: [String], child: String, key: String, lowerBound: Double, upperBound: Double, foundTag: String, tag: String, dataConglomerate: DataConglomerate) -> Bool {
