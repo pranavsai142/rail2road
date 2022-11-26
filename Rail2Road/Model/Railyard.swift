@@ -21,7 +21,6 @@ struct Railyard: Identifiable, Comparable, Equatable {
     let coordinates: CLLocationCoordinate2D
     let name: String
     let address: String
-    let waittime: TimeInterval?
 //    init(id: UUID = UUID(), coordinates: CLLocationCoordinate2D) {
 //        self.id = id
 //        self.coordinates = coordinates
@@ -29,26 +28,16 @@ struct Railyard: Identifiable, Comparable, Equatable {
 //        self.waittime = TimeInterval()
 //        self.address = "f39"
 //    }
-    init(id: UUID, dictionary: NSDictionary, waittime: TimeInterval?) {
+    init(id: UUID, dictionary: NSDictionary) {
         self.id = id
         self.coordinates = CLLocationCoordinate2D(latitude: dictionary.value(forKey: "latitude") as! CLLocationDegrees, longitude: dictionary.value(forKey: "longitude") as! CLLocationDegrees)
         self.name = dictionary.value(forKey: "name") as! String
         self.address = dictionary.value(forKey: "address") as! String
-        self.waittime = waittime
     }
     init() {
         self.id = UUID()
         coordinates = CLLocationCoordinate2D(latitude: 0, longitude: 0)
         self.name = ""
         self.address = ""
-        self.waittime = TimeInterval(0)
-    }
-    
-    func waittimeToMinutes() -> String {
-        if(waittime == nil) {
-            return "-"
-        } else {
-            return waittime!.toMinutesString()
-        }
     }
 }

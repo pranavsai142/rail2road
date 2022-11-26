@@ -158,7 +158,7 @@ final class FireDatabaseReference: ObservableObject {
                     let railyardDictionary = snapVal.value(forKey: id) as! NSDictionary
     //                    print("adding " + (railyardDictionary["name"] as! String))
                     let railyardUid = UUID(uuidString: id)!
-                    let railyard = Railyard(id: railyardUid, dictionary: railyardDictionary, waittime: nil)
+                    let railyard = Railyard(id: railyardUid, dictionary: railyardDictionary)
                         
 //                    print("\n\n")
 //                    print("starting at value")
@@ -254,7 +254,7 @@ final class FireDatabaseReference: ObservableObject {
                         let railyardDictionary = snapVal.value(forKey: (railyardUid as! String)) as! NSDictionary
     //                    print("adding " + (railyardDictionary["name"] as! String))
                         let railyardUid = UUID(uuidString: railyardUid as! String)!
-                        railyards.append(Railyard(id: railyardUid, dictionary: railyardDictionary, waittime: nil))
+                        railyards.append(Railyard(id: railyardUid, dictionary: railyardDictionary))
                         
                     }
 //                    print("\n\n")
@@ -282,27 +282,36 @@ final class FireDatabaseReference: ObservableObject {
         return true
     }
 
-    func queryDatabaseByTime(path: [String], longitudeRegion: Int, railyard: Railyard, startDate: Date, endDate: Date, tag: String, dataConglomerate: DataConglomerate) -> Bool {
+    func findAndReplaceRailyard(longitudeRegion: Int, railyard: Railyard, dataConglomerate: DataConglomerate) {
+        
+    }
+    
+    func queryDatabaseByTime(path: [String], railyardId: UUID, startDate: Date, endDate: Date, tag: String, dataConglomerate: DataConglomerate) -> Bool {
         var ref = database
         if(!path.isEmpty) {
-            let stringPath = path.joined(separator: "/")
+            //Navigating to railyard tree
+            let stringPath = path.joined(separator: "/") + "/" + railyardId.uuidString + "/waittimes"
             ref  = database.child(stringPath)
         }
-        
         if(dataConglomerate.queries[tag] == nil) {
             dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.searching
             ref.queryOrdered(byChild: "endtime")
-                .queryStarting(atValue: startDate)
-                .queryEnding(atValue: endDate)
+                .queryStarting(atValue: startDate.timeIntervalSince1970)
+                .queryEnding(atValue: endDate.timeIntervalSince1970)
                 .observeSingleEvent(of: .value, with: { snapshot in
                 if let snapVal = snapshot.value as? NSDictionary {
                     dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.result
                     var waittimes: [Waittime] = []
-                    for waittime in snapVal.allKeys {
-                        let waittimeDictionary = snapVal.value(forKey: (waittime as! String)) as! NSDictionary
-                        let waittimeUid = UUID(uuidString: waittime as! String)!
+                    for waittimeUid in snapVal.allKeys {
+                        let waittimeDictionary = snapVal.value(forKey: (waittimeUid as! String)) as! NSDictionary
+                        let waittimeUid = UUID(uuidString: waittimeUid as! String)!
                         waittimes.append(Waittime(id: waittimeUid, dictionary: waittimeDictionary))
-                        
+                        var waittimeSum: Double = 0.0
+                        for waittime in waittimes {
+                            waittimeSum = waittimeSum + waittime.delta
+                        }
+                        let waittimeAverage = waittimeSum / Double(waittimes.count)
+                        dataConglomerate.storedAverageWaittimes[railyardId] = waittimeAverage
                     }
                 } else {
                     if(snapshot.exists()) {

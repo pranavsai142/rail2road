@@ -48,7 +48,7 @@ struct MapView: View {
             for userLongitudeRegionQueryTags in userLongitudeRegionsQueryTags {
                 _ = database.queryDatabaseByRegion(path: ["railyards"], queryTags: userLongitudeRegionQueryTags, dataConglomerate: dataConglomerate)
             }
-//            _ = generateWaittimes()
+            _ = generateWaittimes()
         }
         return true
     }
@@ -73,12 +73,12 @@ struct MapView: View {
         }
     
     private func generateWaittimes() -> Bool {
-        for keyAndRailyard in dataConglomerate.conglomerateAllStoredKeysAndRailyards() {
+//        dataConglomerate.clearWaittimeData()
+        for railyard in dataConglomerate.conglomerateAllStoredRailyards() {
             let startDate = Calendar.current.date(byAdding: .day, value: -2, to: Date())!
             let endDate = Date()
-            let tag = "railyard_" + keyAndRailyard.1.id.uuidString + "_waittime_tag"
-            _ = database.queryDatabaseByTime(path: ["railyards", keyAndRailyard.1.id.uuidString], longitudeRegion: keyAndRailyard.0, railyard: keyAndRailyard.1, startDate: startDate, endDate: endDate, tag: tag, dataConglomerate: dataConglomerate)
-            print(tag)
+            let tag = "railyard_" + railyard.id.uuidString + "_waittime_tag"
+            _ = database.queryDatabaseByTime(path: ["railyards"], railyardId: railyard.id, startDate: startDate, endDate: endDate, tag: tag, dataConglomerate: dataConglomerate)
         }
         return true
     }
@@ -200,12 +200,12 @@ struct MapView: View {
                     }
             } else {
                 ZStack {
-                    Map(coordinateRegion: $dataConglomerate.region, showsUserLocation: true, annotationItems: dataConglomerate.conglomerateAllStoredRailyards()) { railyard in
+                    Map(coordinateRegion: $dataConglomerate.region, showsUserLocation: true, annotationItems: dataConglomerate.conglomerateRegionalStoredRailyards()) { railyard in
                         MapAnnotation(coordinate: railyard.coordinates) {
                             NavigationLink(destination: DetailView(uid: uid, railyard: railyard)
                                             .environmentObject(database)
                                             .environmentObject(dataConglomerate)) {
-                                RailyardAnnotation(railyard: railyard)
+                                RailyardAnnotation(railyard: railyard, averageWaittimeMinutes: dataConglomerate.waittimeToMinutes(railyardId: railyard.id))
                             }
                         }
                     }

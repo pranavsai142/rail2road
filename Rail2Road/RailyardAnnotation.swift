@@ -9,9 +9,10 @@ import SwiftUI
 
 struct RailyardAnnotation: View {
     var railyard: Railyard
+    var averageWaittimeMinutes: String
     var body: some View {
         HStack(spacing: 0) {
-            Text(railyard.waittimeToMinutes())
+            Text(averageWaittimeMinutes)
                 .foregroundColor(Color.white)
                 .frame(width: 42, height: 60)
                 .background(Color.green.opacity(0.9))

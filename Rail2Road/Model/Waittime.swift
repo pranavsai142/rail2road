@@ -24,8 +24,15 @@ struct Waittime: Identifiable, Comparable, Equatable {
     init(id: UUID, dictionary: NSDictionary) {
         self.id = id
         self.userId = dictionary.value(forKey: "user") as! String
-        self.endtime = dictionary.value(forKey: "endtime") as! Date
+        self.endtime = Date(timeIntervalSince1970: (dictionary.value(forKey: "endtime") as! TimeInterval))
         self.delta = dictionary.value(forKey: "delta") as! TimeInterval
+    }
+    
+    init(id: UUID, userId: String, endtime: Date, delta: TimeInterval) {
+        self.id = id
+        self.userId = userId
+        self.endtime = endtime
+        self.delta = delta
     }
 }
 

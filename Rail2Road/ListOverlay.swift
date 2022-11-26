@@ -23,7 +23,7 @@ struct ListOverlay: View {
                             NavigationLink(destination: DetailView(uid: uid, railyard: railyard)
                                             .environmentObject(database)
                                             .environmentObject(dataConglomerate)) {
-                                RailyardRow(railyard: railyard)
+                                RailyardRow(railyard: railyard, averageWaittimeMinutes: dataConglomerate.waittimeToMinutes(railyardId: railyard.id))
                             }
                         }
                     }
@@ -35,7 +35,7 @@ struct ListOverlay: View {
                             NavigationLink(destination: DetailView(uid: uid, railyard: railyard)
                                             .environmentObject(database)
                                             .environmentObject(dataConglomerate)) {
-                                RailyardRow(railyard: railyard)
+                                RailyardRow(railyard: railyard, averageWaittimeMinutes: dataConglomerate.waittimeToMinutes(railyardId: railyard.id))
                             }
                         }
                     }

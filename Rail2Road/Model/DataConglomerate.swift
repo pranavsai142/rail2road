@@ -5,7 +5,9 @@
 //  Created by Pranav Sai on 4/30/22.
 //
 import MapKit
+import Foundation
 
+/// Conglomerates and stores data for the operations of the app.
 final class DataConglomerate: ObservableObject {
     
     enum QueryStatus: Equatable {
@@ -24,6 +26,12 @@ final class DataConglomerate: ObservableObject {
     
     @Published var storedUserLongitudeRegions: [Int: [Railyard]] = [Int: [Railyard]]()
     @Published var favoriteRailyards: [Railyard] = [Railyard]()
+    
+    /// Dictionary storing average waittimes associated with a given railyard. Key is railyard uuid.
+    @Published var storedAverageWaittimes: [UUID: TimeInterval] = [UUID: TimeInterval]()
+    /// Dictionary storing waittime objects associated with a given railyard. key is railyard uuid.
+    /// TODO: Determine if individual waittimes need to be stored
+    @Published var storedWaittimes: [UUID: [Waittime]] = [UUID: [Waittime]]()
     
     /// Boolean that detirmines if the SearchOverlay is visible or not.
     /// The reason for having this variable stored in DataConglomerate is because the value has to persist between two views, MapView and SearchOverlay.
@@ -50,7 +58,22 @@ final class DataConglomerate: ObservableObject {
         return storedNearbyRailyards
     }
     
+    /// Conglomerates all railyards stored in DataConglomerate storedUserLongitudeRegions dictionary and favoriteRailyards list
+    /// - Returns: Returns an array of railyards currently in data conglomerate memory
     func conglomerateAllStoredRailyards() -> [Railyard] {
+        var railyards: [Railyard] = []
+        for regionRailyards in storedUserLongitudeRegions.values {
+            railyards.append(contentsOf: regionRailyards)
+        }
+        for railyard in favoriteRailyards {
+            railyards.append(railyard)
+        }
+        return railyards
+    }
+    
+    /// Conglomerates railyards stored in DataConglomerate storedUserLongitudeRegions dictionary
+    /// - Returns: returns array of Railyard objects, values of storedUserLongitudeRegions
+    func conglomerateRegionalStoredRailyards() -> [Railyard] {
         var railyards: [Railyard] = []
         for regionRailyards in storedUserLongitudeRegions.values {
             railyards.append(contentsOf: regionRailyards)
@@ -58,17 +81,23 @@ final class DataConglomerate: ObservableObject {
         return railyards
     }
     
-    func conglomerateAllStoredKeysAndRailyards() -> [(Int, Railyard)] {
-        var keysAndRailyards: [(Int, Railyard)] = []
-        for key in storedUserLongitudeRegions.keys {
-            let regionRailyards = storedUserLongitudeRegions[key]
-            if(regionRailyards != nil) {
-                for regionRailyard in regionRailyards! {
-                    keysAndRailyards.append((key, regionRailyard))
-                }
-            }
+    
+    /// Function to return a string representation of the average waittime for a given railyard.
+    /// The waittime is found by acceessing stored average waittimes
+    /// - Parameter railyardId: railyard to return string waittime of
+    /// - Returns: waittime in minutes. Returns hyphen if no average waittime recorded.
+    func waittimeToMinutes(railyardId: UUID) -> String {
+        let waittimeAverage = storedAverageWaittimes[railyardId]
+        if(waittimeAverage == nil) {
+            return "-"
+        } else {
+            return waittimeAverage!.toMinutesString()
         }
-        return keysAndRailyards
+    }
+    
+    func clearWaittimeData() {
+        storedAverageWaittimes = [UUID: TimeInterval]()
+        storedWaittimes = [UUID: [Waittime]]()
     }
     
     func getChatHistory(railyard: Railyard) -> [Chat] {

@@ -56,20 +56,16 @@ extension TimeInterval {
         return returnString
     }
     
+    /// Returns if time interval is valid - valid being defined as: positive duration in time, greater than 59 seconds.
+    /// - Returns: true if time interval is a positive duration greater than 59 seconds, false otherwise.
+    func isLessThanOneMinute() -> Bool {
+        return self <= 59
+    }
+    
     func toMinutesString() -> String {
-        if(self <= 59) {
+        if(isLessThanOneMinute()) {
             return "Invalid Input"
         }
-        
-        var returnString = ""
-
-        let minutes = self/60
-        if(minutes == 1) {
-            returnString = returnString + " " + String(minutes) + " minute"
-        } else if(self.minute > 1) {
-            returnString = returnString + " " + String(minutes) + " minutes"
-        }
-        
-        return returnString
+        return String(Int(self/60))
     }
 }

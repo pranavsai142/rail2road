@@ -9,11 +9,12 @@ import SwiftUI
 
 struct RailyardRow: View {
     var railyard: Railyard
+    var averageWaittimeMinutes: String
     var body: some View {
         HStack {
             Text(railyard.name)
             Spacer()
-            Text(railyard.waittimeToMinutes())
+            Text(averageWaittimeMinutes)
         }
             .padding()
     }
@@ -21,6 +22,6 @@ struct RailyardRow: View {
 
 struct RailyardRow_Previews: PreviewProvider {
     static var previews: some View {
-        RailyardRow(railyard: Railyard())
+        RailyardRow(railyard: Railyard(), averageWaittimeMinutes: "-")
     }
 }

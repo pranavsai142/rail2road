@@ -67,7 +67,7 @@ struct DetailView: View {
                         .environmentObject(database)
                         .environmentObject(dataConglomerate)) {
                     VStack {
-                        Text(railyard.waittimeToMinutes())
+                        Text(dataConglomerate.waittimeToMinutes(railyardId: railyard.id))
                             .font(.title)
                             .bold()
                             .padding()

@@ -37,6 +37,12 @@ struct ReportView: View {
         //User uid: string
         //delta: millesecond time duration
         //railyard uid: string
+        if(!(startDate.distance(to: endDate).isLessThanOneMinute())) {
+            let waittime = Waittime(id: UUID(), userId: uid, endtime: endDate, delta: startDate.distance(to: endDate))
+            database.setValue(path:  ["railyards", railyard.id.uuidString, "waittimes", waittime.id.uuidString, "user"], value: waittime.userId)
+            database.setValue(path:  ["railyards", railyard.id.uuidString, "waittimes", waittime.id.uuidString, "endtime"], value: waittime.endtime.timeIntervalSince1970)
+            database.setValue(path:  ["railyards", railyard.id.uuidString, "waittimes", waittime.id.uuidString, "delta"], value: waittime.delta)
+        }
     }
     
     var body: some View {
