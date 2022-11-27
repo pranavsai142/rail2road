@@ -6,7 +6,19 @@
 //
 import Foundation
 
-struct Chat: Identifiable {
+struct Chat: Identifiable, Comparable, Equatable {
+    static func < (lhs: Chat, rhs: Chat) -> Bool {
+        return lhs.timestamp.timeIntervalSince1970 < rhs.timestamp.timeIntervalSince1970
+    }
+    
+    static func > (lhs: Chat, rhs: Chat) -> Bool {
+        return lhs.timestamp.timeIntervalSince1970 > rhs.timestamp.timeIntervalSince1970
+    }
+    
+    static func == (lhs: Chat, rhs: Chat) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
     let id: UUID
     let timestamp: Date
     let message: String

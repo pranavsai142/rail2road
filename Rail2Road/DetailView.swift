@@ -38,7 +38,7 @@ struct DetailView: View {
         database.setValue(path:  ["railyards", railyard.id.uuidString, "chat", chat.id.uuidString, "user"], value: chat.userId)
         database.setValue(path:  ["railyards", railyard.id.uuidString, "chat", chat.id.uuidString, "timestamp"], value: chat.timestamp.timeIntervalSince1970)
         database.setValue(path:  ["railyards", railyard.id.uuidString, "chat", chat.id.uuidString, "message"], value: chat.message)
-        dataConglomerate.clearChatData()
+        dataConglomerate.queries["railyard_" + railyard.id.uuidString + "_chat_tag"] = nil
     }
     
     private func toggleFavorite() {
