@@ -18,7 +18,22 @@ struct DetailView: View {
     var uid: String
     var railyard: Railyard
     
-    private func sendMessage() {
+    var query: Bool {
+        DispatchQueue.main.async {
+            _ = generateChat()
+        }
+        return true
+    }
+    
+    private func generateChat() -> Bool {
+        let startDate = Calendar.current.date(byAdding: .day, value: -2, to: Date())!
+        let endDate = Date()
+        let tag = "railyard_" + railyard.id.uuidString + "_chat_tag"
+        _ = database.queryChatDatabaseByTime(path: ["railyards"], railyardId: railyard.id, startDate: startDate, endDate: endDate, tag: tag, dataConglomerate: dataConglomerate)
+        return true
+    }
+    
+    private func sendChat() {
         
     }
     
@@ -81,14 +96,30 @@ struct DetailView: View {
                 .padding(.leading)
                 .padding(.trailing)
             ScrollView {
-                ForEach(dataConglomerate.getChatHistory(railyard: railyard)) { chat in
-                    if(Int.random(in: 0..<2) % 2 == 0) {
-                        ChatBubble(chat: chat, sent: true)
-                    } else {
-                        ChatBubble(chat: chat, sent: false)
+                if(dataConglomerate.storedChats[railyard.id] == nil) {
+                    Text("Chat History Empty!")
+                } else {
+                    ForEach(dataConglomerate.storedChats[railyard.id]!) { chat in
+                        if(uid == chat.userId) {
+                            ChatBubble(chat: chat, sent: true)
+                        } else {
+                            ChatBubble(chat: chat, sent: false)
+                        }
                     }
                 }
             }
+            HStack {
+                TextField("type message", text: $message)
+                    .textFieldStyle(.roundedBorder)
+                Button(action: {
+                    sendChat()
+                }, label: {
+                    Image(systemName: "arrow.up.square.fill")
+                })
+            }
+                .padding(.leading)
+                .padding(.trailing)
+                .padding(.bottom)
         }
             .navigationTitle(railyard.name)
             .navigationBarTitleDisplayMode(.large)

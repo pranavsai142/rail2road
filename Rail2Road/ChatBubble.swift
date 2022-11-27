@@ -43,6 +43,6 @@ struct Bubble: Shape {
 
 struct ChatBubble_Previews: PreviewProvider {
     static var previews: some View {
-        ChatBubble(chat: Chat(message: "hi"), sent: true)
+        ChatBubble(chat: Chat(id: UUID(), timestamp: Date(), message: "", userId: ""), sent: true)
     }
 }

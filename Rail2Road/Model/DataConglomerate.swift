@@ -33,6 +33,8 @@ final class DataConglomerate: ObservableObject {
     /// TODO: Determine if individual waittimes need to be stored
     @Published var storedWaittimes: [UUID: [Waittime]] = [UUID: [Waittime]]()
     
+    @Published var storedChats: [UUID: [Chat]] = [UUID: [Chat]]()
+    
     /// Boolean that detirmines if the SearchOverlay is visible or not.
     /// The reason for having this variable stored in DataConglomerate is because the value has to persist between two views, MapView and SearchOverlay.
     @Published var searchOverlayActive: Bool = false
@@ -98,20 +100,6 @@ final class DataConglomerate: ObservableObject {
     func clearWaittimeData() {
         storedAverageWaittimes = [UUID: TimeInterval]()
         storedWaittimes = [UUID: [Waittime]]()
-    }
-    
-    func getChatHistory(railyard: Railyard) -> [Chat] {
-        var chatHistory: [Chat] = []
-        chatHistory.append(Chat(message: "Quick, fast service"))
-        chatHistory.append(Chat(message: "Just left this depot. moving fast now."))
-        chatHistory.append(Chat(message: "Where are some good lodges around here?"))
-        chatHistory.append(Chat(message: "Quick, fast service"))
-        chatHistory.append(Chat(message: "Just left this depot. moving fast now."))
-        chatHistory.append(Chat(message: "Where are some good lodges around here?"))
-        chatHistory.append(Chat(message: "Quick, fast service"))
-        chatHistory.append(Chat(message: "Just left this depot. moving fast now."))
-        chatHistory.append(Chat(message: "Where are some good lodges around here?"))
-        return chatHistory
     }
     
     func findLongitudeRegionsTags() -> [LongitudeRegionQueryTags] {

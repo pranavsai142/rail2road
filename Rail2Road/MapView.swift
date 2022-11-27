@@ -78,7 +78,7 @@ struct MapView: View {
             let startDate = Calendar.current.date(byAdding: .day, value: -2, to: Date())!
             let endDate = Date()
             let tag = "railyard_" + railyard.id.uuidString + "_waittime_tag"
-            _ = database.queryDatabaseByTime(path: ["railyards"], railyardId: railyard.id, startDate: startDate, endDate: endDate, tag: tag, dataConglomerate: dataConglomerate)
+            _ = database.queryWaittimeDatabaseByTime(path: ["railyards"], railyardId: railyard.id, startDate: startDate, endDate: endDate, tag: tag, dataConglomerate: dataConglomerate)
         }
         return true
     }

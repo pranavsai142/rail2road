@@ -286,7 +286,45 @@ final class FireDatabaseReference: ObservableObject {
         
     }
     
-    func queryDatabaseByTime(path: [String], railyardId: UUID, startDate: Date, endDate: Date, tag: String, dataConglomerate: DataConglomerate) -> Bool {
+    func queryChatDatabaseByTime(path: [String], railyardId: UUID, startDate: Date, endDate: Date, tag: String, dataConglomerate: DataConglomerate) -> Bool {
+        var ref = database
+        if(!path.isEmpty) {
+            //Navigating to railyard tree
+            let stringPath = path.joined(separator: "/") + "/" + railyardId.uuidString + "/chat"
+            ref  = database.child(stringPath)
+        }
+        if(dataConglomerate.queries[tag] == nil) {
+            dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.searching
+            ref.queryOrdered(byChild: "timestamp")
+                .queryStarting(atValue: startDate.timeIntervalSince1970)
+                .queryEnding(atValue: endDate.timeIntervalSince1970)
+                .observeSingleEvent(of: .value, with: { snapshot in
+                if let snapVal = snapshot.value as? NSDictionary {
+                    dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.result
+                    var chats: [Chat] = []
+                    for chatUid in snapVal.allKeys {
+                        let chatDictionary = snapVal.value(forKey: (chatUid as! String)) as! NSDictionary
+                        let chatUid = UUID(uuidString: chatUid as! String)!
+                        chats.append(Chat(id: chatUid, dictionary: chatDictionary))
+                    }
+                    dataConglomerate.storedChats[railyardId] = chats
+                } else {
+                    if(snapshot.exists()) {
+//                        print("\n\n")
+//                        print("starting at value")
+//                        print("Not dictionary type")
+//                        print("ending at value")
+                        dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.error
+                    } else {
+                        dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.empty
+                    }
+                }
+            })
+        }
+        return true
+    }
+    
+    func queryWaittimeDatabaseByTime(path: [String], railyardId: UUID, startDate: Date, endDate: Date, tag: String, dataConglomerate: DataConglomerate) -> Bool {
         var ref = database
         if(!path.isEmpty) {
             //Navigating to railyard tree
