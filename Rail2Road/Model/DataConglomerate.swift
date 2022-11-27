@@ -100,6 +100,16 @@ final class DataConglomerate: ObservableObject {
     func clearWaittimeData() {
         storedAverageWaittimes = [UUID: TimeInterval]()
         storedWaittimes = [UUID: [Waittime]]()
+        clearQueries()
+    }
+    
+    func clearChatData() {
+        storedChats = [UUID: [Chat]]()
+        clearQueries()
+    }
+    
+    func clearQueries() {
+        queries = [String: QueryStatus]()
     }
     
     func findLongitudeRegionsTags() -> [LongitudeRegionQueryTags] {
