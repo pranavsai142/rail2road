@@ -300,14 +300,15 @@ final class FireDatabaseReference: ObservableObject {
                 .queryEnding(atValue: endDate.timeIntervalSince1970)
                 .observeSingleEvent(of: .value, with: { snapshot in
                 if let snapVal = snapshot.value as? NSDictionary {
-                    dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.result
                     var chats: [Chat] = []
                     for chatUid in snapVal.allKeys {
                         let chatDictionary = snapVal.value(forKey: (chatUid as! String)) as! NSDictionary
                         let chatUid = UUID(uuidString: chatUid as! String)!
                         chats.append(Chat(id: chatUid, dictionary: chatDictionary))
+                        chats.sort(by: >)
                     }
                     dataConglomerate.storedChats[railyardId] = chats
+                    dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.result
                 } else {
                     if(snapshot.exists()) {
 //                        print("\n\n")

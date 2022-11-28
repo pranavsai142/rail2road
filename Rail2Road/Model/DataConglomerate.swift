@@ -97,11 +97,6 @@ final class DataConglomerate: ObservableObject {
         }
     }
     
-    func getSortedStoredChats(railyardId: UUID) -> [Chat] {
-        (self.storedChats[railyardId]!).sort(by: <)
-        return self.storedChats[railyardId]!
-    }
-    
     func clearWaittimeData() {
         storedAverageWaittimes = [UUID: TimeInterval]()
         storedWaittimes = [UUID: [Waittime]]()
