@@ -8,26 +8,33 @@
 import SwiftUI
 
 struct EditView: View {
-    @State private var fullName: String = ""
+    @EnvironmentObject var database: FireDatabaseReference
+    @EnvironmentObject var dataConglomerate: DataConglomerate
+    
+    @State private var name: String = ""
     @State private var email: String = ""
+    
+    var uid: String
+    
+    var userNameTag = "user_name"
+    
+    private func submit() {
+        if(name != dataConglomerate.dataToString(tag: userNameTag)) {
+            database.setValue(path: ["users", uid, "name"], value: name)
+        }
+    }
+    
     var body: some View {
         VStack {
-            TextField("Full Name", text: $fullName)
-                .padding(.leading)
-                .padding(.trailing)
-                .padding(.top)
-            
-            TextField("Email", text: $email)
-                .padding(.leading)
-                .padding(.trailing)
-            
+            TextField(dataConglomerate.dataToString(tag: userNameTag), text: $name)
             Spacer()
-            
-            Button("Save", action: {
-                
-            })
-                .padding()
+            Button(action: {
+                submit()
+            }) {
+                Text("submit")
+            }
         }
+            .padding()
             .navigationTitle("Edit")
             .navigationBarTitleDisplayMode(.inline)
     }
@@ -35,6 +42,6 @@ struct EditView: View {
 
 struct EditView_Previews: PreviewProvider {
     static var previews: some View {
-        EditView()
+        EditView(uid: "1")
     }
 }

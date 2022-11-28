@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct AccountView: View {
-    var uid: String
     @EnvironmentObject var database: FireDatabaseReference
     @EnvironmentObject var dataConglomerate: DataConglomerate
     
+    var uid: String
+    
     var userNameTag = "user_name"
+    
     var userPath: [String] {
         ["users", uid]
     }
@@ -24,13 +26,46 @@ struct AccountView: View {
         return true
     }
     
+    private func deleteAccount() {
+        
+    }
+    
+    private func logout() {
+        
+    }
+    
     var body: some View {
         if(query) {
             VStack {
-                if(dataConglomerate.data[userNameTag] != nil) {
-                    Text(dataConglomerate.dataToString(tag: userNameTag))
+                if(dataConglomerate.queries[userNameTag] == DataConglomerate.QueryStatus.result) {
+                    HStack {
+                        Text("Name: \(dataConglomerate.dataToString(tag: userNameTag))")
+                        Spacer()
+                        NavigationLink(
+                            destination: EditView(uid: uid)
+                                .environmentObject(database)
+                                .environmentObject(dataConglomerate)) {
+                            Image(systemName: "pencil.circle.fill")
+                        }
+                    }
+                    HStack {
+                        Text("Email: test@test.com")
+                        Spacer()
+                    }
+                    Button(action: {
+                        deleteAccount()
+                    }) {
+                        Text("Delete Account")
+                            .bold()
+                            .foregroundColor(.red)
+                    }
                 }
                 Spacer()
+                Button(action: {
+                    logout()
+                }) {
+                    Text("logout")
+                }
             }
                 .padding()
                 .navigationTitle("Account")
