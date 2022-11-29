@@ -28,6 +28,7 @@ struct ChatBubble: View {
                 Spacer()
                 Text(dataConglomerate.dateToNumericalString(date: chat.timestamp))
                     .font(.subheadline)
+                    .italic()
                     .foregroundColor(.gray)
             }
                 .padding(.leading)

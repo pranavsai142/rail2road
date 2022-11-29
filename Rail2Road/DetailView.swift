@@ -77,7 +77,8 @@ struct DetailView: View {
         }
         dataConglomerate.clearQuery(tag: railyardFavoriteTag)
         dataConglomerate.clearQuery(tag: "user_favorites_tag")
-        dataConglomerate.clearStoredFavoritesData()
+        dataConglomerate.clearRailyardQueries()
+        dataConglomerate.clearFavoriteRailyards()
     }
     
     var body: some View {

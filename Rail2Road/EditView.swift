@@ -11,6 +11,7 @@ struct EditView: View {
     @EnvironmentObject var database: FireDatabaseReference
     @EnvironmentObject var dataConglomerate: DataConglomerate
     
+    @State private var submitted: Bool = false
     @State private var showingEditAlert: Bool = false
     @State private var validEdit: Bool = true
     @State private var name: String = ""
@@ -26,6 +27,7 @@ struct EditView: View {
         if(name != dataConglomerate.dataToString(tag: userNameTag)) {
             database.setValue(path: ["users", uid, "name"], value: name)
             dataConglomerate.clearQuery(tag: userNameTag)
+            submitted = true
         }
     }
     
@@ -48,24 +50,34 @@ struct EditView: View {
             }
             TextField(dataConglomerate.dataToString(tag: userNameTag), text: $name)
             if(!validEdit) {
-                Text("Edit Invalid!")
+                Text("Edit invalid!")
+            }
+            if(submitted) {
+                Text("Succesfully submitted!")
             }
             Spacer()
-            Button(action: {
-                if(validateEdit()) {
-                    showingEditAlert = true
+            if(submitted) {
+                Button(action: {}) {
+                    Text("submit")
                 }
-            }) {
-                Text("submit")
+                    .disabled(true)
+            } else {
+                Button(action: {
+                    if(validateEdit()) {
+                        showingEditAlert = true
+                    }
+                }) {
+                    Text("submit")
+                }
+                    .alert(isPresented: $showingEditAlert) {
+                        Alert(title: Text("Review Edit"),
+                              message: Text("Old Display Name: \(dataConglomerate.dataToString(tag: userNameTag))\nNew Display Name: \(name)"),
+                              primaryButton: .cancel(),
+                              secondaryButton: .default(Text("Submit")) {
+                                submit()
+                        })
+                    }
             }
-                .alert(isPresented: $showingEditAlert) {
-                    Alert(title: Text("Review Edit"),
-                          message: Text("Old Display Name: \(dataConglomerate.dataToString(tag: userNameTag))\nNew Display Name: \(name)"),
-                          primaryButton: .cancel(),
-                          secondaryButton: .default(Text("Submit")) {
-                            submit()
-                    })
-                }
         }
             .padding()
             .navigationTitle("Edit")

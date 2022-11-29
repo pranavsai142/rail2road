@@ -134,11 +134,25 @@ final class DataConglomerate: ObservableObject {
         queries[tag] = nil
     }
     
+    func clearRailyardData() {
+        storedUserLongitudeRegions = [Int: [Railyard]]()
+        favoriteRailyards = [Railyard]()
+    }
+    
+    func clearRailyardQueries() {
+        for key in queries.keys {
+            //Railyard query tags are 49 characters
+            if(key.count == 49) {
+                queries[key] = nil
+            }
+        }
+    }
+    
     func clearQueries() {
         queries = [String: QueryStatus]()
     }
     
-    func clearStoredFavoritesData() {
+    func clearFavoriteRailyards() {
         favoriteRailyards = [Railyard]()
     }
     

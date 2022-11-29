@@ -33,10 +33,6 @@ struct UserView: View {
     private func changeEmail() {
         
     }
-
-    private func resetPassword() {
-        
-    }
     
     private func deleteAccount() {
         

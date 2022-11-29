@@ -54,8 +54,14 @@ final class FireDatabaseReference: ObservableObject {
                     dataConglomerate.data[tag] = "DNE"
                     dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.empty
                 } else if(snapshot.value! is NSDictionary) {
-                    dataConglomerate.data[tag] = ((snapshot.value) as! NSDictionary)[key]
-                    dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.result
+                    let result = ((snapshot.value) as! NSDictionary)[key]
+                    if(result != nil) {
+                        dataConglomerate.data[tag] = ((snapshot.value) as! NSDictionary)[key]
+                        dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.result
+                    } else {
+                        dataConglomerate.data[tag] = "DNE"
+                        dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.empty
+                    }
                 } else {
                     dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.error
                 }

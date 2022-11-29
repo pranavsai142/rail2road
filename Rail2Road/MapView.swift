@@ -61,8 +61,7 @@ struct MapView: View {
                 for id in userFavoritesIds {
                     let id = (id as! String)
     //                Define tags to act as keys to access data in the database
-                     let railyardTag = "railyard_" + id + "_tag"
-
+                    let railyardTag = "railyard_" + id + "_tag"
                     _ = database.getRailyard(id: id, tag: railyardTag, dataConglomerate: dataConglomerate)
                 }
                 return true
@@ -155,6 +154,14 @@ struct MapView: View {
         dataConglomerate.searchOverlayActive = true
     }
     
+    private func toggleViewFavoriteRailyards() {
+        if(viewFavoriteRailyards) {
+            viewFavoriteRailyards = false
+        } else {
+            viewFavoriteRailyards = true
+        }
+    }
+    
 //    private func printQuery() -> Bool {
 //        if(dataConglomerate.query[railyardsTag] != nil) {
 ////            print(dataConglomerate.query[railyardsTag])
@@ -176,7 +183,7 @@ struct MapView: View {
                     HStack {
                         Spacer()
                         Button(action: {
-                            viewFavoriteRailyards = !viewFavoriteRailyards
+                            toggleViewFavoriteRailyards()
                         }, label: {
                             if(viewFavoriteRailyards) {
                                 Image(systemName: "star.fill")
