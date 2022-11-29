@@ -213,7 +213,7 @@ struct MapView: View {
                     VStack {
                         HStack(alignment: .top) {
                             NavigationLink(
-                                destination: AccountView(uid: uid)
+                                destination: UserView(uid: uid)
                                     .environmentObject(database)
                                     .environmentObject(dataConglomerate)) {
                                 Image(systemName: "person.crop.circle.fill")

@@ -11,32 +11,65 @@ struct EditView: View {
     @EnvironmentObject var database: FireDatabaseReference
     @EnvironmentObject var dataConglomerate: DataConglomerate
     
+    @State private var showingEditAlert: Bool = false
+    @State private var validEdit: Bool = true
     @State private var name: String = ""
     @State private var email: String = ""
     
     var uid: String
     
-    var userNameTag = "user_name"
+    var userNameTag: String {
+        "user_" + uid + "_name_tag"
+    }
     
     private func submit() {
         if(name != dataConglomerate.dataToString(tag: userNameTag)) {
             database.setValue(path: ["users", uid, "name"], value: name)
+            dataConglomerate.clearQuery(tag: userNameTag)
         }
+    }
+    
+    private func validateEdit() -> Bool {
+        if(name != dataConglomerate.dataToString(tag: userNameTag) && name != "") {
+            validEdit = true
+        } else {
+            validEdit = false
+        }
+        return validEdit
     }
     
     var body: some View {
         VStack {
+            HStack {
+                Text("Display Name:")
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
+                Spacer()
+            }
             TextField(dataConglomerate.dataToString(tag: userNameTag), text: $name)
+            if(!validEdit) {
+                Text("Edit Invalid!")
+            }
             Spacer()
             Button(action: {
-                submit()
+                if(validateEdit()) {
+                    showingEditAlert = true
+                }
             }) {
                 Text("submit")
             }
+                .alert(isPresented: $showingEditAlert) {
+                    Alert(title: Text("Review Edit"),
+                          message: Text("Old Display Name: \(dataConglomerate.dataToString(tag: userNameTag))\nNew Display Name: \(name)"),
+                          primaryButton: .cancel(),
+                          secondaryButton: .default(Text("Submit")) {
+                            submit()
+                    })
+                }
         }
             .padding()
             .navigationTitle("Edit")
-            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarTitleDisplayMode(.large)
     }
 }
 

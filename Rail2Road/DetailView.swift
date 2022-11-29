@@ -18,9 +18,25 @@ struct DetailView: View {
     var uid: String
     var railyard: Railyard
     
+    var railyardFavoriteTag: String {
+        return "railyard_" + railyard.id.uuidString + "_favorite_tag"
+    }
+    
     var query: Bool {
         DispatchQueue.main.async {
+            _ = database.getValue(path: ["users", uid, "favorites"], key: railyard.id.uuidString, tag: railyardFavoriteTag, dataConglomerate: dataConglomerate)
+            _ = setFavorite()
             _ = generateChat()
+            _ = generateUserNames()
+        }
+        return true
+    }
+    
+    private func setFavorite() -> Bool {
+        if(dataConglomerate.queries[railyardFavoriteTag] == DataConglomerate.QueryStatus.result) {
+            isFavorite = true
+        } else {
+            isFavorite = false
         }
         return true
     }
@@ -30,6 +46,16 @@ struct DetailView: View {
         let endDate = Date()
         let tag = "railyard_" + railyard.id.uuidString + "_chat_tag"
         _ = database.queryChatDatabaseByTime(path: ["railyards"], railyardId: railyard.id, startDate: startDate, endDate: endDate, tag: tag, dataConglomerate: dataConglomerate)
+        return true
+    }
+    
+    private func generateUserNames() -> Bool {
+        let chatTag = "railyard_" + railyard.id.uuidString + "_chat_tag"
+        if(dataConglomerate.queries[chatTag] == DataConglomerate.QueryStatus.result) {
+            for chat in dataConglomerate.storedChats[railyard.id]! {
+                _ = database.getValue(path: ["users", chat.userId], key: "name", tag: "user_" + chat.userId + "_name_tag", dataConglomerate: dataConglomerate)
+            }
+        }
         return true
     }
     
@@ -44,9 +70,14 @@ struct DetailView: View {
     private func toggleFavorite() {
         if(isFavorite) {
             isFavorite = false
+            database.removeValue(path: ["users", uid, "favorites", railyard.id.uuidString])
         } else {
             isFavorite = true
+            database.setValue(path: ["users", uid, "favorites", railyard.id.uuidString], value: true)
         }
+        dataConglomerate.clearQuery(tag: railyardFavoriteTag)
+        dataConglomerate.clearQuery(tag: "user_favorites_tag")
+        dataConglomerate.clearStoredFavoritesData()
     }
     
     var body: some View {
@@ -90,8 +121,10 @@ struct DetailView: View {
                         ForEach(dataConglomerate.storedChats[railyard.id]!) { chat in
                             if(uid == chat.userId) {
                                 ChatBubble(chat: chat, sent: true)
+                                    .environmentObject(dataConglomerate)
                             } else {
                                 ChatBubble(chat: chat, sent: false)
+                                    .environmentObject(dataConglomerate)
                             }
                         }
                     }

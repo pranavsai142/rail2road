@@ -42,8 +42,8 @@ struct ResetView: View {
     
     var body: some View {
         VStack {
-            Text("Reset Password")
-                .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+//            Text("Reset Password")
+//                .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
             TextField("email", text: $email)
             Button(action: {
                 reset();
@@ -61,6 +61,7 @@ struct ResetView: View {
             }
             Spacer()
         }
+            .navigationTitle("Reset Password")
             .padding()
     }
 }

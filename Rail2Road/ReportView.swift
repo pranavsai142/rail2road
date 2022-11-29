@@ -42,6 +42,7 @@ struct ReportView: View {
             database.setValue(path:  ["railyards", railyard.id.uuidString, "waittimes", waittime.id.uuidString, "user"], value: waittime.userId)
             database.setValue(path:  ["railyards", railyard.id.uuidString, "waittimes", waittime.id.uuidString, "endtime"], value: waittime.endtime.timeIntervalSince1970)
             database.setValue(path:  ["railyards", railyard.id.uuidString, "waittimes", waittime.id.uuidString, "delta"], value: waittime.delta)
+            dataConglomerate.clearQuery(tag: "railyard_" + railyard.id.uuidString + "_waittime_tag")
         }
     }
     

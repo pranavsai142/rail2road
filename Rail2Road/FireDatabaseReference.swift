@@ -41,7 +41,7 @@ final class FireDatabaseReference: ObservableObject {
 //        print("Query")
 //        print(stringPath)
 //        print(key)
-        if(dataConglomerate.data[tag] == nil && dataConglomerate.queries[tag] == nil) {
+        if(dataConglomerate.queries[tag] == nil) {
             dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.searching
             ref.observeSingleEvent(of: .value, with: { snapshot in
               // This is the snapshot of the data at the moment in the Firebase database
@@ -53,22 +53,30 @@ final class FireDatabaseReference: ObservableObject {
                 if(snapshot.value! is NSNull) {
                     dataConglomerate.data[tag] = "DNE"
                     dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.empty
-                } else {
+                } else if(snapshot.value! is NSDictionary) {
                     dataConglomerate.data[tag] = ((snapshot.value) as! NSDictionary)[key]
                     dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.result
+                } else {
+                    dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.error
                 }
             })
         }
         return true
     }
     
+    /// Gets a list of values from the database. WIP: Add QueryStatus conditions to handle error and empty queries
+    /// - Parameters:
+    ///   - path: full path to parent node of tree containing list of child nodes to fetch
+    ///   - tag: string to use as key for dataConglomerate storage
+    ///   - dataConglomerate: Conglomerates data
+    /// - Returns: WIP true if query successfully executed, false otherwise
     func getValues(path: [String], tag: String, dataConglomerate: DataConglomerate) -> Bool {
         let stringPath = path.joined(separator: "/")
         let ref = database.child(stringPath)
 //        var data: Any?
 //        print(stringPath)
 //        print(key)
-        if(dataConglomerate.data[tag] == nil && dataConglomerate.queries[tag] == nil) {
+        if(dataConglomerate.queries[tag] == nil) {
             dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.searching
             ref.observeSingleEvent(of: .value, with: { snapshot in
               // This is the snapshot of the data at the moment in the Firebase database
@@ -95,7 +103,7 @@ final class FireDatabaseReference: ObservableObject {
 //        var data: Any?
 //        print(stringPath)
 //        print(key)
-        if(dataConglomerate.data[tag] == nil && dataConglomerate.queries[tag] == nil) {
+        if(dataConglomerate.queries[tag] == nil) {
             dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.searching
             ref.observeSingleEvent(of: .value, with: { snapshot in
               // This is the snapshot of the data at the moment in the Firebase database
@@ -119,7 +127,7 @@ final class FireDatabaseReference: ObservableObject {
         let ref = database.child(stringPath)
 //        var data: Any?
 //        print(stringPath)
-        if(dataConglomerate.data[tag] == nil && dataConglomerate.queries[tag] == nil) {
+        if(dataConglomerate.queries[tag] == nil) {
             dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.searching
             ref.observeSingleEvent(of: .value, with: { snapshot in
               // This is the snapshot of the data at the moment in the Firebase database
@@ -149,7 +157,7 @@ final class FireDatabaseReference: ObservableObject {
             let stringPath = path.joined(separator: "/")
             ref  = database.child(stringPath)
         }
-        if(dataConglomerate.favoriteRailyards.isEmpty && dataConglomerate.queries[tag] == nil) {
+        if(dataConglomerate.queries[tag] == nil) {
             dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.searching
             ref.queryOrderedByKey()
                 .queryEqual(toValue: id)
@@ -211,7 +219,7 @@ final class FireDatabaseReference: ObservableObject {
             let stringPath = path.joined(separator: "/")
             ref = database.child(stringPath)
         }
-        if(dataConglomerate.data[tag] == nil && dataConglomerate.queries[tag] == nil) {
+        if(dataConglomerate.queries[tag] == nil) {
             dataConglomerate.queries[tag] = DataConglomerate.QueryStatus.searching
             ref.queryOrdered(byChild: child).queryEqual(toValue: query).observeSingleEvent(of: .value, with: { snapshot in
                 if let snapVal = snapshot.value as? NSDictionary {

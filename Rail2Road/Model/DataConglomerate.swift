@@ -41,8 +41,19 @@ final class DataConglomerate: ObservableObject {
     
     @Published var region: MKCoordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 0, longitude: 0), span: MKCoordinateSpan(latitudeDelta: 0, longitudeDelta: 0))
     
+    var dateFormatter: DateFormatter = DateFormatter()
+    
+    func dateToNumericalString(date: Date) -> String {
+        dateFormatter.dateFormat = "HH:mm:ss dd/MM/YY"
+        return dateFormatter.string(from: date)
+    }
+    
     func dataToString(tag: String) -> String {
-        return data[tag] as! String
+        var dataString = ""
+        if(queries[tag] == QueryStatus.result) {
+            dataString = data[tag] as! String
+        }
+        return dataString
     }
     
     func conglomerateNearbyStoredRailyards() -> [Railyard] {
@@ -97,6 +108,19 @@ final class DataConglomerate: ObservableObject {
         }
     }
     
+    func getUserName(userId: String) -> String {
+        var userName = ""
+        let userNameTag = "user_" + userId + "_name_tag"
+        if(queries[userNameTag] == QueryStatus.result) {
+            userName = data[userNameTag] as! String
+        } else if(queries[userNameTag] == QueryStatus.empty) {
+            userName = ""
+        } else {
+            userName = "deleted user"
+        }
+        return userName
+    }
+    
     func clearWaittimeData() {
         storedAverageWaittimes = [UUID: TimeInterval]()
         storedWaittimes = [UUID: [Waittime]]()
@@ -106,8 +130,16 @@ final class DataConglomerate: ObservableObject {
         storedChats = [UUID: [Chat]]()
     }
     
+    func clearQuery(tag: String) {
+        queries[tag] = nil
+    }
+    
     func clearQueries() {
         queries = [String: QueryStatus]()
+    }
+    
+    func clearStoredFavoritesData() {
+        favoriteRailyards = [Railyard]()
     }
     
     func findLongitudeRegionsTags() -> [LongitudeRegionQueryTags] {

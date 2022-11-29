@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ChatBubble: View {
+    @EnvironmentObject var dataConglomerate: DataConglomerate
+    
     var chat: Chat
     var sent: Bool
     
@@ -17,18 +19,33 @@ struct ChatBubble: View {
     }
     
     var body: some View {
-        HStack {
-            Text(chat.message)
-                .padding()
-            Spacer()
+        VStack {
+            HStack {
+                Text(dataConglomerate.getUserName(userId: chat.userId))
+                    .font(.subheadline)
+                    .italic()
+                    .foregroundColor(.gray)
+                Spacer()
+                Text(dataConglomerate.dateToNumericalString(date: chat.timestamp))
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
+            }
+                .padding(.leading)
+                .padding(.trailing)
+            HStack {
+                Text(chat.message)
+                    .padding()
+                Spacer()
+            }
+                .foregroundColor(.white)
+                .background(Color.blue)
+                .frame(maxWidth: .infinity)
+                .clipShape(Bubble(sent: sent))
+                .padding(.leading)
+                .padding(.trailing)
+                .padding(.bottom)
+            Divider()
         }
-        .foregroundColor(.white)
-        .background(Color.blue)
-        .frame(maxWidth: .infinity)
-        .clipShape(Bubble(sent: sent))
-        .padding(.leading)
-        .padding(.trailing)
-        .padding(.bottom)
     }
 }
 

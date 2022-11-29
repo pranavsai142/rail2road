@@ -29,7 +29,7 @@
 		BF2C4D8F281E5E0200C241BF /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2C4D8E281E5E0200C241BF /* MapView.swift */; };
 		BF2C4D92281E5E1F00C241BF /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2C4D91281E5E1F00C241BF /* DetailView.swift */; };
 		BF2C4D95281E5E3E00C241BF /* ReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2C4D94281E5E3E00C241BF /* ReportView.swift */; };
-		BF2C4D98281E5E4E00C241BF /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2C4D97281E5E4E00C241BF /* AccountView.swift */; };
+		BF2C4D98281E5E4E00C241BF /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2C4D97281E5E4E00C241BF /* UserView.swift */; };
 		BF2C4D9B281E5E5900C241BF /* EditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2C4D9A281E5E5900C241BF /* EditView.swift */; };
 		BF8986532889CFCA00BF676E /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8986522889CFCA00BF676E /* LocationManager.swift */; };
 		BF8A79C22824D75E007B4AE2 /* Railyard.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8A79C12824D75E007B4AE2 /* Railyard.swift */; };
@@ -61,7 +61,7 @@
 		BF2C4D8E281E5E0200C241BF /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		BF2C4D91281E5E1F00C241BF /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		BF2C4D94281E5E3E00C241BF /* ReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportView.swift; sourceTree = "<group>"; };
-		BF2C4D97281E5E4E00C241BF /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
+		BF2C4D97281E5E4E00C241BF /* UserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
 		BF2C4D9A281E5E5900C241BF /* EditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditView.swift; sourceTree = "<group>"; };
 		BF8986522889CFCA00BF676E /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		BF8A79C12824D75E007B4AE2 /* Railyard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Railyard.swift; sourceTree = "<group>"; };
@@ -117,7 +117,7 @@
 				BFBE4053288F0F9700DA2FD3 /* ChatBubble.swift */,
 				BF2C4D94281E5E3E00C241BF /* ReportView.swift */,
 				81377B9E2910C6C300274799 /* RailyardRow.swift */,
-				BF2C4D97281E5E4E00C241BF /* AccountView.swift */,
+				BF2C4D97281E5E4E00C241BF /* UserView.swift */,
 				BF2C4D9A281E5E5900C241BF /* EditView.swift */,
 				BF2C4D64281E31A200C241BF /* Assets.xcassets */,
 				BF2C4D69281E31A200C241BF /* Info.plist */,
@@ -239,7 +239,7 @@
 				8171B85F28AF1E390004B7B7 /* QueryTags.swift in Sources */,
 				BFBE4051288F0CF700DA2FD3 /* Chat.swift in Sources */,
 				BF2C4D77281E410200C241BF /* FireDatabaseReference.swift in Sources */,
-				BF2C4D98281E5E4E00C241BF /* AccountView.swift in Sources */,
+				BF2C4D98281E5E4E00C241BF /* UserView.swift in Sources */,
 				81C9DD352930525F00710E07 /* Waittime.swift in Sources */,
 				BF8A79C52824D873007B4AE2 /* RailyardAnnotation.swift in Sources */,
 				BF2C4D61281E31A200C241BF /* Rail2RoadApp.swift in Sources */,
