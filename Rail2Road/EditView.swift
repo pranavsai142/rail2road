@@ -33,11 +33,10 @@ struct EditView: View {
     
     private func validateEdit() -> Bool {
         if(name != dataConglomerate.dataToString(tag: userNameTag) && name != "") {
-            validEdit = true
+            return true
         } else {
-            validEdit = false
+            return false
         }
-        return validEdit
     }
     
     var body: some View {

@@ -21,6 +21,15 @@ final class FireDatabaseReference: ObservableObject {
         let stringPath = path.joined(separator: "/")
         database.child(stringPath).setValue(value)
     }
+    
+    /// Find all branches and leaves of a parent, copy parent tree into new location
+    /// - Parameters:
+    ///   - sourcePath: path to parent tree
+    ///   - destinationPath: path of where to insert parent tree
+    func copyTree(sourcePath: [String], destinationPath: [String]) {
+        
+    }
+    
     func removeValue(path: [String]) {
         let stringPath = path.joined(separator: "/")
         database.child(stringPath).removeValue()

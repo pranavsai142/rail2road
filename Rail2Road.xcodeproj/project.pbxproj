@@ -14,6 +14,7 @@
 		8171B85F28AF1E390004B7B7 /* QueryTags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8171B85E28AF1E390004B7B7 /* QueryTags.swift */; };
 		8181116D292CA5A2007E57C3 /* TimeIntervalExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8181116C292CA5A2007E57C3 /* TimeIntervalExtension.swift */; };
 		81C9DD352930525F00710E07 /* Waittime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C9DD342930525F00710E07 /* Waittime.swift */; };
+		81E22CD12937E4DF00BAE661 /* EmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E22CD02937E4DF00BAE661 /* EmailView.swift */; };
 		BF2C4D61281E31A200C241BF /* Rail2RoadApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2C4D60281E31A200C241BF /* Rail2RoadApp.swift */; };
 		BF2C4D63281E31A200C241BF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2C4D62281E31A200C241BF /* ContentView.swift */; };
 		BF2C4D65281E31A200C241BF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF2C4D64281E31A200C241BF /* Assets.xcassets */; };
@@ -46,6 +47,7 @@
 		8171B85E28AF1E390004B7B7 /* QueryTags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryTags.swift; sourceTree = "<group>"; };
 		8181116C292CA5A2007E57C3 /* TimeIntervalExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalExtension.swift; sourceTree = "<group>"; };
 		81C9DD342930525F00710E07 /* Waittime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Waittime.swift; sourceTree = "<group>"; };
+		81E22CD02937E4DF00BAE661 /* EmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailView.swift; sourceTree = "<group>"; };
 		BF2C4D5D281E31A200C241BF /* Rail2Road.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rail2Road.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF2C4D60281E31A200C241BF /* Rail2RoadApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rail2RoadApp.swift; sourceTree = "<group>"; };
 		BF2C4D62281E31A200C241BF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -106,9 +108,9 @@
 				BF2C4D60281E31A200C241BF /* Rail2RoadApp.swift */,
 				BF2C4D7E281E473F00C241BF /* GoogleService-Info.plist */,
 				BF2C4D62281E31A200C241BF /* ContentView.swift */,
-				BF2C4D85281E5D0C00C241BF /* LoginView.swift */,
 				BF2C4D88281E5D8200C241BF /* RegisterView.swift */,
 				BF2C4D8B281E5DA600C241BF /* ResetView.swift */,
+				BF2C4D85281E5D0C00C241BF /* LoginView.swift */,
 				BF2C4D8E281E5E0200C241BF /* MapView.swift */,
 				81377BA02910C7F500274799 /* SearchOverlay.swift */,
 				81377BA22910C82700274799 /* ListOverlay.swift */,
@@ -118,6 +120,7 @@
 				BF2C4D94281E5E3E00C241BF /* ReportView.swift */,
 				81377B9E2910C6C300274799 /* RailyardRow.swift */,
 				BF2C4D97281E5E4E00C241BF /* UserView.swift */,
+				81E22CD02937E4DF00BAE661 /* EmailView.swift */,
 				BF2C4D9A281E5E5900C241BF /* EditView.swift */,
 				BF2C4D64281E31A200C241BF /* Assets.xcassets */,
 				BF2C4D69281E31A200C241BF /* Info.plist */,
@@ -239,6 +242,7 @@
 				8171B85F28AF1E390004B7B7 /* QueryTags.swift in Sources */,
 				BFBE4051288F0CF700DA2FD3 /* Chat.swift in Sources */,
 				BF2C4D77281E410200C241BF /* FireDatabaseReference.swift in Sources */,
+				81E22CD12937E4DF00BAE661 /* EmailView.swift in Sources */,
 				BF2C4D98281E5E4E00C241BF /* UserView.swift in Sources */,
 				81C9DD352930525F00710E07 /* Waittime.swift in Sources */,
 				BF8A79C52824D873007B4AE2 /* RailyardAnnotation.swift in Sources */,
