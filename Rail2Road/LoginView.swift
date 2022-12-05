@@ -22,7 +22,7 @@ struct LoginView: View {
     @State private var uid: String = ""
     
     private func authenticate() {
-        email = "best@newsies.us"
+        email = "test@newsies.us"
         password = "Newsies"
         failed = false
         networkError = false

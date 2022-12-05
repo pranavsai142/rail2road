@@ -26,8 +26,30 @@ final class FireDatabaseReference: ObservableObject {
     /// - Parameters:
     ///   - sourcePath: path to parent tree
     ///   - destinationPath: path of where to insert parent tree
-    func copyTree(sourcePath: [String], destinationPath: [String]) {
-        
+    func copyTree(sourcePath: [String], destinationPath: [String]) -> Bool {
+        let sourceStringPath = sourcePath.joined(separator: "/")
+        let ref = database.child(sourceStringPath)
+//        var data: Any?
+//        print("Query")
+//        print(stringPath)
+//        print(key)
+        ref.observeSingleEvent(of: .value, with: { snapshot in
+          // This is the snapshot of the data at the moment in the Firebase database
+          // To get value from the snapshot, we user snapshot.value
+//            print("INISIDE")
+//            print(snapshot.value!)
+//            print("\(type(of: snapshot.value))")
+//            print(self.data)
+            if(snapshot.value! is NSNull) {
+                
+            } else if(snapshot.value! is NSDictionary) {
+                let value = (snapshot.value) as! NSDictionary
+                self.setValue(path: destinationPath, value: value)
+            } else {
+
+            }
+        })
+        return true
     }
     
     func removeValue(path: [String]) {
