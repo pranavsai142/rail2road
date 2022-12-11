@@ -52,6 +52,25 @@ final class FireDatabaseReference: ObservableObject {
         return true
     }
     
+    /// Find all branches and leaves of a parent, copy parent tree into new location, then delete the original data
+    /// WIP Implement QueryStatus tracking by adding conditionals
+    /// - Parameters:
+    ///   - sourcePath: path to parent tree
+    ///   - destinationPath: path of where to insert parent tree
+    func cutTree(sourcePath: [String], destinationPath: [String]) -> Bool {
+        let sourceStringPath = sourcePath.joined(separator: "/")
+        let ref = database.child(sourceStringPath)
+
+        ref.observeSingleEvent(of: .value, with: { snapshot in
+            if(snapshot.value! is NSDictionary) {
+                let value = (snapshot.value) as! NSDictionary
+                self.setValue(path: destinationPath, value: value)
+                self.removeValue(path: sourcePath)
+            }
+        })
+        return true
+    }
+    
     func removeValue(path: [String]) {
         let stringPath = path.joined(separator: "/")
         database.child(stringPath).removeValue()

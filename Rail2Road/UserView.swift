@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct UserView: View {
     @EnvironmentObject var database: FireDatabaseReference
     @EnvironmentObject var dataConglomerate: DataConglomerate
     
     @State private var deleteAccountAlertActive: Bool = false
+    @State private var logoutAlertActive: Bool = false
     
     var uid: String
     
@@ -31,11 +33,17 @@ struct UserView: View {
     }
     
     private func deleteAccount() {
-        
+        database.removeValue(path: ["users", uid])
+        Auth.auth().currentUser!.delete()
+        logout()
     }
     
+    ///Exits application
     private func logout() {
-        
+        let seconds = 1.0
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+            exit(0)
+        }
     }
     
     var body: some View {
@@ -84,7 +92,7 @@ struct UserView: View {
                             .padding(.top)
                             .alert(isPresented: $deleteAccountAlertActive) {
                                 Alert(title: Text("Confirm Deletion"),
-                                      message: Text("Are you sure you want to delete your account? This process is irreversable."),
+                                      message: Text("Are you sure you want to delete your account? Rail2Road will quit upon successful deletion."),
                                       primaryButton: .cancel(),
                                       secondaryButton: .destructive(Text("Delete")) {
                                         deleteAccount()
@@ -93,10 +101,18 @@ struct UserView: View {
                     }
                     Spacer()
                     Button(action: {
-                        logout()
+                        logoutAlertActive = true
                     }) {
                         Text("logout")
                     }
+                        .alert(isPresented: $logoutAlertActive) {
+                            Alert(title: Text("Exiting App"),
+                                  message: Text("Please relaunch Rail2Road and reauthenticate!"),
+                                  primaryButton: .cancel(),
+                                  secondaryButton: .default(Text("Exit")) {
+                                    logout()
+                                  })
+                        }
                 }
                     .padding()
                     .navigationTitle("User Info")
