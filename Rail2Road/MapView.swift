@@ -32,7 +32,7 @@ struct MapView: View {
     }
     
     var query: Bool {
-        print("\n", dataConglomerate.queries)
+//        print("\n", dataConglomerate.queries)
         let userLongitudeRegionsTags = dataConglomerate.findLongitudeRegionsTags()
         //QueryTag struct {foundTag: String, tag: String} Used for retriving values from firebase
         DispatchQueue.main.async {
