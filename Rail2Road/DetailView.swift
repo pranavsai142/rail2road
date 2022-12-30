@@ -81,6 +81,13 @@ struct DetailView: View {
         dataConglomerate.clearFavoriteRailyards()
     }
     
+    private func refresh() async {
+        try! await Task.sleep(nanoseconds: 500000000)
+        dataConglomerate.clearChatData()
+        dataConglomerate.clearChatQueries()
+        dataConglomerate.clearQuery(tag: "railyard_" + railyard.id.uuidString + "_waittime_tag")
+    }
+    
     var body: some View {
         if(query) {
             VStack {
@@ -106,7 +113,7 @@ struct DetailView: View {
                                 .font(.title)
                                 .bold()
                                 .padding()
-                                .background(.green)
+                                .background(Railyard.waittimeToColor(waittime: dataConglomerate.waittimeToMinutes(railyardId: railyard.id)))
                                 .clipShape(RoundedRectangle(cornerRadius: 20))
                             Text("Report Wait Time")
                                 .font(.caption)
@@ -115,9 +122,11 @@ struct DetailView: View {
                 }
                     .padding(.leading)
                     .padding(.trailing)
-                ScrollView {
+                
+                //Courtesy of jstarry95
+                RefreshableScrollView(showsIndicators: true) {
                     if(dataConglomerate.storedChats[railyard.id] == nil) {
-                        Text("Chat History Empty!")
+
                     } else {
                         ForEach(dataConglomerate.storedChats[railyard.id]!) { chat in
                             if(uid == chat.userId) {
@@ -129,7 +138,10 @@ struct DetailView: View {
                             }
                         }
                     }
+                } onRefresh: {
+                    await refresh()
                 }
+                
                 HStack {
                     TextField("type message", text: $message)
                         .textFieldStyle(.roundedBorder)

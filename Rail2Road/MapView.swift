@@ -120,6 +120,14 @@ struct MapView: View {
 
     private func zoomIn() {
         DispatchQueue.main.async {
+            if(dataConglomerate.region.span.latitudeDelta == 0.0) {
+                dataConglomerate.region.span.latitudeDelta += 0.1
+            }
+            
+            if(dataConglomerate.region.span.longitudeDelta == 0.0) {
+                dataConglomerate.region.span.longitudeDelta += 0.1
+            }
+            
             dataConglomerate.region.span.latitudeDelta *= 0.9
             dataConglomerate.region.span.longitudeDelta *= 0.9
         }
@@ -147,6 +155,10 @@ struct MapView: View {
     private func goToCurrentLocation() {
         DispatchQueue.main.async {
             dataConglomerate.region = locationManager.region
+            //If LocationManager returned a 0 value MKCoordinateRegion, default view to America
+            if(dataConglomerate.region.center.latitude == 0.0 && dataConglomerate.region.center.longitude == 0.0 && dataConglomerate.region.span.latitudeDelta == 0.0 && dataConglomerate.region.span.longitudeDelta == 0.0) {
+                dataConglomerate.region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.09024, longitude: -95.712891), span: MKCoordinateSpan(latitudeDelta: 5, longitudeDelta: 65))
+            }
         }
     }
     
@@ -160,6 +172,11 @@ struct MapView: View {
         } else {
             viewFavoriteRailyards = true
         }
+    }
+    
+    private func refresh() {
+        dataConglomerate.clearWaittimeData()
+        dataConglomerate.clearWaittimeQueries()
     }
     
 //    private func printQuery() -> Bool {
@@ -226,6 +243,15 @@ struct MapView: View {
                                 Image(systemName: "person.crop.circle.fill")
                                     .padding(.leading)
                             }
+                            
+                            Spacer()
+                            
+                            Button(action: {
+                                refresh()
+                            }, label: {
+                                Image(systemName: "arrow.clockwise.circle.fill")
+                                    .padding(.trailing)
+                            })
                             
                             Spacer()
                             

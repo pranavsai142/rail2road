@@ -15,7 +15,7 @@ struct RailyardAnnotation: View {
             Text(averageWaittimeMinutes)
                 .foregroundColor(Color.white)
                 .frame(width: 42, height: 60)
-                .background(Color.green.opacity(0.9))
+                .background(Railyard.waittimeToColor(waittime: averageWaittimeMinutes).opacity(0.9))
             Text(railyard.name)
                 .foregroundColor(Color.white)
                 .frame(width: 100, height: 60)

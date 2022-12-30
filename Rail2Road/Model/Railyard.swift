@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 import MapKit
 
 struct Railyard: Identifiable, Comparable, Equatable {
@@ -15,6 +16,22 @@ struct Railyard: Identifiable, Comparable, Equatable {
     
     static func == (lhs: Railyard, rhs: Railyard) -> Bool {
         return lhs.id == rhs.id
+    }
+    
+    static func waittimeToColor(waittime: String) -> Color {
+        if(waittime == "-"){
+            return Color.gray
+        }
+        
+        let waittimeInt: Int = Int(waittime)!
+        
+        if(waittimeInt <= 30) {
+            return Color.green
+        } else if(waittimeInt <= 60) {
+            return Color.yellow
+        } else {
+            return Color.red
+        }
     }
     
     let id: UUID

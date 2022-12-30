@@ -148,6 +148,22 @@ final class DataConglomerate: ObservableObject {
         }
     }
     
+    func clearWaittimeQueries() {
+        for key in queries.keys {
+            if(key.count == 58) {
+                queries[key] = nil
+            }
+        }
+    }
+    
+    func clearChatQueries() {
+        for key in queries.keys {
+            if(key.count == 54) {
+                queries[key] = nil
+            }
+        }
+    }
+    
     func clearQueries() {
         queries = [String: QueryStatus]()
     }
