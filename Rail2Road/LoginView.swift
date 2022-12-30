@@ -6,12 +6,51 @@
 //
 
 import SwiftUI
-import Foundation
+import FirebaseAuth
 
 
 struct LoginView: View {
+    @EnvironmentObject var database: FireDatabaseReference
+    @EnvironmentObject var dataConglomerate: DataConglomerate
+    
     @State private var email: String = ""
     @State private var password: String = ""
+    @State private var isAuthenticated: Bool = false
+    @State private var tryAgainLater: Bool = false
+    @State private var networkError: Bool = false
+    @State private var failed: Bool = false
+    @State private var uid: String = ""
+    
+    private func authenticate() {
+        email = "test@newsies.us"
+        password = "Newsies"
+        failed = false
+        networkError = false
+        tryAgainLater = false
+        Auth.auth().signIn(withEmail: email, password: password) { (result, error) in
+            if((result) != nil) {
+//                print("success!")
+//                print(result!.user.uid)
+                uid = result!.user.uid
+                isAuthenticated = true
+                failed = false
+            }
+            else {
+//                isAuthenticated = false
+//                failed = true
+//                print("ERROR")
+//                print(error!)
+                let errorCode = (error as NSError?)!.code
+                if(errorCode == 17010) {
+                    tryAgainLater = true
+                } else if(errorCode == 17020) {
+                    networkError = true
+                }
+                isAuthenticated = false
+                failed = true
+            }
+        }
+    }
     
     var body: some View {
         NavigationView {
@@ -19,20 +58,27 @@ struct LoginView: View {
                 Text("Rail2Road")
                     .font(.title)
                     .bold()
-                    .padding(.top)
-                
                 TextField("Email", text: $email)
-                    .padding(.leading)
-                    .padding(.trailing)
             
                 SecureField("Password", text: $password)
-                    .padding(.leading)
-                    .padding(.trailing)
             
                 NavigationLink(
-                    destination: MapView()) {
-                    Text("Login")
-                        .padding()
+                    destination: MapView(uid: uid)
+                        .environmentObject(database)
+                        .environmentObject(dataConglomerate),
+                    isActive: $isAuthenticated) {
+                    Button(action: {
+                        authenticate()
+                    }) {
+                        Text("Login")
+                    }
+                }
+                if(tryAgainLater) {
+                    Text("Reset passowrd or try again later")
+                } else if(networkError) {
+                    Text("Network error")
+                } else if(failed) {
+                    Text("Incorrect credentials")
                 }
                 
                 Spacer()
@@ -41,15 +87,17 @@ struct LoginView: View {
                     destination: ResetView()) {
                     Text("Reset Password")
                 }
-                    .navigationBarTitle("Rail2Road")
                 NavigationLink(
-                    destination: RegisterView()) {
+                    destination: RegisterView()
+                        .environmentObject(database)
+                        .environmentObject(dataConglomerate)) {
                     Text("Register")
-                        .padding(.bottom)
                 }
-                    .navigationBarHidden(true)
             }
+                .padding()
         }
+            .navigationBarTitle("Rail2Road")
+            .navigationBarHidden(true)
     }
 }
 
