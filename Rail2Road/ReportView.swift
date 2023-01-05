@@ -11,8 +11,9 @@ struct ReportView: View {
     @EnvironmentObject var database: FireDatabaseReference
     @EnvironmentObject var dataConglomerate: DataConglomerate
     
-    @State private var startDate = Calendar.current.date(byAdding: .hour, value: -1, to: Date())!
-    @State private var endDate = Date()
+    @State private var startDate: Date = Calendar.current.date(byAdding: .hour, value: -1, to: Date())!
+    @State private var endDate: Date = Date()
+    @State private var submitted: Bool = false
     
     var uid: String
     var railyard: Railyard
@@ -43,6 +44,7 @@ struct ReportView: View {
             database.setValue(path:  ["railyards", railyard.id.uuidString, "waittimes", waittime.id.uuidString, "endtime"], value: waittime.endtime.timeIntervalSince1970)
             database.setValue(path:  ["railyards", railyard.id.uuidString, "waittimes", waittime.id.uuidString, "delta"], value: waittime.delta)
             dataConglomerate.clearQuery(tag: "railyard_" + railyard.id.uuidString + "_waittime_tag")
+            submitted = true
         }
     }
     
@@ -59,10 +61,14 @@ struct ReportView: View {
                 Text("Wait Duration: \(startDate.distance(to: endDate).toString())")
                     .bold()
                 Spacer()
-                Button(action: {
-                    submit()
-                }) {
-                    Text("submit")
+                if(submitted) {
+                    Text("submitted!")
+                } else {
+                    Button(action: {
+                        submit()
+                    }) {
+                        Text("submit")
+                    }
                 }
             }
         }
