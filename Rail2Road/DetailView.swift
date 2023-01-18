@@ -155,8 +155,7 @@ struct DetailView: View {
                     .padding(.trailing)
                     .padding(.bottom)
             }
-                .navigationTitle(railyard.name)
-                .navigationBarTitleDisplayMode(.large)
+            .navigationBarTitle(railyard.name, displayMode: .large)
         }
     }
 }

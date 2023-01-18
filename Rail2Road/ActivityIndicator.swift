@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-final class ActivityIndicator: UIViewRepresentable {
+struct ActivityIndicator: UIViewRepresentable {
     @Binding var size: CGFloat
     @Binding var isAnimating: Bool
     private let style: UIActivityIndicatorView.Style

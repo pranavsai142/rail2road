@@ -190,25 +190,32 @@ struct MapView: View {
         if(query) {
             if(listOverlayActive) {
                 VStack {
-                    HStack {
-                        Button(action: {
-                            listOverlayActive = false
-                        }, label: {
-                            Image(systemName: "chevron.compact.up")
-                        })
-                    }
-                    HStack {
-                        Spacer()
-                        Button(action: {
-                            toggleViewFavoriteRailyards()
-                        }, label: {
-                            if(viewFavoriteRailyards) {
-                                Image(systemName: "star.fill")
-                            } else {
-                                Image(systemName: "star")
-                            }
-                        })
-                            .padding(.trailing)
+                    ZStack {
+                        HStack {
+                            Button(action: {
+                                listOverlayActive = false
+                            }, label: {
+                                Image(systemName: "chevron.compact.up")
+                                    .font(.title)
+                            })
+                                .buttonStyle(.borderedProminent)
+                        }
+                        HStack {
+                            Spacer()
+                            Button(action: {
+                                toggleViewFavoriteRailyards()
+                            }, label: {
+                                if(viewFavoriteRailyards) {
+                                    Image(systemName: "star.fill")
+                                        .font(.title3)
+                                } else {
+                                    Image(systemName: "star")
+                                        .font(.title3)
+                                }
+                            })
+                                .buttonStyle(.bordered)
+                                .padding(.trailing)
+                        }
                     }
                     //If ListOverlay should have accessibility to SearchOverlay,
                     //add conditional displaying SearchOverlay if dataConglomerate.searchOverlayActive else display ListOverlay.
@@ -235,45 +242,53 @@ struct MapView: View {
                     }
                         .edgesIgnoringSafeArea(.all)
                     VStack {
-                        HStack(alignment: .top) {
-                            NavigationLink(
-                                destination: UserView(uid: uid)
-                                    .environmentObject(database)
-                                    .environmentObject(dataConglomerate)) {
-                                Image(systemName: "person.crop.circle.fill")
-                                    .padding(.leading)
+                        ZStack {
+                            //Account
+                            HStack(alignment: .top) {
+                                NavigationLink(
+                                    destination: UserView(uid: uid)
+                                        .environmentObject(database)
+                                        .environmentObject(dataConglomerate)) {
+                                            Image(systemName: "person.crop.circle.fill")
+                                                .padding(.leading)
+                                }
+                                Spacer()
                             }
-                            
-                            Spacer()
-                            
-                            Button(action: {
-                                refresh()
-                            }, label: {
-                                Image(systemName: "arrow.clockwise.circle.fill")
-                                    .padding(.trailing)
-                            })
-                            
-                            Spacer()
-                            
-                            VStack(alignment: HorizontalAlignment.trailing) {
+                            //Refresh
+                            HStack {
+                                Spacer()
                                 Button(action: {
-                                    zoomIn()
+                                    refresh()
                                 }, label: {
-                                    Image(systemName: "plus.square.fill")
+                                    Image(systemName: "arrow.clockwise.circle.fill")
                                         .padding(.trailing)
                                 })
-                                Button(action: {
-                                    zoomOut()
-                                }, label: {
-                                    Image(systemName: "minus.square.fill")
-                                        .padding(.trailing)
-                                })
-                                Button(action: {
-                                    goToCurrentLocation()
-                                }, label: {
-                                    Image(systemName: "location.fill.viewfinder")
-                                        .padding(.trailing)
-                                })
+                                
+                                Spacer()
+                            }
+                            //Map Controls
+                            HStack {
+                                Spacer()
+                                VStack(alignment: HorizontalAlignment.trailing) {
+                                    Button(action: {
+                                        zoomIn()
+                                    }, label: {
+                                        Image(systemName: "plus.square.fill")
+                                            .padding(.trailing)
+                                    })
+                                    Button(action: {
+                                        zoomOut()
+                                    }, label: {
+                                        Image(systemName: "minus.square.fill")
+                                            .padding(.trailing)
+                                    })
+                                    Button(action: {
+                                        goToCurrentLocation()
+                                    }, label: {
+                                        Image(systemName: "location.fill.viewfinder")
+                                            .padding(.trailing)
+                                    })
+                                }
                             }
                         }
                             .padding(.top)
@@ -287,9 +302,7 @@ struct MapView: View {
                                     .padding(.bottom)
                                     .padding(.bottom)
                             })
-                            
                             Spacer()
-                            
                             Button(action: {
                                 listOverlayActive = true
                             }, label: {
