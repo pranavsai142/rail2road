@@ -229,6 +229,7 @@ struct EmailView: View {
             Spacer()
         }
             .navigationBarTitle("Change Email")
+            .navigationBarTitleDisplayMode(.inline)
             .padding()
     }
 }

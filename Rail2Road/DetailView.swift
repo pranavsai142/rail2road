@@ -14,6 +14,9 @@ struct DetailView: View {
     
     @State private var message: String = ""
     @State private var isFavorite: Bool = false
+    @State private var chatFailed: Bool = false
+
+    @State private var lastChatTimestamp: Date? = nil
     
     var uid: String
     var railyard: Railyard
@@ -59,12 +62,27 @@ struct DetailView: View {
         return true
     }
     
-    private func sendChat() {
+    private func setChatValues() {
         let chat = Chat(id: UUID(), timestamp: Date(), message: message, userId: uid)
         database.setValue(path:  ["railyards", railyard.id.uuidString, "chat", chat.id.uuidString, "user"], value: chat.userId)
+        lastChatTimestamp = chat.timestamp
         database.setValue(path:  ["railyards", railyard.id.uuidString, "chat", chat.id.uuidString, "timestamp"], value: chat.timestamp.timeIntervalSince1970)
         database.setValue(path:  ["railyards", railyard.id.uuidString, "chat", chat.id.uuidString, "message"], value: chat.message)
         dataConglomerate.queries["railyard_" + railyard.id.uuidString + "_chat_tag"] = nil
+    }
+    
+    private func sendChat() {
+        chatFailed = false
+        if let unwrappedLastChatTimestamp = lastChatTimestamp {
+            let lastChatTimeInterval = Date().timeIntervalSince1970 - unwrappedLastChatTimestamp.timeIntervalSince1970
+            if(lastChatTimeInterval.second > 10) {
+                setChatValues()
+            } else {
+                chatFailed = true
+            }
+        } else {
+            setChatValues()
+        }
     }
     
     private func toggleFavorite() {
@@ -83,6 +101,7 @@ struct DetailView: View {
     
     private func refresh() async {
         try! await Task.sleep(nanoseconds: 500000000)
+        chatFailed = false
         dataConglomerate.clearChatData()
         dataConglomerate.clearChatQueries()
         dataConglomerate.clearQuery(tag: "railyard_" + railyard.id.uuidString + "_waittime_tag")
@@ -90,72 +109,90 @@ struct DetailView: View {
     
     var body: some View {
         if(query) {
-            VStack {
-                HStack {
-                    Text(railyard.address)
-                        .font(.caption)
-                    Spacer()
-                    Button(action: {
-                        toggleFavorite()
-                    }, label: {
-                        if(isFavorite) {
-                            Image(systemName: "star.fill")
-                        } else {
-                            Image(systemName: "star")
-                        }
-                    })
-                    NavigationLink(
-                        destination: ReportView(uid: uid, railyard: railyard)
-                            .environmentObject(database)
-                            .environmentObject(dataConglomerate)) {
-                        VStack {
-                            Text(dataConglomerate.waittimeToMinutes(railyardId: railyard.id))
-                                .font(.title)
-                                .bold()
-                                .padding()
-                                .background(Railyard.waittimeToColor(waittime: dataConglomerate.waittimeToMinutes(railyardId: railyard.id)))
-                                .clipShape(RoundedRectangle(cornerRadius: 20))
-                            Text("Report Wait Time")
-                                .font(.caption)
-                        }
+            ZStack {
+                VStack {
+                    HStack {
+                        Text(railyard.address)
+                            .font(.caption)
+                        Spacer()
+                        Button(action: {
+                            toggleFavorite()
+                        }, label: {
+                            if(isFavorite) {
+                                Image(systemName: "star.fill")
+                            } else {
+                                Image(systemName: "star")
+                            }
+                        })
+                        NavigationLink(
+                            destination: ReportView(uid: uid, railyard: railyard)
+                                .environmentObject(database)
+                                .environmentObject(dataConglomerate)) {
+                                    VStack {
+                                        Text(dataConglomerate.waittimeToMinutes(railyardId: railyard.id))
+                                            .font(.title)
+                                            .bold()
+                                            .padding()
+                                            .background(Railyard.waittimeToColor(waittime: dataConglomerate.waittimeToMinutes(railyardId: railyard.id)))
+                                            .clipShape(RoundedRectangle(cornerRadius: 20))
+                                        Text("Report Wait Time")
+                                            .font(.caption)
+                                    }
+                                }
                     }
-                }
                     .padding(.leading)
                     .padding(.trailing)
-                
-                //Courtesy of jstarry95
-                RefreshableScrollView(showsIndicators: true) {
-                    if(dataConglomerate.storedChats[railyard.id] == nil) {
-
-                    } else {
-                        ForEach(dataConglomerate.storedChats[railyard.id]!) { chat in
-                            if(uid == chat.userId) {
-                                ChatBubble(chat: chat, sent: true)
-                                    .environmentObject(dataConglomerate)
-                            } else {
-                                ChatBubble(chat: chat, sent: false)
-                                    .environmentObject(dataConglomerate)
+                    
+                    //Courtesy of jstarry95
+                    RefreshableScrollView(showsIndicators: true) {
+                        if(dataConglomerate.storedChats[railyard.id] == nil) {
+                            
+                        } else {
+                            ForEach(dataConglomerate.storedChats[railyard.id]!) { chat in
+                                if(uid == chat.userId) {
+                                    ChatBubble(chat: chat, sent: true)
+                                        .environmentObject(dataConglomerate)
+                                } else {
+                                    ChatBubble(chat: chat, sent: false)
+                                        .environmentObject(dataConglomerate)
+                                }
                             }
                         }
+                    } onRefresh: {
+                        await refresh()
                     }
-                } onRefresh: {
-                    await refresh()
                 }
-                
-                HStack {
-                    TextField("type message", text: $message)
-                        .textFieldStyle(.roundedBorder)
-                    Button(action: {
-                        sendChat()
-                    }, label: {
-                        Image(systemName: "arrow.up.square.fill")
-                    })
-                }
+                VStack {
+                    Spacer()
+                    if(chatFailed) {
+                        HStack {
+                            Text("Please try again later.")
+                                .font(.body)
+                                .padding()
+                            Spacer()
+                        }
+                            .background(.ultraThinMaterial)
+                            .clipShape(RoundedRectangle(cornerRadius: 100))
+                            .padding()
+                    }
+                    HStack {
+                        TextField("type message", text: $message)
+                            .textFieldStyle(.roundedBorder)
+                        Button(action: {
+                            withAnimation {
+                                sendChat()
+                            }
+                        }, label: {
+                            Image(systemName: "arrow.up.square.fill")
+                        })
+                    }
                     .padding(.leading)
                     .padding(.trailing)
                     .padding(.bottom)
+                }
             }
-            .navigationBarTitle(railyard.name, displayMode: .large)
+                .navigationBarTitle(railyard.name)
+                .navigationBarTitleDisplayMode(.inline)
         }
     }
 }

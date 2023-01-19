@@ -62,6 +62,7 @@ struct ResetView: View {
             Spacer()
         }
             .navigationTitle("Reset Password")
+            .navigationBarTitleDisplayMode(.inline)
             .padding()
     }
 }

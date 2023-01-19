@@ -116,7 +116,7 @@ struct UserView: View {
                 }
                     .padding()
                     .navigationTitle("User Info")
-                    .navigationBarTitleDisplayMode(.large)
+                    .navigationBarTitleDisplayMode(.inline)
             }
         }
     }

@@ -234,64 +234,73 @@ struct MapView: View {
                     Map(coordinateRegion: $dataConglomerate.region, showsUserLocation: true, annotationItems: dataConglomerate.conglomerateRegionalStoredRailyards()) { railyard in
                         MapAnnotation(coordinate: railyard.coordinates) {
                             NavigationLink(destination: DetailView(uid: uid, railyard: railyard)
-                                            .environmentObject(database)
-                                            .environmentObject(dataConglomerate)) {
-                                RailyardAnnotation(railyard: railyard, averageWaittimeMinutes: dataConglomerate.waittimeToMinutes(railyardId: railyard.id))
-                            }
+                                .environmentObject(database)
+                                .environmentObject(dataConglomerate)) {
+                                    RailyardAnnotation(railyard: railyard, averageWaittimeMinutes: dataConglomerate.waittimeToMinutes(railyardId: railyard.id))
+                                }
                         }
                     }
-                        .edgesIgnoringSafeArea(.all)
+                    .edgesIgnoringSafeArea(.all)
                     VStack {
                         ZStack {
                             //Account
-                            HStack(alignment: .top) {
-                                NavigationLink(
-                                    destination: UserView(uid: uid)
-                                        .environmentObject(database)
-                                        .environmentObject(dataConglomerate)) {
-                                            Image(systemName: "person.crop.circle.fill")
-                                                .padding(.leading)
+                            VStack {
+                                HStack(alignment: .top) {
+                                    NavigationLink(
+                                        destination: UserView(uid: uid)
+                                            .environmentObject(database)
+                                            .environmentObject(dataConglomerate)) {
+                                                Image(systemName: "person.crop.circle.fill")
+                                                    .padding(.leading)
+                                            }
+                                    Spacer()
                                 }
                                 Spacer()
                             }
                             //Refresh
-                            HStack {
-                                Spacer()
-                                Button(action: {
-                                    refresh()
-                                }, label: {
-                                    Image(systemName: "arrow.clockwise.circle.fill")
-                                        .padding(.trailing)
-                                })
-                                
+                            VStack {
+                                HStack {
+                                    Spacer()
+                                    Button(action: {
+                                        refresh()
+                                    }, label: {
+                                        Image(systemName: "arrow.clockwise.circle.fill")
+                                            .padding(.trailing)
+                                    })
+                                    
+                                    Spacer()
+                                }
                                 Spacer()
                             }
                             //Map Controls
-                            HStack {
-                                Spacer()
-                                VStack(alignment: HorizontalAlignment.trailing) {
-                                    Button(action: {
-                                        zoomIn()
-                                    }, label: {
-                                        Image(systemName: "plus.square.fill")
-                                            .padding(.trailing)
-                                    })
-                                    Button(action: {
-                                        zoomOut()
-                                    }, label: {
-                                        Image(systemName: "minus.square.fill")
-                                            .padding(.trailing)
-                                    })
-                                    Button(action: {
-                                        goToCurrentLocation()
-                                    }, label: {
-                                        Image(systemName: "location.fill.viewfinder")
-                                            .padding(.trailing)
-                                    })
+                            VStack {
+                                HStack {
+                                    Spacer()
+                                    VStack(alignment: HorizontalAlignment.trailing) {
+                                        Button(action: {
+                                            zoomIn()
+                                        }, label: {
+                                            Image(systemName: "plus.square.fill")
+                                                .padding(.trailing)
+                                        })
+                                        Button(action: {
+                                            zoomOut()
+                                        }, label: {
+                                            Image(systemName: "minus.square.fill")
+                                                .padding(.trailing)
+                                        })
+                                        Button(action: {
+                                            goToCurrentLocation()
+                                        }, label: {
+                                            Image(systemName: "location.fill.viewfinder")
+                                                .padding(.trailing)
+                                        })
+                                    }
                                 }
+                                Spacer()
                             }
                         }
-                            .padding(.top)
+                        .padding(.top)
                         Spacer()
                         HStack {
                             Button(action: {
@@ -321,14 +330,16 @@ struct MapView: View {
                                     dataConglomerate.searchOverlayActive = false
                                 }, label: {
                                     Image(systemName: "chevron.compact.up")
+                                        .font(.title)
                                 })
+                                    .buttonStyle(.borderedProminent)
                                 Spacer()
                             }
-                                .padding(.bottom)
+                            .padding(.bottom)
                             SearchOverlay()
                         }
-                            .background(Color.black)
-                            .opacity(0.8)
+                        .background(Color.black)
+                        .opacity(0.8)
                     }
                 }
                     .navigationBarHidden(true)

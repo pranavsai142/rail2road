@@ -80,7 +80,7 @@ struct EditView: View {
         }
             .padding()
             .navigationTitle("Edit")
-            .navigationBarTitleDisplayMode(.large)
+            .navigationBarTitleDisplayMode(.inline)
     }
 }
 
