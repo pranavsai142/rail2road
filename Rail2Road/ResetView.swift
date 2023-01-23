@@ -45,11 +45,6 @@ struct ResetView: View {
 //            Text("Reset Password")
 //                .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
             TextField("email", text: $email)
-            Button(action: {
-                reset();
-            }) {
-                Text("Reset")
-            }
             if(isSent) {
                 Text("Sent!")
             } else if(invalidUser) {
@@ -60,10 +55,20 @@ struct ResetView: View {
                 Text("Please enter valid email")
             }
             Spacer()
+            Button(action: {
+                reset();
+            }) {
+                Text("Reset")
+                    .font(.title3)
+            }
+                .buttonStyle(.borderedProminent)
         }
             .navigationTitle("Reset Password")
             .navigationBarTitleDisplayMode(.inline)
             .padding()
+            .onAppear {
+                hideKeyboard()
+            }
     }
 }
 

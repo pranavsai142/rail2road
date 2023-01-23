@@ -120,8 +120,10 @@ struct DetailView: View {
                         }, label: {
                             if(isFavorite) {
                                 Image(systemName: "star.fill")
+                                    .font(.title3)
                             } else {
                                 Image(systemName: "star")
+                                    .font(.title3)
                             }
                         })
                         NavigationLink(
@@ -133,6 +135,7 @@ struct DetailView: View {
                                             .font(.title)
                                             .bold()
                                             .padding()
+                                            .foregroundColor(.black)
                                             .background(Railyard.waittimeToColor(waittime: dataConglomerate.waittimeToMinutes(railyardId: railyard.id)))
                                             .clipShape(RoundedRectangle(cornerRadius: 20))
                                         Text("Report Wait Time")
@@ -184,6 +187,7 @@ struct DetailView: View {
                             }
                         }, label: {
                             Image(systemName: "arrow.up.square.fill")
+                                .font(.title3)
                         })
                     }
                     .padding(.leading)
@@ -193,6 +197,9 @@ struct DetailView: View {
             }
                 .navigationBarTitle(railyard.name)
                 .navigationBarTitleDisplayMode(.inline)
+                .onAppear {
+                    hideKeyboard()
+                }
         }
     }
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		812B3D13297E676500442896 /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812B3D12297E676500442896 /* ViewExtension.swift */; };
 		81377B9F2910C6C300274799 /* RailyardRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81377B9E2910C6C300274799 /* RailyardRow.swift */; };
 		81377BA12910C7F500274799 /* SearchOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81377BA02910C7F500274799 /* SearchOverlay.swift */; };
 		81377BA32910C82700274799 /* ListOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81377BA22910C82700274799 /* ListOverlay.swift */; };
@@ -44,6 +45,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		812B3D12297E676500442896 /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
 		81377B9E2910C6C300274799 /* RailyardRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RailyardRow.swift; sourceTree = "<group>"; };
 		81377BA02910C7F500274799 /* SearchOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchOverlay.swift; sourceTree = "<group>"; };
 		81377BA22910C82700274799 /* ListOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListOverlay.swift; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 		BF2C4D79281E413C00C241BF /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				812B3D12297E676500442896 /* ViewExtension.swift */,
 				81C9DD342930525F00710E07 /* Waittime.swift */,
 				BF2C4D7A281E415F00C241BF /* DataConglomerate.swift */,
 				BFBE4050288F0CF700DA2FD3 /* Chat.swift */,
@@ -266,6 +269,7 @@
 				81377BA12910C7F500274799 /* SearchOverlay.swift in Sources */,
 				8181116D292CA5A2007E57C3 /* TimeIntervalExtension.swift in Sources */,
 				BF2C4D86281E5D0C00C241BF /* LoginView.swift in Sources */,
+				812B3D13297E676500442896 /* ViewExtension.swift in Sources */,
 				BF2C4D7B281E415F00C241BF /* DataConglomerate.swift in Sources */,
 				BF8A79C22824D75E007B4AE2 /* Railyard.swift in Sources */,
 				81BF45E0295F7CB80028B622 /* ActivityIndicator.swift in Sources */,

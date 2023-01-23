@@ -106,6 +106,9 @@ struct LoginView: View {
         }
             .navigationBarTitle("Rail2Road")
             .navigationBarHidden(true)
+            .onAppear {
+                hideKeyboard()
+            }
     }
 }
 

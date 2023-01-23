@@ -13,7 +13,7 @@ struct EditView: View {
     
     @State private var submitted: Bool = false
     @State private var showingEditAlert: Bool = false
-    @State private var validEdit: Bool = true
+    @State private var invalidEdit: Bool = false
     @State private var name: String = ""
     @State private var email: String = ""
     
@@ -32,9 +32,11 @@ struct EditView: View {
     }
     
     private func validateEdit() -> Bool {
+        invalidEdit = false
         if(name != dataConglomerate.dataToString(tag: userNameTag) && name != "") {
             return true
         } else {
+            invalidEdit = true
             return false
         }
     }
@@ -48,7 +50,7 @@ struct EditView: View {
                 Spacer()
             }
             TextField(dataConglomerate.dataToString(tag: userNameTag), text: $name)
-            if(!validEdit) {
+            if(invalidEdit) {
                 Text("Edit invalid!")
             }
             if(submitted) {
@@ -58,7 +60,9 @@ struct EditView: View {
             if(submitted) {
                 Button(action: {}) {
                     Text("submit")
+                        .font(.title3)
                 }
+                    .buttonStyle(.borderedProminent)
                     .disabled(true)
             } else {
                 Button(action: {
@@ -67,7 +71,9 @@ struct EditView: View {
                     }
                 }) {
                     Text("submit")
+                        .font(.title3)
                 }
+                    .buttonStyle(.borderedProminent)
                     .alert(isPresented: $showingEditAlert) {
                         Alert(title: Text("Review Edit"),
                               message: Text("Old Display Name: \(dataConglomerate.dataToString(tag: userNameTag))\nNew Display Name: \(name)"),
@@ -81,6 +87,9 @@ struct EditView: View {
             .padding()
             .navigationTitle("Edit")
             .navigationBarTitleDisplayMode(.inline)
+            .onAppear {
+                hideKeyboard()
+            }
     }
 }
 

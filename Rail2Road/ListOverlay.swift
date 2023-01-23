@@ -14,32 +14,50 @@ struct ListOverlay: View {
     var uid: String
     var viewFavoriteRailyards: Bool
     
+    private func refresh() async {
+        try! await Task.sleep(nanoseconds: 500000000)
+        dataConglomerate.clearWaittimeData()
+        dataConglomerate.clearWaittimeQueries()
+    }
+    
     var body: some View {
-        Form {
-            if(viewFavoriteRailyards) {
-                Section(header: Text("Favorite Railyards")) {
-                    List {
-                        ForEach(dataConglomerate.favoriteRailyards) { railyard in
-                            NavigationLink(destination: DetailView(uid: uid, railyard: railyard)
-                                            .environmentObject(database)
-                                            .environmentObject(dataConglomerate)) {
+        VStack {
+            HStack {
+                if(viewFavoriteRailyards) {
+                    Text("Favorite Railyards")
+                        .font(.subheadline)
+                        .bold()
+                } else {
+                    Text("Nearby Railyards")
+                        .font(.subheadline)
+                        .bold()
+                }
+                Spacer()
+            }
+                .padding(.top)
+                .padding(.leading)
+            Divider()
+            //Courtesy of jstarry95
+            RefreshableScrollView(showsIndicators: true) {
+                if(viewFavoriteRailyards) {
+                    ForEach(dataConglomerate.favoriteRailyards) { railyard in
+                        NavigationLink(destination: DetailView(uid: uid, railyard: railyard)
+                            .environmentObject(database)
+                            .environmentObject(dataConglomerate)) {
                                 RailyardRow(railyard: railyard, averageWaittimeMinutes: dataConglomerate.waittimeToMinutes(railyardId: railyard.id))
                             }
+                    }
+                } else {
+                    ForEach(dataConglomerate.conglomerateNearbyStoredRailyards()) { railyard in
+                        NavigationLink(destination: DetailView(uid: uid, railyard: railyard)
+                            .environmentObject(database)
+                            .environmentObject(dataConglomerate)) {
+                                RailyardRow(railyard: railyard, averageWaittimeMinutes: dataConglomerate.waittimeToMinutes(railyardId: railyard.id))
                         }
                     }
                 }
-            } else {
-                Section(header: Text("Nearby Railyards")) {
-                    List {
-                        ForEach(dataConglomerate.conglomerateNearbyStoredRailyards()) { railyard in
-                            NavigationLink(destination: DetailView(uid: uid, railyard: railyard)
-                                            .environmentObject(database)
-                                            .environmentObject(dataConglomerate)) {
-                                RailyardRow(railyard: railyard, averageWaittimeMinutes: dataConglomerate.waittimeToMinutes(railyardId: railyard.id))
-                            }
-                        }
-                    }
-                }
+            } onRefresh: {
+                await refresh()
             }
         }
     }

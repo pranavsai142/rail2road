@@ -165,7 +165,9 @@ struct EmailView: View {
                     authenticate()
                 }) {
                     Text("Login")
+                        .font(.title3)
                 }
+                    .buttonStyle(.borderedProminent)
                 if(tryAgainLater) {
                     Text("Reset passowrd or try again later")
                 } else if(networkError) {
@@ -206,7 +208,9 @@ struct EmailView: View {
                 } else {
                     Button(action: {}, label: {
                             Text("submit")
+                                .font(.title3)
                         })
+                        .buttonStyle(.borderedProminent)
                         .disabled(true)
                     if(emailEntered()) {
                         Text("Emails don't match!")
@@ -231,6 +235,9 @@ struct EmailView: View {
             .navigationBarTitle("Change Email")
             .navigationBarTitleDisplayMode(.inline)
             .padding()
+            .onAppear {
+                hideKeyboard()
+            }
     }
 }
 

@@ -217,14 +217,13 @@ struct MapView: View {
                                 .padding(.trailing)
                         }
                     }
+                        .padding(.top)
                     //If ListOverlay should have accessibility to SearchOverlay,
                     //add conditional displaying SearchOverlay if dataConglomerate.searchOverlayActive else display ListOverlay.
                     ListOverlay(uid: uid, viewFavoriteRailyards: viewFavoriteRailyards)
                         .environmentObject(database)
                         .environmentObject(dataConglomerate)
                 }
-                    .background(Color.black)
-                    .opacity(0.8)
                     .navigationBarHidden(true)
                     .onAppear {
                         goToCurrentLocation()
@@ -251,6 +250,7 @@ struct MapView: View {
                                             .environmentObject(database)
                                             .environmentObject(dataConglomerate)) {
                                                 Image(systemName: "person.crop.circle.fill")
+                                                    .font(.title3)
                                                     .padding(.leading)
                                             }
                                     Spacer()
@@ -265,6 +265,7 @@ struct MapView: View {
                                         refresh()
                                     }, label: {
                                         Image(systemName: "arrow.clockwise.circle.fill")
+                                            .font(.title3)
                                             .padding(.trailing)
                                     })
                                     
@@ -281,18 +282,21 @@ struct MapView: View {
                                             zoomIn()
                                         }, label: {
                                             Image(systemName: "plus.square.fill")
+                                                .font(.title3)
                                                 .padding(.trailing)
                                         })
                                         Button(action: {
                                             zoomOut()
                                         }, label: {
                                             Image(systemName: "minus.square.fill")
+                                                .font(.title3)
                                                 .padding(.trailing)
                                         })
                                         Button(action: {
                                             goToCurrentLocation()
                                         }, label: {
                                             Image(systemName: "location.fill.viewfinder")
+                                                .font(.title3)
                                                 .padding(.trailing)
                                         })
                                     }
@@ -307,6 +311,7 @@ struct MapView: View {
                                 dataConglomerate.searchOverlayActive = true
                             }, label: {
                                 Image(systemName: "magnifyingglass.circle.fill")
+                                    .font(.title3)
                                     .padding(.leading)
                                     .padding(.bottom)
                                     .padding(.bottom)
@@ -316,6 +321,7 @@ struct MapView: View {
                                 listOverlayActive = true
                             }, label: {
                                 Image(systemName: "list.bullet.circle.fill")
+                                    .font(.title3)
                                     .padding(.trailing)
                                     .padding(.bottom)
                                     .padding(.bottom)
@@ -344,6 +350,7 @@ struct MapView: View {
                 }
                     .navigationBarHidden(true)
                     .onAppear {
+                        hideKeyboard()
                         goToCurrentLocation()
                     }
             }
