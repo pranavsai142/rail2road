@@ -45,7 +45,7 @@ struct DetailView: View {
     }
     
     private func generateChat() -> Bool {
-        let startDate = Calendar.current.date(byAdding: .day, value: -2, to: Date())!
+        let startDate = Calendar.current.date(byAdding: .day, value: -7, to: Date())!
         let endDate = Date()
         let tag = "railyard_" + railyard.id.uuidString + "_chat_tag"
         _ = database.queryChatDatabaseByTime(path: ["railyards"], railyardId: railyard.id, startDate: startDate, endDate: endDate, tag: tag, dataConglomerate: dataConglomerate)

@@ -74,7 +74,7 @@ struct MapView: View {
     private func generateWaittimes() -> Bool {
 //        dataConglomerate.clearWaittimeData()
         for railyard in dataConglomerate.conglomerateAllStoredRailyards() {
-            let startDate = Calendar.current.date(byAdding: .day, value: -2, to: Date())!
+            let startDate = Calendar.current.date(byAdding: .day, value: -7, to: Date())!
             let endDate = Date()
             let tag = "railyard_" + railyard.id.uuidString + "_waittime_tag"
             _ = database.queryWaittimeDatabaseByTime(path: ["railyards"], railyardId: railyard.id, startDate: startDate, endDate: endDate, tag: tag, dataConglomerate: dataConglomerate)
