@@ -59,11 +59,16 @@ final class DataConglomerate: ObservableObject {
     func conglomerateNearbyStoredRailyards() -> [Railyard] {
         let userLongitudeRegionsTags = findLongitudeRegionsTags()
         var storedNearbyRailyards: [Railyard] = []
-        for userLongitudeRegionTags in userLongitudeRegionsTags {
-            if storedUserLongitudeRegions[userLongitudeRegionTags.longitudeRegion] != nil {
-                for railyard in storedUserLongitudeRegions[userLongitudeRegionTags.longitudeRegion]! {
-                    if(abs(railyard.coordinates.latitude - region.center.latitude) < 2.0) {
-                        storedNearbyRailyards.append(railyard)
+        var count: Int = 0
+        var maxRailyardsDisplayed: Int = 20
+        for userLongitudeRegionTag in userLongitudeRegionsTags {
+            if storedUserLongitudeRegions[userLongitudeRegionTag.longitudeRegion] != nil {
+                for railyard in storedUserLongitudeRegions[userLongitudeRegionTag.longitudeRegion]! {
+                    if(abs(railyard.coordinates.latitude - region.center.latitude) < abs(region.center.latitude - region.span.latitudeDelta)) {
+                        if(count <= maxRailyardsDisplayed) {
+                            storedNearbyRailyards.append(railyard)
+                        }
+                        count += 1
                     }
                 }
             }

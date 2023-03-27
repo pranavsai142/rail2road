@@ -230,7 +230,7 @@ struct MapView: View {
                     }
             } else {
                 ZStack {
-                    Map(coordinateRegion: $dataConglomerate.region, showsUserLocation: true, annotationItems: dataConglomerate.conglomerateRegionalStoredRailyards()) { railyard in
+                    Map(coordinateRegion: $dataConglomerate.region, showsUserLocation: true, annotationItems: dataConglomerate.conglomerateNearbyStoredRailyards()) { railyard in
                         MapAnnotation(coordinate: railyard.coordinates) {
                             NavigationLink(destination: DetailView(uid: uid, railyard: railyard)
                                 .environmentObject(database)
