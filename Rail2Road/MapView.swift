@@ -33,6 +33,7 @@ struct MapView: View {
     
     var query: Bool {
 //        print("\n", dataConglomerate.queries)
+//        print("SIZE OF REGIONS", MemoryLayout.size(ofValue: dataConglomerate.storedUserLongitudeRegions))
         let userLongitudeRegionsTags = dataConglomerate.findLongitudeRegionsTags()
         //QueryTag struct {foundTag: String, tag: String} Used for retriving values from firebase
         DispatchQueue.main.async {
@@ -175,8 +176,7 @@ struct MapView: View {
     }
     
     private func refresh() {
-        dataConglomerate.clearWaittimeData()
-        dataConglomerate.clearWaittimeQueries()
+        dataConglomerate.refreshMapView()
     }
     
 //    private func printQuery() -> Bool {
@@ -230,7 +230,7 @@ struct MapView: View {
                     }
             } else {
                 ZStack {
-                    Map(coordinateRegion: $dataConglomerate.region, showsUserLocation: true, annotationItems: dataConglomerate.conglomerateNearbyStoredRailyards()) { railyard in
+                    Map(coordinateRegion: $dataConglomerate.region, showsUserLocation: true, annotationItems: dataConglomerate.conglomerateStoredRailyards()) { railyard in
                         MapAnnotation(coordinate: railyard.coordinates) {
                             NavigationLink(destination: DetailView(uid: uid, railyard: railyard)
                                 .environmentObject(database)

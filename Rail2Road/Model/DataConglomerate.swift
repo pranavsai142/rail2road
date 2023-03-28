@@ -56,26 +56,68 @@ final class DataConglomerate: ObservableObject {
         return dataString
     }
     
+    func conglomerateStoredRailyards() -> [Railyard] {
+        if(region.span.longitudeDelta > 5) {
+            return conglomerateNearbyStoredRailyards()
+        } else {
+            return conglomerateRegionalStoredRailyards()
+        }
+    }
+    
+    /// Returns railyards contained in the user map region. Contains parameters to adjust number of railyards displayed.
+    /// limitRailyardsDisplayedThreshold is a number of railyards that are diplayed before limiting further railyards from getting displayed
+    ///  railyardsDisplayedFrequency detirmines how often railyards are displayed after the limiter is active.
+    /// - Returns: A list of railyards, with railyards displayed concentrated in the middle of the map region.
     func conglomerateNearbyStoredRailyards() -> [Railyard] {
         let userLongitudeRegionsTags = findLongitudeRegionsTags()
         var storedNearbyRailyards: [Railyard] = []
-        var count: Int = 0
-        var maxRailyardsDisplayed: Int = 20
-        for userLongitudeRegionTag in userLongitudeRegionsTags {
-            if storedUserLongitudeRegions[userLongitudeRegionTag.longitudeRegion] != nil {
-                for railyard in storedUserLongitudeRegions[userLongitudeRegionTag.longitudeRegion]! {
-                    if(abs(railyard.coordinates.latitude - region.center.latitude) < abs(region.center.latitude - region.span.latitudeDelta)) {
-                        if(count <= maxRailyardsDisplayed) {
-                            storedNearbyRailyards.append(railyard)
+        let limitRailyardsDisplayedThreshold = 20
+        var numRailyardsDisplayed: Int = 0
+        let railyardsDisplayedFrequency: Int = 30
+            
+//        TODO: IF left and right userLongitudeRegionTags are different in length, one longitude region will be left out of the returned railyards according to the current loop logic.
+        var leftUserLongitudeRegionTags = Array((userLongitudeRegionsTags[0...(userLongitudeRegionsTags.count/2) - 1]))
+        leftUserLongitudeRegionTags.reverse()
+        let rightUserLongitudeRegionTags = Array(userLongitudeRegionsTags[leftUserLongitudeRegionTags.count...])
+        var userLongitudeRegionTagsIndex: Int = 0
+        while(userLongitudeRegionTagsIndex < leftUserLongitudeRegionTags.count || userLongitudeRegionTagsIndex < rightUserLongitudeRegionTags.count) {
+            if(userLongitudeRegionTagsIndex < leftUserLongitudeRegionTags.count) {
+                if storedUserLongitudeRegions[leftUserLongitudeRegionTags[userLongitudeRegionTagsIndex].longitudeRegion] != nil {
+                    for railyard in storedUserLongitudeRegions[leftUserLongitudeRegionTags[userLongitudeRegionTagsIndex].longitudeRegion]! {
+                        if((abs(railyard.coordinates.latitude) - abs(region.center.latitude)) < region.span.latitudeDelta) {
+                            if(numRailyardsDisplayed < limitRailyardsDisplayedThreshold) {
+                                storedNearbyRailyards.append(railyard)
+                            } else {
+                                if(numRailyardsDisplayed % railyardsDisplayedFrequency == 0) {
+                                    storedNearbyRailyards.append(railyard)
+                                }
+                            }
+                            numRailyardsDisplayed += 1
                         }
-                        count += 1
                     }
                 }
             }
+            if(userLongitudeRegionTagsIndex < rightUserLongitudeRegionTags.count) {
+                if storedUserLongitudeRegions[rightUserLongitudeRegionTags[userLongitudeRegionTagsIndex].longitudeRegion] != nil {
+                    for railyard in storedUserLongitudeRegions[rightUserLongitudeRegionTags[userLongitudeRegionTagsIndex].longitudeRegion]! {
+                        if((abs(railyard.coordinates.latitude) - abs(region.center.latitude)) < region.span.latitudeDelta) {
+                            if(numRailyardsDisplayed < limitRailyardsDisplayedThreshold) {
+                                storedNearbyRailyards.append(railyard)
+                            } else {
+                                if(numRailyardsDisplayed % railyardsDisplayedFrequency == 0) {
+                                    storedNearbyRailyards.append(railyard)
+                                }
+                            }
+                            numRailyardsDisplayed += 1
+                        }
+                    }
+                }
+            }
+            userLongitudeRegionTagsIndex += 1
         }
         return storedNearbyRailyards
     }
-    
+
     /// Conglomerates all railyards stored in DataConglomerate storedUserLongitudeRegions dictionary and favoriteRailyards list
     /// - Returns: Returns an array of railyards currently in data conglomerate memory
     func conglomerateAllStoredRailyards() -> [Railyard] {
@@ -139,11 +181,6 @@ final class DataConglomerate: ObservableObject {
         queries[tag] = nil
     }
     
-    func clearRailyardData() {
-        storedUserLongitudeRegions = [Int: [Railyard]]()
-        favoriteRailyards = [Railyard]()
-    }
-    
     func clearRailyardQueries() {
         for key in queries.keys {
             //Railyard query tags are 49 characters
@@ -173,8 +210,24 @@ final class DataConglomerate: ObservableObject {
         queries = [String: QueryStatus]()
     }
     
+    func refreshMapView() {
+        clearRailyardQueries()
+        clearWaittimeQueries()
+        clearRailyardData()
+        clearWaittimeData()
+    }
+    
     func clearFavoriteRailyards() {
         favoriteRailyards = [Railyard]()
+    }
+    
+    func clearRegionalRailyards() {
+        storedUserLongitudeRegions = [Int: [Railyard]]()
+    }
+    
+    func clearRailyardData() {
+        clearFavoriteRailyards()
+        clearRegionalRailyards()
     }
     
     func findLongitudeRegionsTags() -> [LongitudeRegionQueryTags] {
