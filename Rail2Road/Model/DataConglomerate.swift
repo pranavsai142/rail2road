@@ -58,28 +58,34 @@ final class DataConglomerate: ObservableObject {
     
     func conglomerateStoredRailyards() -> [Railyard] {
         if(region.span.longitudeDelta > 5) {
-            return conglomerateNearbyStoredRailyards()
+            return conglomerateRegionalStoredRailyards(limitRailyardsDisplayedThreshold: 20, railyardsDisplayedFrequency: 30)
         } else {
-            return conglomerateRegionalStoredRailyards()
+            return conglomerateRegionalStoredRailyards(limitRailyardsDisplayedThreshold: 99, railyardsDisplayedFrequency: 1)
         }
     }
     
     /// Returns railyards contained in the user map region. Contains parameters to adjust number of railyards displayed.
-    /// limitRailyardsDisplayedThreshold is a number of railyards that are diplayed before limiting further railyards from getting displayed
-    ///  railyardsDisplayedFrequency detirmines how often railyards are displayed after the limiter is active.
     /// - Returns: A list of railyards, with railyards displayed concentrated in the middle of the map region.
-    func conglomerateNearbyStoredRailyards() -> [Railyard] {
+    /// - Parameters:
+    ///   - limitRailyardsDisplayedThreshold: number of railyards that are diplayed before limiting further railyards from getting displayed
+    ///   - railyardsDisplayedFrequency: detirmines how often railyards are displayed after the limiter is active.
+    func conglomerateRegionalStoredRailyards(limitRailyardsDisplayedThreshold: Int, railyardsDisplayedFrequency: Int) -> [Railyard] {
         let userLongitudeRegionsTags = findLongitudeRegionsTags()
         var storedNearbyRailyards: [Railyard] = []
-        let limitRailyardsDisplayedThreshold = 20
+        if(userLongitudeRegionsTags.isEmpty) {
+            return storedNearbyRailyards
+        }
         var numRailyardsDisplayed: Int = 0
-        let railyardsDisplayedFrequency: Int = 30
-            
-//        TODO: IF left and right userLongitudeRegionTags are different in length, one longitude region will be left out of the returned railyards according to the current loop logic.
-        var leftUserLongitudeRegionTags = Array((userLongitudeRegionsTags[0...(userLongitudeRegionsTags.count/2) - 1]))
-        leftUserLongitudeRegionTags.reverse()
-        let rightUserLongitudeRegionTags = Array(userLongitudeRegionsTags[leftUserLongitudeRegionTags.count...])
         var userLongitudeRegionTagsIndex: Int = 0
+        var leftUserLongitudeRegionTags: [LongitudeRegionQueryTags] = []
+        var rightUserLongitudeRegionTags: [LongitudeRegionQueryTags] = []
+        if(userLongitudeRegionsTags.count == 1) {
+            leftUserLongitudeRegionTags = userLongitudeRegionsTags
+        } else {
+            leftUserLongitudeRegionTags = Array((userLongitudeRegionsTags[0...(userLongitudeRegionsTags.count/2) - 1]))
+            leftUserLongitudeRegionTags.reverse()
+            rightUserLongitudeRegionTags = Array(userLongitudeRegionsTags[leftUserLongitudeRegionTags.count...])
+        }
         while(userLongitudeRegionTagsIndex < leftUserLongitudeRegionTags.count || userLongitudeRegionTagsIndex < rightUserLongitudeRegionTags.count) {
             if(userLongitudeRegionTagsIndex < leftUserLongitudeRegionTags.count) {
                 if storedUserLongitudeRegions[leftUserLongitudeRegionTags[userLongitudeRegionTagsIndex].longitudeRegion] != nil {
@@ -130,17 +136,6 @@ final class DataConglomerate: ObservableObject {
         }
         return railyards
     }
-    
-    /// Conglomerates railyards stored in DataConglomerate storedUserLongitudeRegions dictionary
-    /// - Returns: returns array of Railyard objects, values of storedUserLongitudeRegions
-    func conglomerateRegionalStoredRailyards() -> [Railyard] {
-        var railyards: [Railyard] = []
-        for regionRailyards in storedUserLongitudeRegions.values {
-            railyards.append(contentsOf: regionRailyards)
-        }
-        return railyards
-    }
-    
     
     /// Function to return a string representation of the average waittime for a given railyard.
     /// The waittime is found by acceessing stored average waittimes
