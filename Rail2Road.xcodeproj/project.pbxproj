@@ -13,6 +13,7 @@
 		81377BA32910C82700274799 /* ListOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81377BA22910C82700274799 /* ListOverlay.swift */; };
 		81377BA52910CAC500274799 /* SearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81377BA42910CAC500274799 /* SearchManager.swift */; };
 		8171B85F28AF1E390004B7B7 /* QueryTags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8171B85E28AF1E390004B7B7 /* QueryTags.swift */; };
+		8175C3F529D91C1C00158CDC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8175C3F429D91C1C00158CDC /* LaunchScreen.storyboard */; };
 		8181116D292CA5A2007E57C3 /* TimeIntervalExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8181116C292CA5A2007E57C3 /* TimeIntervalExtension.swift */; };
 		81BF45DA295F7B970028B622 /* RefreshableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BF45D9295F7B970028B622 /* RefreshableScrollView.swift */; };
 		81BF45DC295F7C040028B622 /* FramePreferenceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BF45DB295F7C040028B622 /* FramePreferenceKey.swift */; };
@@ -52,6 +53,7 @@
 		81377BA22910C82700274799 /* ListOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListOverlay.swift; sourceTree = "<group>"; };
 		81377BA42910CAC500274799 /* SearchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchManager.swift; sourceTree = "<group>"; };
 		8171B85E28AF1E390004B7B7 /* QueryTags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryTags.swift; sourceTree = "<group>"; };
+		8175C3F429D91C1C00158CDC /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8181116C292CA5A2007E57C3 /* TimeIntervalExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalExtension.swift; sourceTree = "<group>"; };
 		81BF45D9295F7B970028B622 /* RefreshableScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshableScrollView.swift; sourceTree = "<group>"; };
 		81BF45DB295F7C040028B622 /* FramePreferenceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FramePreferenceKey.swift; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 				81BF45D9295F7B970028B622 /* RefreshableScrollView.swift */,
 				81BF45DD295F7C620028B622 /* RefreshableScrollViewModel.swift */,
 				81BF45DB295F7C040028B622 /* FramePreferenceKey.swift */,
+				8175C3F429D91C1C00158CDC /* LaunchScreen.storyboard */,
 				BFBE4053288F0F9700DA2FD3 /* ChatBubble.swift */,
 				BF2C4D94281E5E3E00C241BF /* ReportView.swift */,
 				81377B9E2910C6C300274799 /* RailyardRow.swift */,
@@ -236,6 +239,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF2C4D68281E31A200C241BF /* Preview Assets.xcassets in Resources */,
+				8175C3F529D91C1C00158CDC /* LaunchScreen.storyboard in Resources */,
 				BF2C4D65281E31A200C241BF /* Assets.xcassets in Resources */,
 				BF2C4D7F281E473F00C241BF /* GoogleService-Info.plist in Resources */,
 			);
@@ -416,7 +420,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1;
+				MARKETING_VERSION = 0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = sanavpai.Rail2Road;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -442,7 +446,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1;
+				MARKETING_VERSION = 0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = sanavpai.Rail2Road;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
