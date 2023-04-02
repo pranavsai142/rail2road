@@ -36,21 +36,21 @@ struct MapView: View {
 //        print("SIZE OF REGIONS", MemoryLayout.size(ofValue: dataConglomerate.storedUserLongitudeRegions))
         let userLongitudeRegionsTags = dataConglomerate.findLongitudeRegionsTags()
         //QueryTag struct {foundTag: String, tag: String} Used for retriving values from firebase
-        DispatchQueue.main.async {
-            _ = database.getValues(path: userFavoritesPath, tag: userFavoritesTag, dataConglomerate: dataConglomerate)
-            _ = generateFavorites()
-            var userLongitudeRegionsQueryTags: [LongitudeRegionQueryTags] = []
-            for userLongitudeRegionTags in userLongitudeRegionsTags {
+//        DispatchQueue.main.async {
+        _ = database.getValues(path: userFavoritesPath, tag: userFavoritesTag, dataConglomerate: dataConglomerate)
+        _ = generateFavorites()
+        var userLongitudeRegionsQueryTags: [LongitudeRegionQueryTags] = []
+        for userLongitudeRegionTags in userLongitudeRegionsTags {
 //                print(pairingFunction(userRailyardRegionTags: userRailyardRegionTags))
-                if(dataConglomerate.storedUserLongitudeRegions[userLongitudeRegionTags.longitudeRegion] == nil) {
-                    userLongitudeRegionsQueryTags.append(userLongitudeRegionTags)
-                }
+            if(dataConglomerate.storedUserLongitudeRegions[userLongitudeRegionTags.longitudeRegion] == nil) {
+                userLongitudeRegionsQueryTags.append(userLongitudeRegionTags)
             }
-            for userLongitudeRegionQueryTags in userLongitudeRegionsQueryTags {
-                _ = database.queryDatabaseByRegion(path: ["railyards"], queryTags: userLongitudeRegionQueryTags, dataConglomerate: dataConglomerate)
-            }
-            _ = generateWaittimes()
         }
+        for userLongitudeRegionQueryTags in userLongitudeRegionsQueryTags {
+            _ = database.queryDatabaseByRegion(path: ["railyards"], queryTags: userLongitudeRegionQueryTags, dataConglomerate: dataConglomerate)
+        }
+        _ = generateWaittimes()
+//        }
         return true
     }
     
@@ -73,7 +73,6 @@ struct MapView: View {
         }
     
     private func generateWaittimes() -> Bool {
-//        dataConglomerate.clearWaittimeData()
         for railyard in dataConglomerate.conglomerateAllStoredRailyards() {
             let startDate = Calendar.current.date(byAdding: .day, value: -7, to: Date())!
             let endDate = Date()
@@ -120,47 +119,47 @@ struct MapView: View {
 //    }
 
     private func zoomIn() {
-        DispatchQueue.main.async {
-            if(dataConglomerate.region.span.latitudeDelta == 0.0) {
-                dataConglomerate.region.span.latitudeDelta += 0.1
-            }
-            
-            if(dataConglomerate.region.span.longitudeDelta == 0.0) {
-                dataConglomerate.region.span.longitudeDelta += 0.1
-            }
-            
-            dataConglomerate.region.span.latitudeDelta *= 0.9
-            dataConglomerate.region.span.longitudeDelta *= 0.9
+//        DispatchQueue.main.async {
+        if(dataConglomerate.region.span.latitudeDelta == 0.0) {
+            dataConglomerate.region.span.latitudeDelta += 0.1
         }
+        
+        if(dataConglomerate.region.span.longitudeDelta == 0.0) {
+            dataConglomerate.region.span.longitudeDelta += 0.1
+        }
+        
+        dataConglomerate.region.span.latitudeDelta *= 0.9
+        dataConglomerate.region.span.longitudeDelta *= 0.9
+//        }
     }
     
     private func zoomOut() {
-        DispatchQueue.main.async {
-            let newLatitudeDelta = dataConglomerate.region.span.latitudeDelta * 1.1
-            let newLongitudeDelta = dataConglomerate.region.span.longitudeDelta * 1.1
-            if(newLatitudeDelta < 126.65) {
-                dataConglomerate.region.span.latitudeDelta = newLatitudeDelta
-            } else {
-                //Max latitude delta for Apple Maps
-                dataConglomerate.region.span.latitudeDelta = 126.65
-            }
-            if(newLongitudeDelta < 108.689) {
-                dataConglomerate.region.span.longitudeDelta = newLongitudeDelta
-            } else {
-                //Max longitude delta for appple maps
-                dataConglomerate.region.span.longitudeDelta = 108.689
-            }
+//        DispatchQueue.main.async {
+        let newLatitudeDelta = dataConglomerate.region.span.latitudeDelta * 1.1
+        let newLongitudeDelta = dataConglomerate.region.span.longitudeDelta * 1.1
+        if(newLatitudeDelta < 126.65) {
+            dataConglomerate.region.span.latitudeDelta = newLatitudeDelta
+        } else {
+            //Max latitude delta for Apple Maps
+            dataConglomerate.region.span.latitudeDelta = 126.65
         }
+        if(newLongitudeDelta < 108.689) {
+            dataConglomerate.region.span.longitudeDelta = newLongitudeDelta
+        } else {
+            //Max longitude delta for appple maps
+            dataConglomerate.region.span.longitudeDelta = 108.689
+        }
+//        }
     }
     
     private func goToCurrentLocation() {
-        DispatchQueue.main.async {
-            dataConglomerate.region = locationManager.region
-            //If LocationManager returned a 0 value MKCoordinateRegion, default view to America
-            if(dataConglomerate.region.center.latitude == 0.0 && dataConglomerate.region.center.longitude == 0.0 && dataConglomerate.region.span.latitudeDelta == 0.0 && dataConglomerate.region.span.longitudeDelta == 0.0) {
-                dataConglomerate.region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.09024, longitude: -95.712891), span: MKCoordinateSpan(latitudeDelta: 5, longitudeDelta: 65))
-            }
+//        DispatchQueue.main.async {
+        dataConglomerate.region = locationManager.region
+        //If LocationManager returned a 0 value MKCoordinateRegion, default view to America
+        if(dataConglomerate.region.center.latitude == 0.0 && dataConglomerate.region.center.longitude == 0.0 && dataConglomerate.region.span.latitudeDelta == 0.0 && dataConglomerate.region.span.longitudeDelta == 0.0) {
+            dataConglomerate.region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.09024, longitude: -95.712891), span: MKCoordinateSpan(latitudeDelta: 5, longitudeDelta: 65))
         }
+//        }
     }
     
     private func search() {

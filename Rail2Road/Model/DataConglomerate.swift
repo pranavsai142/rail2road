@@ -58,7 +58,7 @@ final class DataConglomerate: ObservableObject {
     
     func conglomerateStoredRailyards() -> [Railyard] {
         if(region.span.longitudeDelta > 5) {
-            return conglomerateRegionalStoredRailyards(limitRailyardsDisplayedThreshold: 20, railyardsDisplayedFrequency: 30)
+            return conglomerateRegionalStoredRailyards(limitRailyardsDisplayedThreshold: 5, railyardsDisplayedFrequency: 10)
         } else {
             return conglomerateRegionalStoredRailyards(limitRailyardsDisplayedThreshold: 99, railyardsDisplayedFrequency: 1)
         }

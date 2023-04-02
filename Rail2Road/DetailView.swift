@@ -26,12 +26,12 @@ struct DetailView: View {
     }
     
     var query: Bool {
-        DispatchQueue.main.async {
-            _ = database.getValue(path: ["users", uid, "favorites"], key: railyard.id.uuidString, tag: railyardFavoriteTag, dataConglomerate: dataConglomerate)
-            _ = setFavorite()
-            _ = generateChat()
-            _ = generateUserNames()
-        }
+//        DispatchQueue.main.async {
+        _ = database.getValue(path: ["users", uid, "favorites"], key: railyard.id.uuidString, tag: railyardFavoriteTag, dataConglomerate: dataConglomerate)
+        _ = setFavorite()
+        _ = generateChat()
+        _ = generateUserNames()
+//        }
         return true
     }
     

@@ -26,9 +26,9 @@ struct UserView: View {
     }
 
     var query: Bool {
-        DispatchQueue.main.async {
-            _ = database.getValue(path: userPath, key: "name", tag: userNameTag, dataConglomerate: dataConglomerate)
-        }
+//        DispatchQueue.main.async {
+        _ = database.getValue(path: userPath, key: "name", tag: userNameTag, dataConglomerate: dataConglomerate)
+//        }
         return true
     }
     
