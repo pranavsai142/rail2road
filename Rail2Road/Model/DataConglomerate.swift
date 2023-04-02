@@ -57,11 +57,12 @@ final class DataConglomerate: ObservableObject {
     }
     
     func conglomerateStoredRailyards() -> [Railyard] {
-        if(region.span.longitudeDelta > 5) {
-            return conglomerateRegionalStoredRailyards(limitRailyardsDisplayedThreshold: 5, railyardsDisplayedFrequency: 10)
-        } else {
-            return conglomerateRegionalStoredRailyards(limitRailyardsDisplayedThreshold: 99, railyardsDisplayedFrequency: 1)
-        }
+//        if(region.span.longitudeDelta > 5) {
+//            return conglomerateRegionalStoredRailyards(limitRailyardsDisplayedThreshold: 5, railyardsDisplayedFrequency: 10)
+//        } else {
+//            return conglomerateRegionalStoredRailyards(limitRailyardsDisplayedThreshold: 99, railyardsDisplayedFrequency: 1)
+//        }
+        return conglomerateRegionalStoredRailyards(limitRailyardsDisplayedThreshold: 99, railyardsDisplayedFrequency: 1)
     }
     
     /// Returns railyards contained in the user map region. Contains parameters to adjust number of railyards displayed.
