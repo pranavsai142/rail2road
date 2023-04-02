@@ -26,9 +26,9 @@ struct UserView: View {
     }
 
     var query: Bool {
-        DispatchQueue.main.async {
-            _ = database.getValue(path: userPath, key: "name", tag: userNameTag, dataConglomerate: dataConglomerate)
-        }
+//        DispatchQueue.main.async {
+        _ = database.getValue(path: userPath, key: "name", tag: userNameTag, dataConglomerate: dataConglomerate)
+//        }
         return true
     }
     
@@ -65,6 +65,7 @@ struct UserView: View {
                                     .environmentObject(database)
                                     .environmentObject(dataConglomerate)) {
                                 Image(systemName: "pencil.circle.fill")
+                                    .font(.title3)
                             }
                         }
                             .padding(.bottom)
@@ -73,22 +74,28 @@ struct UserView: View {
                                 .environmentObject(database)
                                 .environmentObject(dataConglomerate)) {
                             Text("Change Email")
+                                .font(.title3)
                         }
+                            .buttonStyle(.bordered)
                             .padding(.bottom)
                         NavigationLink(
                             destination: ResetView()
                                 .environmentObject(database)
                                 .environmentObject(dataConglomerate)) {
                             Text("Reset Password")
+                                .font(.title3)
                         }
+                            .buttonStyle(.bordered)
                             .padding(.bottom)
                         Button(action: {
                             deleteAccountAlertActive = true
                         }) {
                             Text("Delete Account")
                                 .bold()
+                                .font(.title3)
                                 .foregroundColor(.red)
                         }
+                            .buttonStyle(.bordered)
                             .padding(.top)
                             .alert(isPresented: $deleteAccountAlertActive) {
                                 Alert(title: Text("Confirm Deletion"),
@@ -104,7 +111,9 @@ struct UserView: View {
                         logoutAlertActive = true
                     }) {
                         Text("logout")
+                            .font(.title3)
                     }
+                        .buttonStyle(.borderedProminent)
                         .alert(isPresented: $logoutAlertActive) {
                             Alert(title: Text("Exiting App"),
                                   message: Text("Please relaunch Rail2Road and reauthenticate!"),
@@ -116,7 +125,10 @@ struct UserView: View {
                 }
                     .padding()
                     .navigationTitle("User Info")
-                    .navigationBarTitleDisplayMode(.large)
+                    .navigationBarTitleDisplayMode(.inline)
+                    .onAppear {
+                        hideKeyboard()
+                    }
             }
         }
     }

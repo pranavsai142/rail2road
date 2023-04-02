@@ -59,8 +59,10 @@ struct LoginView: View {
                     .font(.title)
                     .bold()
                 TextField("Email", text: $email)
+                    .font(.title3)
             
                 SecureField("Password", text: $password)
+                    .font(.title3)
             
                 NavigationLink(
                     destination: MapView(uid: uid)
@@ -71,7 +73,9 @@ struct LoginView: View {
                         authenticate()
                     }) {
                         Text("Login")
+                            .font(.title3)
                     }
+                        .buttonStyle(.borderedProminent)
                 }
                 if(tryAgainLater) {
                     Text("Reset passowrd or try again later")
@@ -86,18 +90,25 @@ struct LoginView: View {
                 NavigationLink(
                     destination: ResetView()) {
                     Text("Reset Password")
+                        .font(.title3)
                 }
+                    .buttonStyle(.bordered)
                 NavigationLink(
                     destination: RegisterView()
                         .environmentObject(database)
                         .environmentObject(dataConglomerate)) {
                     Text("Register")
+                        .font(.title3)
                 }
+                    .buttonStyle(.bordered)
             }
                 .padding()
         }
             .navigationBarTitle("Rail2Road")
             .navigationBarHidden(true)
+            .onAppear {
+                hideKeyboard()
+            }
     }
 }
 

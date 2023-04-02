@@ -12,12 +12,6 @@ import Foundation
 struct ContentView: View {
     @EnvironmentObject var database: FireDatabaseReference
     @EnvironmentObject var dataConglomerate: DataConglomerate
-    private var query: Bool {
-        database.setValue(path: ["Users", "Jackson", "Age"], value: "22")
-        _ = database.getValue(path: ["Users", "Jackson"], key: "Age", tag: "JacksonAge", dataConglomerate: dataConglomerate)
-        return true
-    }
-    
     
     var body: some View {
         LoginView()

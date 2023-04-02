@@ -13,10 +13,17 @@ struct RailyardRow: View {
     var body: some View {
         HStack {
             Text(railyard.name)
+                .bold()
             Spacer()
             Text(averageWaittimeMinutes)
+                .bold()
+                .padding()
+                .background(Railyard.waittimeToColor(waittime: averageWaittimeMinutes))
+                .clipShape(RoundedRectangle(cornerRadius: 10))
         }
-            .padding()
+            .padding(.leading)
+            .padding(.trailing)
+            .padding(.bottom)
     }
 }
 

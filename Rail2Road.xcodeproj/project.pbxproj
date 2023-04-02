@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		812B3D13297E676500442896 /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812B3D12297E676500442896 /* ViewExtension.swift */; };
 		81377B9F2910C6C300274799 /* RailyardRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81377B9E2910C6C300274799 /* RailyardRow.swift */; };
 		81377BA12910C7F500274799 /* SearchOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81377BA02910C7F500274799 /* SearchOverlay.swift */; };
 		81377BA32910C82700274799 /* ListOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81377BA22910C82700274799 /* ListOverlay.swift */; };
@@ -19,6 +20,7 @@
 		81BF45E0295F7CB80028B622 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BF45DF295F7CB80028B622 /* ActivityIndicator.swift */; };
 		81C9DD352930525F00710E07 /* Waittime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C9DD342930525F00710E07 /* Waittime.swift */; };
 		81E22CD12937E4DF00BAE661 /* EmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E22CD02937E4DF00BAE661 /* EmailView.swift */; };
+		81E70B7029D24DDA00059CD5 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E70B6F29D24DDA00059CD5 /* ArrayExtension.swift */; };
 		BF2C4D61281E31A200C241BF /* Rail2RoadApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2C4D60281E31A200C241BF /* Rail2RoadApp.swift */; };
 		BF2C4D63281E31A200C241BF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2C4D62281E31A200C241BF /* ContentView.swift */; };
 		BF2C4D65281E31A200C241BF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF2C4D64281E31A200C241BF /* Assets.xcassets */; };
@@ -44,6 +46,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		812B3D12297E676500442896 /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
 		81377B9E2910C6C300274799 /* RailyardRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RailyardRow.swift; sourceTree = "<group>"; };
 		81377BA02910C7F500274799 /* SearchOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchOverlay.swift; sourceTree = "<group>"; };
 		81377BA22910C82700274799 /* ListOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListOverlay.swift; sourceTree = "<group>"; };
@@ -56,6 +59,7 @@
 		81BF45DF295F7CB80028B622 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		81C9DD342930525F00710E07 /* Waittime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Waittime.swift; sourceTree = "<group>"; };
 		81E22CD02937E4DF00BAE661 /* EmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailView.swift; sourceTree = "<group>"; };
+		81E70B6F29D24DDA00059CD5 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		BF2C4D5D281E31A200C241BF /* Rail2Road.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rail2Road.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF2C4D60281E31A200C241BF /* Rail2RoadApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rail2RoadApp.swift; sourceTree = "<group>"; };
 		BF2C4D62281E31A200C241BF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -153,8 +157,10 @@
 		BF2C4D79281E413C00C241BF /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				812B3D12297E676500442896 /* ViewExtension.swift */,
 				81C9DD342930525F00710E07 /* Waittime.swift */,
 				BF2C4D7A281E415F00C241BF /* DataConglomerate.swift */,
+				81E70B6F29D24DDA00059CD5 /* ArrayExtension.swift */,
 				BFBE4050288F0CF700DA2FD3 /* Chat.swift */,
 				BF8A79C12824D75E007B4AE2 /* Railyard.swift */,
 				BF8986522889CFCA00BF676E /* LocationManager.swift */,
@@ -266,8 +272,10 @@
 				81377BA12910C7F500274799 /* SearchOverlay.swift in Sources */,
 				8181116D292CA5A2007E57C3 /* TimeIntervalExtension.swift in Sources */,
 				BF2C4D86281E5D0C00C241BF /* LoginView.swift in Sources */,
+				812B3D13297E676500442896 /* ViewExtension.swift in Sources */,
 				BF2C4D7B281E415F00C241BF /* DataConglomerate.swift in Sources */,
 				BF8A79C22824D75E007B4AE2 /* Railyard.swift in Sources */,
+				81E70B7029D24DDA00059CD5 /* ArrayExtension.swift in Sources */,
 				81BF45E0295F7CB80028B622 /* ActivityIndicator.swift in Sources */,
 				BF2C4D95281E5E3E00C241BF /* ReportView.swift in Sources */,
 				BF2C4D8C281E5DA600C241BF /* ResetView.swift in Sources */,
@@ -403,15 +411,19 @@
 				DEVELOPMENT_TEAM = PCKCXX5VA8;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Rail2Road/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = sanavpai.Rail2Road;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -425,15 +437,19 @@
 				DEVELOPMENT_TEAM = PCKCXX5VA8;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Rail2Road/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = sanavpai.Rail2Road;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

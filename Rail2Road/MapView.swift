@@ -33,23 +33,24 @@ struct MapView: View {
     
     var query: Bool {
 //        print("\n", dataConglomerate.queries)
+//        print("SIZE OF REGIONS", MemoryLayout.size(ofValue: dataConglomerate.storedUserLongitudeRegions))
         let userLongitudeRegionsTags = dataConglomerate.findLongitudeRegionsTags()
         //QueryTag struct {foundTag: String, tag: String} Used for retriving values from firebase
-        DispatchQueue.main.async {
-            _ = database.getValues(path: userFavoritesPath, tag: userFavoritesTag, dataConglomerate: dataConglomerate)
-            _ = generateFavorites()
-            var userLongitudeRegionsQueryTags: [LongitudeRegionQueryTags] = []
-            for userLongitudeRegionTags in userLongitudeRegionsTags {
+//        DispatchQueue.main.async {
+        _ = database.getValues(path: userFavoritesPath, tag: userFavoritesTag, dataConglomerate: dataConglomerate)
+        _ = generateFavorites()
+        var userLongitudeRegionsQueryTags: [LongitudeRegionQueryTags] = []
+        for userLongitudeRegionTags in userLongitudeRegionsTags {
 //                print(pairingFunction(userRailyardRegionTags: userRailyardRegionTags))
-                if(dataConglomerate.storedUserLongitudeRegions[userLongitudeRegionTags.longitudeRegion] == nil) {
-                    userLongitudeRegionsQueryTags.append(userLongitudeRegionTags)
-                }
+            if(dataConglomerate.storedUserLongitudeRegions[userLongitudeRegionTags.longitudeRegion] == nil) {
+                userLongitudeRegionsQueryTags.append(userLongitudeRegionTags)
             }
-            for userLongitudeRegionQueryTags in userLongitudeRegionsQueryTags {
-                _ = database.queryDatabaseByRegion(path: ["railyards"], queryTags: userLongitudeRegionQueryTags, dataConglomerate: dataConglomerate)
-            }
-            _ = generateWaittimes()
         }
+        for userLongitudeRegionQueryTags in userLongitudeRegionsQueryTags {
+            _ = database.queryDatabaseByRegion(path: ["railyards"], queryTags: userLongitudeRegionQueryTags, dataConglomerate: dataConglomerate)
+        }
+        _ = generateWaittimes()
+//        }
         return true
     }
     
@@ -72,9 +73,8 @@ struct MapView: View {
         }
     
     private func generateWaittimes() -> Bool {
-//        dataConglomerate.clearWaittimeData()
         for railyard in dataConglomerate.conglomerateAllStoredRailyards() {
-            let startDate = Calendar.current.date(byAdding: .day, value: -2, to: Date())!
+            let startDate = Calendar.current.date(byAdding: .day, value: -7, to: Date())!
             let endDate = Date()
             let tag = "railyard_" + railyard.id.uuidString + "_waittime_tag"
             _ = database.queryWaittimeDatabaseByTime(path: ["railyards"], railyardId: railyard.id, startDate: startDate, endDate: endDate, tag: tag, dataConglomerate: dataConglomerate)
@@ -119,47 +119,47 @@ struct MapView: View {
 //    }
 
     private func zoomIn() {
-        DispatchQueue.main.async {
-            if(dataConglomerate.region.span.latitudeDelta == 0.0) {
-                dataConglomerate.region.span.latitudeDelta += 0.1
-            }
-            
-            if(dataConglomerate.region.span.longitudeDelta == 0.0) {
-                dataConglomerate.region.span.longitudeDelta += 0.1
-            }
-            
-            dataConglomerate.region.span.latitudeDelta *= 0.9
-            dataConglomerate.region.span.longitudeDelta *= 0.9
+//        DispatchQueue.main.async {
+        if(dataConglomerate.region.span.latitudeDelta == 0.0) {
+            dataConglomerate.region.span.latitudeDelta += 0.1
         }
+        
+        if(dataConglomerate.region.span.longitudeDelta == 0.0) {
+            dataConglomerate.region.span.longitudeDelta += 0.1
+        }
+        
+        dataConglomerate.region.span.latitudeDelta *= 0.9
+        dataConglomerate.region.span.longitudeDelta *= 0.9
+//        }
     }
     
     private func zoomOut() {
-        DispatchQueue.main.async {
-            let newLatitudeDelta = dataConglomerate.region.span.latitudeDelta * 1.1
-            let newLongitudeDelta = dataConglomerate.region.span.longitudeDelta * 1.1
-            if(newLatitudeDelta < 126.65) {
-                dataConglomerate.region.span.latitudeDelta = newLatitudeDelta
-            } else {
-                //Max latitude delta for Apple Maps
-                dataConglomerate.region.span.latitudeDelta = 126.65
-            }
-            if(newLongitudeDelta < 108.689) {
-                dataConglomerate.region.span.longitudeDelta = newLongitudeDelta
-            } else {
-                //Max longitude delta for appple maps
-                dataConglomerate.region.span.longitudeDelta = 108.689
-            }
+//        DispatchQueue.main.async {
+        let newLatitudeDelta = dataConglomerate.region.span.latitudeDelta * 1.1
+        let newLongitudeDelta = dataConglomerate.region.span.longitudeDelta * 1.1
+        if(newLatitudeDelta < 126.65) {
+            dataConglomerate.region.span.latitudeDelta = newLatitudeDelta
+        } else {
+            //Max latitude delta for Apple Maps
+            dataConglomerate.region.span.latitudeDelta = 126.65
         }
+        if(newLongitudeDelta < 108.689) {
+            dataConglomerate.region.span.longitudeDelta = newLongitudeDelta
+        } else {
+            //Max longitude delta for appple maps
+            dataConglomerate.region.span.longitudeDelta = 108.689
+        }
+//        }
     }
     
     private func goToCurrentLocation() {
-        DispatchQueue.main.async {
-            dataConglomerate.region = locationManager.region
-            //If LocationManager returned a 0 value MKCoordinateRegion, default view to America
-            if(dataConglomerate.region.center.latitude == 0.0 && dataConglomerate.region.center.longitude == 0.0 && dataConglomerate.region.span.latitudeDelta == 0.0 && dataConglomerate.region.span.longitudeDelta == 0.0) {
-                dataConglomerate.region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.09024, longitude: -95.712891), span: MKCoordinateSpan(latitudeDelta: 5, longitudeDelta: 65))
-            }
+//        DispatchQueue.main.async {
+        dataConglomerate.region = locationManager.region
+        //If LocationManager returned a 0 value MKCoordinateRegion, default view to America
+        if(dataConglomerate.region.center.latitude == 0.0 && dataConglomerate.region.center.longitude == 0.0 && dataConglomerate.region.span.latitudeDelta == 0.0 && dataConglomerate.region.span.longitudeDelta == 0.0) {
+            dataConglomerate.region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.09024, longitude: -95.712891), span: MKCoordinateSpan(latitudeDelta: 5, longitudeDelta: 65))
         }
+//        }
     }
     
     private func search() {
@@ -175,8 +175,7 @@ struct MapView: View {
     }
     
     private func refresh() {
-        dataConglomerate.clearWaittimeData()
-        dataConglomerate.clearWaittimeQueries()
+        dataConglomerate.refreshMapView()
     }
     
 //    private func printQuery() -> Bool {
@@ -190,110 +189,138 @@ struct MapView: View {
         if(query) {
             if(listOverlayActive) {
                 VStack {
-                    HStack {
-                        Button(action: {
-                            listOverlayActive = false
-                        }, label: {
-                            Image(systemName: "chevron.compact.up")
-                        })
+                    ZStack {
+                        HStack {
+                            Button(action: {
+                                listOverlayActive = false
+                            }, label: {
+                                Image(systemName: "chevron.compact.up")
+                                    .font(.title)
+                            })
+                                .buttonStyle(.borderedProminent)
+                        }
+                        HStack {
+                            Spacer()
+                            Button(action: {
+                                toggleViewFavoriteRailyards()
+                            }, label: {
+                                if(viewFavoriteRailyards) {
+                                    Image(systemName: "star.fill")
+                                        .font(.title3)
+                                } else {
+                                    Image(systemName: "star")
+                                        .font(.title3)
+                                }
+                            })
+                                .buttonStyle(.bordered)
+                                .padding(.trailing)
+                        }
                     }
-                    HStack {
-                        Spacer()
-                        Button(action: {
-                            toggleViewFavoriteRailyards()
-                        }, label: {
-                            if(viewFavoriteRailyards) {
-                                Image(systemName: "star.fill")
-                            } else {
-                                Image(systemName: "star")
-                            }
-                        })
-                            .padding(.trailing)
-                    }
+                        .padding(.top)
                     //If ListOverlay should have accessibility to SearchOverlay,
                     //add conditional displaying SearchOverlay if dataConglomerate.searchOverlayActive else display ListOverlay.
                     ListOverlay(uid: uid, viewFavoriteRailyards: viewFavoriteRailyards)
                         .environmentObject(database)
                         .environmentObject(dataConglomerate)
                 }
-                    .background(Color.black)
-                    .opacity(0.8)
                     .navigationBarHidden(true)
                     .onAppear {
                         goToCurrentLocation()
                     }
             } else {
                 ZStack {
-                    Map(coordinateRegion: $dataConglomerate.region, showsUserLocation: true, annotationItems: dataConglomerate.conglomerateRegionalStoredRailyards()) { railyard in
+                    Map(coordinateRegion: $dataConglomerate.region, showsUserLocation: true, annotationItems: dataConglomerate.conglomerateStoredRailyards()) { railyard in
                         MapAnnotation(coordinate: railyard.coordinates) {
                             NavigationLink(destination: DetailView(uid: uid, railyard: railyard)
-                                            .environmentObject(database)
-                                            .environmentObject(dataConglomerate)) {
-                                RailyardAnnotation(railyard: railyard, averageWaittimeMinutes: dataConglomerate.waittimeToMinutes(railyardId: railyard.id))
-                            }
+                                .environmentObject(database)
+                                .environmentObject(dataConglomerate)) {
+                                    RailyardAnnotation(railyard: railyard, averageWaittimeMinutes: dataConglomerate.waittimeToMinutes(railyardId: railyard.id))
+                                }
                         }
                     }
-                        .edgesIgnoringSafeArea(.all)
+                    .edgesIgnoringSafeArea(.all)
                     VStack {
-                        HStack(alignment: .top) {
-                            NavigationLink(
-                                destination: UserView(uid: uid)
-                                    .environmentObject(database)
-                                    .environmentObject(dataConglomerate)) {
-                                Image(systemName: "person.crop.circle.fill")
-                                    .padding(.leading)
+                        ZStack {
+                            //Account
+                            VStack {
+                                HStack(alignment: .top) {
+                                    NavigationLink(
+                                        destination: UserView(uid: uid)
+                                            .environmentObject(database)
+                                            .environmentObject(dataConglomerate)) {
+                                                Image(systemName: "person.crop.circle.fill")
+                                                    .font(.title3)
+                                                    .padding(.leading)
+                                            }
+                                    Spacer()
+                                }
+                                Spacer()
                             }
-                            
-                            Spacer()
-                            
-                            Button(action: {
-                                refresh()
-                            }, label: {
-                                Image(systemName: "arrow.clockwise.circle.fill")
-                                    .padding(.trailing)
-                            })
-                            
-                            Spacer()
-                            
-                            VStack(alignment: HorizontalAlignment.trailing) {
-                                Button(action: {
-                                    zoomIn()
-                                }, label: {
-                                    Image(systemName: "plus.square.fill")
-                                        .padding(.trailing)
-                                })
-                                Button(action: {
-                                    zoomOut()
-                                }, label: {
-                                    Image(systemName: "minus.square.fill")
-                                        .padding(.trailing)
-                                })
-                                Button(action: {
-                                    goToCurrentLocation()
-                                }, label: {
-                                    Image(systemName: "location.fill.viewfinder")
-                                        .padding(.trailing)
-                                })
+                            //Refresh
+                            VStack {
+                                HStack {
+                                    Spacer()
+                                    Button(action: {
+                                        refresh()
+                                    }, label: {
+                                        Image(systemName: "arrow.clockwise.circle.fill")
+                                            .font(.title3)
+                                            .padding(.trailing)
+                                    })
+                                    
+                                    Spacer()
+                                }
+                                Spacer()
+                            }
+                            //Map Controls
+                            VStack {
+                                HStack {
+                                    Spacer()
+                                    VStack(alignment: HorizontalAlignment.trailing) {
+                                        Button(action: {
+                                            zoomIn()
+                                        }, label: {
+                                            Image(systemName: "plus.square.fill")
+                                                .font(.title3)
+                                                .padding(.trailing)
+                                        })
+                                        Button(action: {
+                                            zoomOut()
+                                        }, label: {
+                                            Image(systemName: "minus.square.fill")
+                                                .font(.title3)
+                                                .padding(.trailing)
+                                        })
+                                        Button(action: {
+                                            goToCurrentLocation()
+                                        }, label: {
+                                            Image(systemName: "location.fill.viewfinder")
+                                                .font(.title3)
+                                                .padding(.trailing)
+                                        })
+                                    }
+                                }
+                                Spacer()
                             }
                         }
-                            .padding(.top)
+                        .padding(.top)
                         Spacer()
                         HStack {
                             Button(action: {
                                 dataConglomerate.searchOverlayActive = true
                             }, label: {
                                 Image(systemName: "magnifyingglass.circle.fill")
+                                    .font(.title3)
                                     .padding(.leading)
                                     .padding(.bottom)
                                     .padding(.bottom)
                             })
-                            
                             Spacer()
-                            
                             Button(action: {
                                 listOverlayActive = true
                             }, label: {
                                 Image(systemName: "list.bullet.circle.fill")
+                                    .font(.title3)
                                     .padding(.trailing)
                                     .padding(.bottom)
                                     .padding(.bottom)
@@ -308,18 +335,21 @@ struct MapView: View {
                                     dataConglomerate.searchOverlayActive = false
                                 }, label: {
                                     Image(systemName: "chevron.compact.up")
+                                        .font(.title)
                                 })
+                                    .buttonStyle(.borderedProminent)
                                 Spacer()
                             }
-                                .padding(.bottom)
+                            .padding(.bottom)
                             SearchOverlay()
                         }
-                            .background(Color.black)
-                            .opacity(0.8)
+                        .background(Color.black)
+                        .opacity(0.8)
                     }
                 }
                     .navigationBarHidden(true)
                     .onAppear {
+                        hideKeyboard()
                         goToCurrentLocation()
                     }
             }
