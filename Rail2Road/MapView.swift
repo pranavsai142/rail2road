@@ -249,7 +249,7 @@ struct MapView: View {
                                             .environmentObject(database)
                                             .environmentObject(dataConglomerate)) {
                                                 Image(systemName: "person.crop.circle.fill")
-                                                    .font(.title3)
+                                                    .font(.title)
                                                     .padding(.leading)
                                             }
                                     Spacer()
@@ -264,7 +264,7 @@ struct MapView: View {
                                         refresh()
                                     }, label: {
                                         Image(systemName: "arrow.clockwise.circle.fill")
-                                            .font(.title3)
+                                            .font(.title)
                                             .padding(.trailing)
                                     })
                                     
@@ -281,21 +281,21 @@ struct MapView: View {
                                             zoomIn()
                                         }, label: {
                                             Image(systemName: "plus.square.fill")
-                                                .font(.title3)
+                                                .font(.title)
                                                 .padding(.trailing)
                                         })
                                         Button(action: {
                                             zoomOut()
                                         }, label: {
                                             Image(systemName: "minus.square.fill")
-                                                .font(.title3)
+                                                .font(.title)
                                                 .padding(.trailing)
                                         })
                                         Button(action: {
                                             goToCurrentLocation()
                                         }, label: {
                                             Image(systemName: "location.fill.viewfinder")
-                                                .font(.title3)
+                                                .font(.title)
                                                 .padding(.trailing)
                                         })
                                     }
@@ -310,7 +310,7 @@ struct MapView: View {
                                 dataConglomerate.searchOverlayActive = true
                             }, label: {
                                 Image(systemName: "magnifyingglass.circle.fill")
-                                    .font(.title3)
+                                    .font(.title)
                                     .padding(.leading)
                                     .padding(.bottom)
                                     .padding(.bottom)
@@ -320,7 +320,7 @@ struct MapView: View {
                                 listOverlayActive = true
                             }, label: {
                                 Image(systemName: "list.bullet.circle.fill")
-                                    .font(.title3)
+                                    .font(.title)
                                     .padding(.trailing)
                                     .padding(.bottom)
                                     .padding(.bottom)
