@@ -60,13 +60,14 @@ final class DataConglomerate: ObservableObject {
     /// - Returns: List of railyards
     func conglomerateStoredRailyards() -> [Railyard] {
         if(region.span.longitudeDelta > 7) {
-            return conglomerateRegionalStoredRailyards(limitRailyardsDisplayedThreshold: 10, railyardsDisplayedFrequency: 20)
+            return conglomerateRegionalStoredRailyards(limitRailyardsDisplayedThreshold: 10, railyardsDisplayedFrequency: 20, boundDimension: 0)
         } else if(region.span.longitudeDelta > 3) {
-            return conglomerateRegionalStoredRailyards(limitRailyardsDisplayedThreshold: 20, railyardsDisplayedFrequency: 30)
+            return conglomerateRegionalStoredRailyards(limitRailyardsDisplayedThreshold: 20, railyardsDisplayedFrequency: 30, boundDimension: 0)
+        } else if(region.span.longitudeDelta > 1) {
+            return conglomerateRegionalStoredRailyards(limitRailyardsDisplayedThreshold: 99, railyardsDisplayedFrequency: 1, boundDimension: 0)
         } else {
-            return conglomerateRegionalStoredRailyards(limitRailyardsDisplayedThreshold: 99, railyardsDisplayedFrequency: 1)
+            return conglomerateRegionalStoredRailyards(limitRailyardsDisplayedThreshold: 99, railyardsDisplayedFrequency: 1, boundDimension: 0)
         }
-//        return conglomerateRegionalStoredRailyards(limitRailyardsDisplayedThreshold: 99, railyardsDisplayedFrequency: 1)
     }
     
     /// Returns railyards contained in the user map region. Contains parameters to adjust number of railyards displayed.
@@ -74,8 +75,9 @@ final class DataConglomerate: ObservableObject {
     /// - Parameters:
     ///   - limitRailyardsDisplayedThreshold: number of railyards that are diplayed before limiting further railyards from getting displayed
     ///   - railyardsDisplayedFrequency: detirmines how often railyards are displayed after the limiter is active.
-    func conglomerateRegionalStoredRailyards(limitRailyardsDisplayedThreshold: Int, railyardsDisplayedFrequency: Int) -> [Railyard] {
+    func conglomerateRegionalStoredRailyards(limitRailyardsDisplayedThreshold: Int, railyardsDisplayedFrequency: Int, boundDimension: CLLocationDegrees) -> [Railyard] {
         let userLongitudeRegionsTags = findLongitudeRegionsTags()
+        let bound: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: boundDimension, longitude: boundDimension)
         var storedNearbyRailyards: [Railyard] = []
         if(userLongitudeRegionsTags.isEmpty) {
             return storedNearbyRailyards
@@ -94,16 +96,32 @@ final class DataConglomerate: ObservableObject {
         while(userLongitudeRegionTagsIndex < leftUserLongitudeRegionTags.count || userLongitudeRegionTagsIndex < rightUserLongitudeRegionTags.count) {
             if(userLongitudeRegionTagsIndex < leftUserLongitudeRegionTags.count) {
                 if storedUserLongitudeRegions[leftUserLongitudeRegionTags[userLongitudeRegionTagsIndex].longitudeRegion] != nil {
-                    for railyard in storedUserLongitudeRegions[leftUserLongitudeRegionTags[userLongitudeRegionTagsIndex].longitudeRegion]! {
-                        if((abs(railyard.coordinates.latitude) - abs(region.center.latitude)) < region.span.latitudeDelta) {
-                            if(numRailyardsDisplayed < limitRailyardsDisplayedThreshold) {
-                                storedNearbyRailyards.append(railyard)
+                    let railyards = storedUserLongitudeRegions[leftUserLongitudeRegionTags[userLongitudeRegionTagsIndex].longitudeRegion]!
+                    for railyardIndex in 0...(railyards.count - 1) {
+                        if((abs(railyards[railyardIndex].coordinates.latitude) - abs(region.center.latitude)) < region.span.latitudeDelta) {
+                            if(boundDimension > 0 && railyardIndex > 0 && !storedNearbyRailyards.isEmpty) {
+                                if(CLLocationCoordinate2D.coordinatesWithinBound(lhs: railyards[railyardIndex].coordinates, rhs: storedNearbyRailyards.last!.coordinates, bound: bound)) {
+                                    if(numRailyardsDisplayed < limitRailyardsDisplayedThreshold) {
+                                        storedNearbyRailyards.append(railyards[railyardIndex])
+                                        numRailyardsDisplayed += 1
+                                    } else {
+                                        if(numRailyardsDisplayed % railyardsDisplayedFrequency == 0) {
+                                            storedNearbyRailyards.append(railyards[railyardIndex])
+                                            numRailyardsDisplayed += 1
+                                        }
+                                    }
+                                }
                             } else {
-                                if(numRailyardsDisplayed % railyardsDisplayedFrequency == 0) {
-                                    storedNearbyRailyards.append(railyard)
+                                if(numRailyardsDisplayed < limitRailyardsDisplayedThreshold) {
+                                    storedNearbyRailyards.append(railyards[railyardIndex])
+                                    numRailyardsDisplayed += 1
+                                } else {
+                                    if(numRailyardsDisplayed % railyardsDisplayedFrequency == 0) {
+                                        storedNearbyRailyards.append(railyards[railyardIndex])
+                                        numRailyardsDisplayed += 1
+                                    }
                                 }
                             }
-                            numRailyardsDisplayed += 1
                         }
                     }
                 }
@@ -129,6 +147,7 @@ final class DataConglomerate: ObservableObject {
         return storedNearbyRailyards
     }
 
+    
     /// Conglomerates all railyards stored in DataConglomerate storedUserLongitudeRegions dictionary and favoriteRailyards list
     /// - Returns: Returns an array of railyards currently in data conglomerate memory
     func conglomerateAllStoredRailyards() -> [Railyard] {

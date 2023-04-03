@@ -19,6 +19,7 @@
 		81BF45DC295F7C040028B622 /* FramePreferenceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BF45DB295F7C040028B622 /* FramePreferenceKey.swift */; };
 		81BF45DE295F7C620028B622 /* RefreshableScrollViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BF45DD295F7C620028B622 /* RefreshableScrollViewModel.swift */; };
 		81BF45E0295F7CB80028B622 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BF45DF295F7CB80028B622 /* ActivityIndicator.swift */; };
+		81C967D729DA961000706791 /* CLLocationCoordinate2DExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C967D629DA961000706791 /* CLLocationCoordinate2DExtension.swift */; };
 		81C9DD352930525F00710E07 /* Waittime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C9DD342930525F00710E07 /* Waittime.swift */; };
 		81E22CD12937E4DF00BAE661 /* EmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E22CD02937E4DF00BAE661 /* EmailView.swift */; };
 		81E70B7029D24DDA00059CD5 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E70B6F29D24DDA00059CD5 /* ArrayExtension.swift */; };
@@ -59,6 +60,7 @@
 		81BF45DB295F7C040028B622 /* FramePreferenceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FramePreferenceKey.swift; sourceTree = "<group>"; };
 		81BF45DD295F7C620028B622 /* RefreshableScrollViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshableScrollViewModel.swift; sourceTree = "<group>"; };
 		81BF45DF295F7CB80028B622 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
+		81C967D629DA961000706791 /* CLLocationCoordinate2DExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLLocationCoordinate2DExtension.swift; sourceTree = "<group>"; };
 		81C9DD342930525F00710E07 /* Waittime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Waittime.swift; sourceTree = "<group>"; };
 		81E22CD02937E4DF00BAE661 /* EmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailView.swift; sourceTree = "<group>"; };
 		81E70B6F29D24DDA00059CD5 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 				81377BA42910CAC500274799 /* SearchManager.swift */,
 				8171B85E28AF1E390004B7B7 /* QueryTags.swift */,
 				8181116C292CA5A2007E57C3 /* TimeIntervalExtension.swift */,
+				81C967D629DA961000706791 /* CLLocationCoordinate2DExtension.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -255,6 +258,7 @@
 				BF2C4D63281E31A200C241BF /* ContentView.swift in Sources */,
 				BF2C4D92281E5E1F00C241BF /* DetailView.swift in Sources */,
 				81377BA32910C82700274799 /* ListOverlay.swift in Sources */,
+				81C967D729DA961000706791 /* CLLocationCoordinate2DExtension.swift in Sources */,
 				BFBE4054288F0F9700DA2FD3 /* ChatBubble.swift in Sources */,
 				BF8986532889CFCA00BF676E /* LocationManager.swift in Sources */,
 				81BF45DA295F7B970028B622 /* RefreshableScrollView.swift in Sources */,
