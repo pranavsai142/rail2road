@@ -56,13 +56,17 @@ final class DataConglomerate: ObservableObject {
         return dataString
     }
     
+    /// Returns a list of railyards in the user's map region. The number of railyards returned is dependent on the zoom of the region
+    /// - Returns: List of railyards
     func conglomerateStoredRailyards() -> [Railyard] {
-//        if(region.span.longitudeDelta > 5) {
-//            return conglomerateRegionalStoredRailyards(limitRailyardsDisplayedThreshold: 5, railyardsDisplayedFrequency: 10)
-//        } else {
-//            return conglomerateRegionalStoredRailyards(limitRailyardsDisplayedThreshold: 99, railyardsDisplayedFrequency: 1)
-//        }
-        return conglomerateRegionalStoredRailyards(limitRailyardsDisplayedThreshold: 99, railyardsDisplayedFrequency: 1)
+        if(region.span.longitudeDelta > 7) {
+            return conglomerateRegionalStoredRailyards(limitRailyardsDisplayedThreshold: 10, railyardsDisplayedFrequency: 20)
+        } else if(region.span.longitudeDelta > 3) {
+            return conglomerateRegionalStoredRailyards(limitRailyardsDisplayedThreshold: 20, railyardsDisplayedFrequency: 30)
+        } else {
+            return conglomerateRegionalStoredRailyards(limitRailyardsDisplayedThreshold: 99, railyardsDisplayedFrequency: 1)
+        }
+//        return conglomerateRegionalStoredRailyards(limitRailyardsDisplayedThreshold: 99, railyardsDisplayedFrequency: 1)
     }
     
     /// Returns railyards contained in the user map region. Contains parameters to adjust number of railyards displayed.
