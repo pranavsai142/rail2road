@@ -59,10 +59,14 @@ final class DataConglomerate: ObservableObject {
     /// Returns a list of railyards in the user's map region. The number of railyards returned is dependent on the zoom of the region
     /// - Returns: List of railyards
     func conglomerateStoredRailyards() -> [Railyard] {
-        if(region.span.longitudeDelta > 7) {
-            return conglomerateRegionalStoredRailyards(railyardModOperatorActivationThreshold: 20, railyardsDisplayedModOperator: 5, boundDimension: 1)
+        if(region.span.longitudeDelta > 40) {
+            return conglomerateRegionalStoredRailyards(railyardModOperatorActivationThreshold: 10, railyardsDisplayedModOperator: 10, boundDimension: 5)
+        } else if(region.span.longitudeDelta > 20) {
+            return conglomerateRegionalStoredRailyards(railyardModOperatorActivationThreshold: 20, railyardsDisplayedModOperator: 5, boundDimension: 3)
+        } else if(region.span.longitudeDelta > 10) {
+            return conglomerateRegionalStoredRailyards(railyardModOperatorActivationThreshold: 35, railyardsDisplayedModOperator: 10, boundDimension: 1)
         } else if(region.span.longitudeDelta > 3) {
-            return conglomerateRegionalStoredRailyards(railyardModOperatorActivationThreshold: 35, railyardsDisplayedModOperator: 10, boundDimension: 0.5)
+            return conglomerateRegionalStoredRailyards(railyardModOperatorActivationThreshold: 99, railyardsDisplayedModOperator: 1, boundDimension: 0.5)
         } else if(region.span.longitudeDelta > 1) {
             return conglomerateRegionalStoredRailyards(railyardModOperatorActivationThreshold: 99, railyardsDisplayedModOperator: 1, boundDimension: 0.3)
         } else {
@@ -99,7 +103,7 @@ final class DataConglomerate: ObservableObject {
                 if storedUserLongitudeRegions[leftUserLongitudeRegionTags[userLongitudeRegionTagsIndex].longitudeRegion] != nil {
                     let railyards = storedUserLongitudeRegions[leftUserLongitudeRegionTags[userLongitudeRegionTagsIndex].longitudeRegion]!
                     for railyardIndex in railyards.indices {
-                        if((abs(railyards[railyardIndex].coordinates.latitude) - abs(region.center.latitude)) < region.span.latitudeDelta) {
+                        if((abs(railyards[railyardIndex].coordinates.latitude) - abs(region.center.latitude)) < (region.span.latitudeDelta/2)) {
                             if(boundDimension > 0 && railyardIndex > 0 && !regionStoredNearbyRailyards.isEmpty) {
                                 var boundViolated: Bool = false
                                 for regionStoredNearbyRailyard in regionStoredNearbyRailyards {
@@ -112,7 +116,7 @@ final class DataConglomerate: ObservableObject {
                                         regionStoredNearbyRailyards.append(railyards[railyardIndex])
                                         numRailyardsDisplayed += 1
                                     } else {
-                                        if(numRailyardsDisplayed % railyardsDisplayedModOperator == 0) {
+                                        if(railyardIndex % railyardsDisplayedModOperator == 0) {
                                             regionStoredNearbyRailyards.append(railyards[railyardIndex])
                                             numRailyardsDisplayed += 1
                                         }
@@ -123,7 +127,7 @@ final class DataConglomerate: ObservableObject {
                                     regionStoredNearbyRailyards.append(railyards[railyardIndex])
                                     numRailyardsDisplayed += 1
                                 } else {
-                                    if(numRailyardsDisplayed % railyardsDisplayedModOperator == 0) {
+                                    if(railyardIndex % railyardsDisplayedModOperator == 0) {
                                         regionStoredNearbyRailyards.append(railyards[railyardIndex])
                                         numRailyardsDisplayed += 1
                                     }
@@ -150,7 +154,7 @@ final class DataConglomerate: ObservableObject {
                                         regionStoredNearbyRailyards.append(railyards[railyardIndex])
                                         numRailyardsDisplayed += 1
                                     } else {
-                                        if(numRailyardsDisplayed % railyardsDisplayedModOperator == 0) {
+                                        if(railyardIndex % railyardsDisplayedModOperator == 0) {
                                             regionStoredNearbyRailyards.append(railyards[railyardIndex])
                                             numRailyardsDisplayed += 1
                                         }
@@ -161,7 +165,7 @@ final class DataConglomerate: ObservableObject {
                                     regionStoredNearbyRailyards.append(railyards[railyardIndex])
                                     numRailyardsDisplayed += 1
                                 } else {
-                                    if(numRailyardsDisplayed % railyardsDisplayedModOperator == 0) {
+                                    if(railyardIndex % railyardsDisplayedModOperator == 0) {
                                         regionStoredNearbyRailyards.append(railyards[railyardIndex])
                                         numRailyardsDisplayed += 1
                                     }
