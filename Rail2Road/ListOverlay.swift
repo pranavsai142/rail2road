@@ -48,7 +48,7 @@ struct ListOverlay: View {
                             }
                     }
                 } else {
-                    ForEach(dataConglomerate.conglomerateRegionalStoredRailyards(limitRailyardsDisplayedThreshold: 99, railyardsDisplayedFrequency: 1)) { railyard in
+                    ForEach(dataConglomerate.conglomerateRegionalStoredRailyards(railyardModOperatorActivationThreshold: 99, railyardsDisplayedModOperator: 1, boundDimension: 0)) { railyard in
                         NavigationLink(destination: DetailView(uid: uid, railyard: railyard)
                             .environmentObject(database)
                             .environmentObject(dataConglomerate)) {
