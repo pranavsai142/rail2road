@@ -60,15 +60,15 @@ final class DataConglomerate: ObservableObject {
     /// - Returns: List of railyards
     func conglomerateStoredRailyards() -> [Railyard] {
         if(region.span.longitudeDelta > 40) {
-            return conglomerateRegionalStoredRailyards(railyardModOperatorActivationThreshold: 10, railyardsDisplayedModOperator: 10, boundDimension: 5)
+            return conglomerateRegionalStoredRailyards(railyardModOperatorActivationThreshold: 0, railyardsDisplayedModOperator: 20, boundDimension: 5)
         } else if(region.span.longitudeDelta > 20) {
-            return conglomerateRegionalStoredRailyards(railyardModOperatorActivationThreshold: 20, railyardsDisplayedModOperator: 5, boundDimension: 3)
+            return conglomerateRegionalStoredRailyards(railyardModOperatorActivationThreshold: 0, railyardsDisplayedModOperator: 10, boundDimension: 3)
         } else if(region.span.longitudeDelta > 10) {
-            return conglomerateRegionalStoredRailyards(railyardModOperatorActivationThreshold: 35, railyardsDisplayedModOperator: 10, boundDimension: 1)
+            return conglomerateRegionalStoredRailyards(railyardModOperatorActivationThreshold: 10, railyardsDisplayedModOperator: 20, boundDimension: 1.5)
         } else if(region.span.longitudeDelta > 3) {
             return conglomerateRegionalStoredRailyards(railyardModOperatorActivationThreshold: 99, railyardsDisplayedModOperator: 1, boundDimension: 0.5)
         } else if(region.span.longitudeDelta > 1) {
-            return conglomerateRegionalStoredRailyards(railyardModOperatorActivationThreshold: 99, railyardsDisplayedModOperator: 1, boundDimension: 0.3)
+            return conglomerateRegionalStoredRailyards(railyardModOperatorActivationThreshold: 99, railyardsDisplayedModOperator: 1, boundDimension: 0.2)
         } else {
             return conglomerateRegionalStoredRailyards(railyardModOperatorActivationThreshold: 99, railyardsDisplayedModOperator: 1, boundDimension: 0)
         }
