@@ -180,7 +180,6 @@ final class DataConglomerate: ObservableObject {
         }
         return storedNearbyRailyards
     }
-
     
     /// Conglomerates all railyards stored in DataConglomerate storedUserLongitudeRegions dictionary and favoriteRailyards list
     /// - Returns: Returns an array of railyards currently in data conglomerate memory
