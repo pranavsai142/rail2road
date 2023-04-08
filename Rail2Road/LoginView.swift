@@ -16,14 +16,21 @@ struct LoginView: View {
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var isAuthenticated: Bool = false
+    @State private var rememberUser: Bool = false
     @State private var tryAgainLater: Bool = false
     @State private var networkError: Bool = false
     @State private var failed: Bool = false
     @State private var uid: String = ""
     
+    private func checkKeychain() {
+        email = getStoredPassword(account: "email")
+        password = getStoredPassword(account: "password")
+        rememberUser = (!email.isEmpty && !password.isEmpty)
+    }
+    
     private func authenticate() {
-        email = "test@newsies.us"
-        password = "Newsies"
+//        email = "test@newsies.us"
+//        password = "Newsies"
         failed = false
         networkError = false
         tryAgainLater = false
@@ -32,6 +39,13 @@ struct LoginView: View {
 //                print("success!")
 //                print(result!.user.uid)
                 uid = result!.user.uid
+                if(rememberUser) {
+                    updateStoredPassword(account: "email", password: email)
+                    updateStoredPassword(account: "password", password: password)
+                } else {
+                    deleteStoredPassword(account: "email")
+                    deleteStoredPassword(account: "password")
+                }
                 isAuthenticated = true
                 failed = false
             }
@@ -52,6 +66,44 @@ struct LoginView: View {
         }
     }
     
+    func getStoredPassword(account: String) -> String {
+      let kcw = KeychainWrapper()
+      if let password = try? kcw.getGenericPasswordFor(
+        account: account,
+        service: "Rail2Road") {
+        return password
+      }
+
+      return ""
+    }
+
+    func updateStoredPassword(account: String, password: String) {
+      let kcw = KeychainWrapper()
+      do {
+        try kcw.storeGenericPasswordFor(
+          account: account,
+          service: "Rail2Road",
+          password: password)
+      } catch let error as KeychainWrapperError {
+        print("Exception setting password: \(error.message ?? "no message")")
+      } catch {
+        print("An error occurred setting the password.")
+      }
+    }
+    
+    func deleteStoredPassword(account: String) {
+        let kcw = KeychainWrapper()
+        do {
+            try kcw.deleteGenericPasswordFor(
+                account: account,
+                service: "Rail2Road")
+        } catch let error as KeychainWrapperError {
+            print("Exception deleting password: \(error.message ?? "no message")")
+        } catch {
+            print("An error occurred deleting the password.")
+        }
+    }
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -63,6 +115,8 @@ struct LoginView: View {
             
                 SecureField("Password", text: $password)
                     .font(.title3)
+                
+                Toggle("Remember me", isOn: $rememberUser)
             
                 NavigationLink(
                     destination: MapView(uid: uid)
@@ -107,6 +161,7 @@ struct LoginView: View {
             .navigationBarTitle("Rail2Road")
             .navigationBarHidden(true)
             .onAppear {
+                checkKeychain()
                 hideKeyboard()
             }
     }
