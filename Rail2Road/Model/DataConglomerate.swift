@@ -103,7 +103,7 @@ final class DataConglomerate: ObservableObject {
                 if storedUserLongitudeRegions[leftUserLongitudeRegionTags[userLongitudeRegionTagsIndex].longitudeRegion] != nil {
                     let railyards = storedUserLongitudeRegions[leftUserLongitudeRegionTags[userLongitudeRegionTagsIndex].longitudeRegion]!
                     for railyardIndex in railyards.indices {
-                        if((abs(railyards[railyardIndex].coordinates.latitude) - abs(region.center.latitude)) < (region.span.latitudeDelta/2)) {
+                        if(abs(abs(railyards[railyardIndex].coordinates.latitude) - abs(region.center.latitude)) < (region.span.latitudeDelta/2)) {
                             if(boundDimension > 0 && railyardIndex > 0 && !regionStoredNearbyRailyards.isEmpty) {
                                 var boundViolated: Bool = false
                                 for regionStoredNearbyRailyard in regionStoredNearbyRailyards {
@@ -141,7 +141,7 @@ final class DataConglomerate: ObservableObject {
                 if storedUserLongitudeRegions[rightUserLongitudeRegionTags[userLongitudeRegionTagsIndex].longitudeRegion] != nil {
                     let railyards = storedUserLongitudeRegions[rightUserLongitudeRegionTags[userLongitudeRegionTagsIndex].longitudeRegion]!
                     for railyardIndex in railyards.indices {
-                        if((abs(railyards[railyardIndex].coordinates.latitude) - abs(region.center.latitude)) < region.span.latitudeDelta) {
+                        if(abs(abs(railyards[railyardIndex].coordinates.latitude) - abs(region.center.latitude)) < (region.span.latitudeDelta/2)) {
                             if(boundDimension > 0 && railyardIndex > 0 && !regionStoredNearbyRailyards.isEmpty) {
                                 var boundViolated: Bool = false
                                 for regionStoredNearbyRailyard in regionStoredNearbyRailyards {

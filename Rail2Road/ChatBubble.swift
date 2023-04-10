@@ -8,14 +8,27 @@
 import SwiftUI
 
 struct ChatBubble: View {
+    @EnvironmentObject var database: FireDatabaseReference
     @EnvironmentObject var dataConglomerate: DataConglomerate
     
     var chat: Chat
     var sent: Bool
     
+    @State private var flagged: Bool = false
+    
     init(chat: Chat, sent: Bool) {
         self.chat = chat
         self.sent = sent
+    }
+    
+    private func toggleFlagChat() {
+        if(!flagged) {
+            database.setValue(path: ["flagged", chat.id.uuidString], value: true)
+            flagged = true
+        } else {
+            database.setValue(path: ["flagged", chat.id.uuidString], value: false)
+            flagged = false
+        }
     }
     
     var body: some View {
@@ -30,6 +43,15 @@ struct ChatBubble: View {
                     .font(.subheadline)
                     .italic()
                     .foregroundColor(.gray)
+                Button(action: {
+                    toggleFlagChat()
+                }, label: {
+                    if(flagged) {
+                        Image(systemName: "flag.fill")
+                    } else {
+                        Image(systemName: "flag")
+                    }
+                })
             }
                 .padding(.leading)
                 .padding(.trailing)

@@ -224,9 +224,6 @@ struct MapView: View {
                         .environmentObject(dataConglomerate)
                 }
                     .navigationBarHidden(true)
-                    .onAppear {
-                        goToCurrentLocation()
-                    }
             } else {
                 ZStack {
                     Map(coordinateRegion: $dataConglomerate.region, showsUserLocation: true, annotationItems: dataConglomerate.conglomerateStoredRailyards()) { railyard in
