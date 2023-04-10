@@ -104,7 +104,6 @@ final class DataConglomerate: ObservableObject {
                     let railyards = storedUserLongitudeRegions[leftUserLongitudeRegionTags[userLongitudeRegionTagsIndex].longitudeRegion]!
                     for railyardIndex in railyards.indices {
                         if(abs(abs(railyards[railyardIndex].coordinates.latitude) - abs(region.center.latitude)) < (region.span.latitudeDelta/2)) {
-                            print(abs(abs(railyards[railyardIndex].coordinates.latitude) - abs(region.center.latitude)))
                             if(boundDimension > 0 && railyardIndex > 0 && !regionStoredNearbyRailyards.isEmpty) {
                                 var boundViolated: Bool = false
                                 for regionStoredNearbyRailyard in regionStoredNearbyRailyards {
