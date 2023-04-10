@@ -29,8 +29,6 @@ struct LoginView: View {
     }
     
     private func authenticate() {
-//        email = "test@newsies.us"
-//        password = "Newsies"
         failed = false
         networkError = false
         tryAgainLater = false
